@@ -1,87 +1,142 @@
 FORMAT: 1A
-HOST: http://polls.apiblueprint.org/
+HOST: https://api.mycred.io/
 
 # CRED-CLAS
 
-## LTV [/ltv]
+API documentation for CRED CLOC As A Service.
+
+## Loan Calculator [/ltv]
 
 ### Loan to value collection [GET/api/v1/ltv]
 
-Get Loan to value collection based on geography.
+Loan Calculator
 + Request
 
     + Headers
 
-            Authorization: Basic ABC123
+            Authorization: None
 
 + Response 200 (application/json)
        
         {
-            "credit_line": {
-                "min":"500",
-                "max":"200000",
-                "currency":"USD"
+          "USD": {
+            "total_credit_limit": {
+              "min": "500",
+              "max": "200000",
+              "currency": "USD"
             },
             "fees": {
-                "origination_fee_percent":"3"
+              "origination_fee_percent": "3"
             },
-            "ltv":[
-            
-            
-                {
-                    "loan_duration_in_months": "36",
-                    "annual_interest_percent": "12",
-                    "state": "CA",
-                    "country": "US",
-                    "currencies": [{
-                        "currency": "BTC",
-                        "percent": "33"
-                    }, {
-                        "currency": "ETH",
-                        "percent": "40"
-                    }],
-                    "annual_interest_discount": [{
-                        "currency": "LBA",
-                        "discount_percent_min": "1",
-                        "discount_percent_max": "3",
-                        "credit_line_buy_percent_increment": "1"
-                    }, {
-                        "currency": "UPUSD",
-                        "discount_percent_min": "1",
-                        "discount_percent_max": "3",
-                        "credit_line_buy_percent_increment": "1"
-                    }]
-                },
-                {
-                    "loan_duration_in_months": "18",
-                    "annual_interest_percent": "15",
-                    "state": "CA",
-                    "country": "US",
-                    "currencies": [{
-                        "currency": "BTC",
-                        "percent": "33"
-                    }, {
-                        "currency": "ETH",
-                        "percent": "40"
-                    }],
-                    "annual_interest_discount": [{
-                        "currency": "LBA",
-                        "discount_percent_min": "1",
-                        "discount_percent_max": "6",
-                        "credit_line_buy_percent_increment": "1"
-                    }, {
-                        "currency": "UPUSD",
-                        "discount_percent_min": "1",
-                        "discount_percent_max": "6",
-                        "credit_line_buy_percent_increment": "1"
-                    }]
-                }
-        ]
+            "ltv": [
+              {
+                "loan_duration_in_months": "36",
+                "annual_interest_percent": "12",
+                "country": "US",
+                "currencies": [
+                  {
+                    "currency": "BTC",
+                    "percent": "33"
+                  },
+                  {
+                    "currency": "ETH",
+                    "percent": "40"
+                  }
+                ],
+                "interest_rate_rebate": [
+                  {
+                    "rebate_currency": "LBA",
+                    "discount_percent_min": "1",
+                    "discount_percent_max": "3",
+                    "loan_rebate_increment": "1"
+                  }
+                  
+                ]
+              },
+              {
+                "loan_duration_in_months": "36",
+                "annual_interest_percent": "15",
+                "country": "CN",
+                "currencies": [
+                  {
+                    "currency": "BTC",
+                    "percent": "33"
+                  },
+                  {
+                    "currency": "ETH",
+                    "percent": "40"
+                  }
+                ],
+                "interest_rate_rebate": [
+                  {
+                    "rebate_currency": "LBA",
+                    "discount_percent_min": "1",
+                    "discount_percent_max": "6",
+                    "loan_rebate_increment": "1"
+                  }
+                ]
+              }
+            ]
+          },
+          "UPUSD": {
+            "total_credit_limit": {
+              "min": "500",
+              "max": "200000",
+              "currency": "UPUSD"
+            },
+            "fees": {
+              "origination_fee_percent": "3"
+            },
+            "ltv": [
+              {
+                "loan_duration_in_months": "36",
+                "annual_interest_percent": "12",
+                "country": "US",
+                "currencies": [
+                  {
+                    "currency": "BTC",
+                    "percent": "33"
+                  },
+                  {
+                    "currency": "ETH",
+                    "percent": "40"
+                  }
+                ],
+                "interest_rate_rebate": [
+                  {
+                    "rebate_currency": "LBA",
+                    "discount_percent_min": "1",
+                    "discount_percent_max": "3",
+                    "loan_rebate_increment": "1"
+                  }
+                ]
+              },
+              {
+                "loan_duration_in_months": "18",
+                "annual_interest_percent": "15",
+                "country": "DE",
+                "currencies": [
+                  {
+                    "currency": "BTC",
+                    "percent": "33"
+                  },
+                  {
+                    "currency": "ETH",
+                    "percent": "40"
+                  }
+                ],
+                "interest_rate_rebate": [
+                  {
+                    "rebate_currency": "LBA",
+                    "discount_percent_min": "1",
+                    "discount_percent_max": "6",
+                    "loan_rebate_increment": "1"
+                  }
+                ]
+              }
+            ]
+          }
         }
-+ Response 401
-    + Headers
-
-            WWW-Authenticate: Basic realm="protected"  
             
 + Response 400
     
@@ -92,70 +147,75 @@ Get Loan to value collection based on geography.
         
 ## Onboarding [/users]
 
-User onboarding with CRED platform including kyc.
+User onboarding with CRED platform.
 
-### user signup [POST/api/v1/users] 
+### User signup [POST/api/v1/users] 
 
-Sign up a partner user.
+Sign up a user.
 
 Required attributes: 
 
-- `email`
-- `mobile`
+- `email` - Email address.
+- `mobile` - Mobile number.
+- `country code` - Mobile country code.
 
 Optional attributes:
 
-- `partner_user_id`
-
+- `partner_user_uuid`
 
 + Request (application/json)
 
-        Body
         {
             "email":"john@mycred.io",
-            "partner_user_id":"10",
-            "mobile":"4153579089"
+            "partner_user_uid":"c4a44579-c996-4e30-a7c1-06245f1eb1fb",
+            "mobile":"4153579089",
+            "country_code":"001"            
+
         }
+
     + Headers
 
-            Authorization: Basic ABC123
+            Authorization: Basic YWxhZGRpbjpvcGVuc2VzYW1l
             
 + Response 200 (application/json)
 
         {
-            "id": "1",
+            "uuid": "d4a44579-c996-4e30-a7c1-06245f1eb1fb",
             "email": "john@mycred.io",
             "mobile": "4153579089",
             "partner_details": {
                 "partner_name":"uphold",
-                "partner_user_id":"10"
+                "partner_user_uid":"c4a44579-c996-4e30-a7c1-06245f1eb1fb"
             }
         }
         
 + Response 401
-    + Headers
 
-            WWW-Authenticate: Basic realm="protected"
-            
-+ Response 400
+        {
+            "error": "Un-Authorized",
+            "code" : "001"
+        }
  
++ Response 400
+
         {
             "error": "Bad request",
             "code" : "400"
-        }            
-        
-### user kyc [POST/api/v1/users/{id}/kyc]  
+        }
 
-Request partner user KYC check
+### User kyc [POST/api/v1/users/{uid}/kyc]  
+
+Partner request for user KYC check
 
 Parameters:
-- `id` (number) - user id issued by cred in the form of an integer  
++ `uuid`: User uuid issued by CRED   
 
 Required attributes: 
 
 - `resident`
 - `first-name`          
 - `last-name`
+- `DOB`
 - `address`
 
 
@@ -172,17 +232,19 @@ Required attributes:
                 "zip": "94105",
                 "country": "USA"
             },
+            "DOB":"12/31/91",
             "resident": "US" 
         }
+        
     + Headers
 
-            Authorization: Basic ABC123
+            Authorization: Basic YWxhZGRpbjpvcGVuc2VzYW1l
             
             
 +   Response 200 (application/json)
 
         {
-            "id": "1",
+            "uuid": "d4a44579-c996-4e30-a7c1-06245f1eb1fb",
             "status": "enabled",
             "kyc": {
                 "status": "pending"
@@ -196,7 +258,7 @@ Required attributes:
             },
             "partner_details": {
                 "partner_name":"uphold",
-                "partner_user_id":"10"
+                "partner_user_id":"c4a44579-c996-4e30-a7c1-06245f1eb1fb"
             },
             "mobile": "4150689089",
             "resident": "US", 
@@ -206,43 +268,42 @@ Required attributes:
         }
         
 + Response 401
-    + Headers
 
-            WWW-Authenticate: Basic realm="protected"
-            
+        {
+            "error": "Un-Authorized",
+            "code" : "001"
+        }
+             
 + Response 400
-    
+
         {
             "error": "Bad request",
             "code" : "400"
-        }                       
+        }
 
-### user by id [GET/api/v1/users/{id}]  
 
-Get CRED user by userId. Can be used in polling to check kyc status or user status.
+### Get user by uuid [GET/api/v1/users/{uuid}]  
+
+Get CRED user by uuid. Can be used in polling to check kyc status or user status.
 
 Parameters:
-- `id` (number) - user id issued by cred in the form of an integer  
+- `uuid`  - user uuid issued by CRED 
     
 
 + Request (application/json)
 
     + Headers
 
-            Authorization: Basic ABC123
+            Authorization: Basic YWxhZGRpbjpvcGVuc2VzYW1l
             
-    
+            
 +   Response 200 (application/json)
 
         {
-            "id": "1",
+            "uuid": "d4a44579-c996-4e30-a7c1-06245f1eb1fb",
             "status": "enabled",
             "kyc": {
-                "status": "success" 
-            },
-             "partner_details": {
-                "partner_name":"uphold",
-                "partner_user_id":"10"
+                "status": "success"
             },
             "address": {
                 "line1": "487 Cumber Lane",
@@ -251,6 +312,10 @@ Parameters:
                 "zip": "94105",
                 "country": "USA"
             },
+            "partner_details": {
+                "partner_name":"uphold",
+                "partner_user_id":"c4a44579-c996-4e30-a7c1-06245f1eb1fb"
+            },
             "mobile": "4150689089",
             "resident": "US", 
             "birthdate": "09/10/1995",
@@ -259,27 +324,30 @@ Parameters:
         }
         
 + Response 401
-    + Headers
 
-            WWW-Authenticate: Basic realm="protected"
-            
+        {
+            "error": "Un-Authorized",
+            "code" : "001"
+        }
+             
 + Response 400
-    
+
         {
             "error": "Bad request",
             "code" : "400"
-        }                       
+        }
+         
             
 ## Quotes [/quotes]
 
 Quote generation based on available collateral, acceptance and lookup based on generated quoteId.
 
-### Quote [POST/api/v1/users/{id}/quotes]  
+### Quote [POST/api/v1/users/{uuid}/quotes]  
 
 Request quote based on available collateral.
 
 Parameters:
-- `id` (number) - user id issued by cred in the form of an integer  
+- `uuid` - User uuid issued by CRED   
 
 
 Required attributes: 
@@ -288,7 +356,6 @@ Required attributes:
 
 + Request (application/json)
 
-        Body
         {
           "collateral": [{
             "currency": "ETH",
@@ -296,62 +363,70 @@ Required attributes:
            }, {
             "currency": "BTC",
             "quantity": "19.9"
-           }],
-           "annual_rate_discount": {
+           },
+            {
+            "currency": "BTC",
+            "quantity": "19.9"
+            }
+           ],
+           "interest_rate_rebate": {
                 "currency":"LBA",
-                "credit_line_buy_percent":"3"
+                "loan_rebate_increment":"3"
            }
         }
         
     + Headers
 
-            Authorization: Basic ABC123
+            Authorization: Basic YWxhZGRpbjpvcGVuc2VzYW1l
             
    
 + Response 200 (application/json)
 
         {
-            "id": "2"
+            "quoteId": "q4a44579-c996-4e30-a7c1-06245f1eb1fb"
+        }
+
++ Response 401
+
+        {
+            "error": "Un-Authorized",
+            "code" : "001"
         }
         
-        
-+ Response 401
-    + Headers
-
-            WWW-Authenticate: Basic realm="protected"
-            
 + Response 400
-    
+
         {
             "error": "Bad request",
             "code" : "400"
-        }                       
-            
-### Quote by id [GET/api/v1/users/{id}/quotes/{quoteId}]  
+        }
+
+
+### Quote by id [GET/api/v1/users/{uuid}/quotes/{quoteId}]  
 
 Request quote based on quote id, can be used for polling quote.
 
 Parameters:
-- `id` (number) - user id issued by cred in the form of an integer
-- `quoteId` (number) - quoteId issued by cred during quote create request.
+- `uuid`  - User uuid issued by CRED  
+- `quoteId` - quoteId issued by cred during quote create request.
 
 + Request (application/json)
 
-
     + Headers
 
-            Authorization: Basic ABC123
+            Authorization: Basic YWxhZGRpbjpvcGVuc2VzYW1l
             
 
 +   Response 200 (application/json)
 
         {
-          "id": "2",
-          "amount": "10000",
+          "id": "q4a44579-c996-4e30-a7c1-06245f1eb1fb",
+          "status": "success",
+          "msg": "Quote created successfully",
+          "total_credit_limit": "10000",
           "currency": "USD", 
           "annual_interest_percent": "9",
           "duration": "36", 
-          "ttl": "10800", 
+          "ttl_in_secs": "10800", 
           "collateral": [{
             "currency": "BTC",
             "quantity": "19.9"
@@ -368,179 +443,154 @@ Parameters:
         }
         
 + Response 401
-    + Headers
-
-            WWW-Authenticate: Basic realm="protected"
-            
-+ Response 400
-    
-        {
-            "error": "Bad request",
-            "code" : "400"
-        }                       
-            
-### Quote Terms by id [GET/api/v1/users/{id}/quotes/{quoteId}/terms?locale=en-US]  
-
-Get quote terms generated by CRED for a given user.
-
-Parameters:
-- `id` (number) - user id issued by cred in the form of an integer
-- `quoteId` (number) - quoteId issued by cred during quote create request.
-
-+ Request (application/json)
-
-    + Headers
-
-            Authorization: Basic ABC123
-            
-    
-+   Response 200 (application/json)
 
         {
-            "agreement": "<Legal Text>"
+            "error": "Un-Authorized",
+            "code" : "001"
         }
         
-+ Response 401
-    + Headers
-
-            WWW-Authenticate: Basic realm="protected"  
-            
 + Response 400
-    
+
         {
             "error": "Bad request",
             "code" : "400"
-        }            
-            
+        }
+   
+
 ## CLOC [/cloc]            
             
-### CLOC [POST/api/v1/users/{id}/cloc] 
+### Create CLOC [POST/api/v1/users/{uuid}/cloc] 
 
-CLOC creation for a given user id.
+CLOC creation for a given user uuid.
 
 Required attributes: 
 - `settings` - settings object containing collateral withdrawl and funds collections details.
 
 Parameters:
-- `id` (number) - user id issued by cred in the form of an integer
-- `quoteId` (number) - quoteId issued by cred during quote create request.
+- `uuid` -User uuid issued by CRED  
 
 + Request (application/json)
 
-    Body
-    {
-        "quote_id": "2",
-        "settings": {
-            "collateral": 
-            [{
-                "id": "11",
-                "type": "uphold-card"
+        {
+            "quote_id": "q4a44579-c996-4e30-a7c1-06245f1eb1fb",
+            "settings": {
+                "collateral": 
+                [{
+                    "id": "11",
+                    "type": "uphold-card"
+                    }, {
+                    "id": "12",
+                    "type": "uphold-card"
+                }],
+                "collection": 
+                [{
+                    "id": "13",
+                    "type": "uphold-card"
                 }, {
-                "id": "12",
-                "type": "uphold-card"
-            }],
-            "collection": 
-            [{
-                "id": "13",
-                "type": "uphold-card"
-            }, {
-                "id": "14",
-                "type": "uphold-card"
-            }],
-            "withdrawal": {
-                "id": "15",
-                "type": "uphold-card"
+                    "id": "14",
+                    "type": "uphold-card"
+                }],
+                "withdrawal": {
+                    "id": "15",
+                    "type": "uphold-card"
+                },
+                "annual_rate_discount": {
+                     "id": "16",
+                    "type": "lba or upusd uphold-card"
+                }
             },
-            "annual_rate_discount": {
-                 "id": "16",
-                "type": "lba or upusd uphold-card"
-            }
-        
-        },
-        "ip": "john.doe.127.0.0.0.1"
-    }
+            "e-sign": "<name>-<ip>-<timestamp>"
+        }
         
     + Headers
 
-            Authorization: Basic ABC123
+            Authorization: Basic YWxhZGRpbjpvcGVuc2VzYW1l
             
-    + Parameters
-        + id (number) - user id issued by cred in the form of an integer
 
 + Response 200 (application/json)
 
         {
-            "id": "3"
+            "uid": "q4a44579-c996-4e30-a7c1-06245f1eb1fb"
         }
 
 + Response 401
-    + Headers
 
-            WWW-Authenticate: Basic realm="protected" 
-            
+        {
+            "error": "Un-Authorized",
+            "code" : "001"
+        }
+        
 + Response 400
-    
+
         {
             "error": "Bad request",
             "code" : "400"
-        }                       
+        }
+        
             
-### CLOC by id [GET/api/v1/users/{id}/cloc/{clocId}]  
+### CLOC by id [GET/api/v1/users/{uuid}/cloc/{clocId}]  
 
-Get CLOC by given id for a given user id
+Get CLOC by given id for a given user uuid
 
 Parameters:
-- `id` (number) - user id issued by cred in the form of an integer
-- `clocId` (number) - cloc id issued by cred in the form of an integer
+- `uuid` - User uuid issued by CRED  
+- `clocId` - cloc id issued by CRED
 
 + Request (application/json)
 
     + Headers
 
-            Authorization: Basic ABC123
+            Authorization: Basic YWxhZGRpbjpvcGVuc2VzYW1l
             
    
 + Response 200 (application/json)
 
         {
-              "id": "3",
+              "id": "q4a44579-c996-4e30-a7c1-06245f1eb1fb",
               "status": "active", 
-              "created_at": "2018-10-1014:00:00",
               "annual_interest_percent": "9",
+              "max_withdrawl_limit":"7500",
+              "origination_date":"2018-10-1014:00:00",
+              "maturity_date":"2021-10-1014:00:00",
+              "tenor_in_months":"36",
               "credit_line": "1000", 
               "available_balance": "1000", 
               "currency": "USD",
               "fees": {
                 "origination_fee_percent":"3",
                 "origination_fee":"30",
-                "origination_fee_currency":"USD"          
+                "origination_fee_currency":"USD" 
               },
               "annual_interest_discount": {
                 "discount_percent_max":"3",
+                "curreny":"LBA",
                 "currency_amount":"6000",
                 "currency_rate":"0.05"
               }
               
         }
-        
-+ Response 401
-    + Headers
 
-            WWW-Authenticate: Basic realm="protected"
-            
++ Response 401
+
+        {
+            "error": "Un-Authorized",
+            "code" : "001"
+        }
+        
 + Response 400
-    
+
         {
             "error": "Bad request",
             "code" : "400"
-        }            
-            
-### Get CLOC List [GET/api/v1/users/{id}/cloc]  
+        }
 
-Get CLOC list for a given user id
+            
+### Get CLOC List [GET/api/v1/users/{uuid}/cloc]  
+
+Get CLOC list for a given user uuid
 
 Parameters:
-- `id` (number) - user id issued by cred in the form of an integer
+- `uuid` - User uuid issued by CRED  
 
 + Request (application/json)
 
@@ -554,7 +604,10 @@ Parameters:
         [{
             "id": "3",
               "status": "active", 
-              "created_at": "2018-10-1014:00:00",
+              "max_withdrawl_limit":"7500",
+              "origination_date":"2018-10-1014:00:00",
+              "maturity_date":"2021-10-1014:00:00",
+              "tenor_in_months":"36",
               "annual_interest_percent": "9",
               "credit_line": "1000", 
               "available_balance": "1000", 
@@ -581,48 +634,15 @@ Parameters:
         {
             "error": "Bad request",
             "code" : "400"
-        }            
-                        
-            
-### CLOC close [GET/api/v1/users/{id}/cloc/{clocId}/close]  
-
-Parameters:
-
-- `id` (number) - user id issued by cred in the form of an integer
-- `clocId` (number) - cloc id issued by cred after cloc creation
-
-+ Request (application/json)
-
-    + Headers
-
-            Authorization: Basic ABC123
-            
-    
-+ Response 200 (application/json)
-
-        {
-              "id":"3"
         }
-        
-+ Response 401
-    + Headers
 
-            WWW-Authenticate: Basic realm="protected" 
-            
-+ Response 400
-    
-        {
-            "error": "Bad request",
-            "code" : "400"
-        }                       
-            
 ## Transactions [/transactions]            
             
-### Transactions [POST/api/v1/users/{id}/cloc/{clocId}/transactions]  
+### Create transactions [POST/api/v1/users/{uuid}/cloc/{clocId}/transactions]  
 
 Parameters:
 
-- `id` (number) - user id issued by cred in the form of an integer
+- `uuid`  - User uuid issued by CRED  
 - `clocId` (number) - cloc id issued by cred after cloc creation
 
 
@@ -641,7 +661,7 @@ Parameters:
 
     + Headers
 
-            Authorization: Basic ABC123
+            Authorization: Basic YWxhZGRpbjpvcGVuc2VzYW1l
             
     + Parameters
         + id (number) - user id issued by cred in the form of an integer
@@ -650,12 +670,12 @@ Parameters:
 + Response 200 (application/json)
 
         {
-            "id": "4"
+            "id": "q4a44579-c996-4e30-a7c1-06245f1eb1fb"
         }
         
-### Transactions by id [GET/api/v1/users/{id}/cloc/{clocId}/transactions/{transactionId}]  
+### Transactions by id [GET/api/v1/users/{uuid}/cloc/{clocId}/transactions/{transactionId}]  
 
-- `id` (number) - user id issued by cred in the form of an integer
+- `uuid` - User uuid issued by CRED  
 - `transactionId` (number) - transaction id issued by cred after transaction request.
 - `clocId` (number) - cloc id issued by cred after cloc creation
 
@@ -664,17 +684,20 @@ Parameters:
 
     + Headers
 
-            Authorization: Basic ABC123
+            Authorization: Basic YWxhZGRpbjpvcGVuc2VzYW1l
 
-+ Response 200 (application/json) 
++ Response 200 (application/json)
 
         
         [
             {
-              "id": "4", 
+              "id": "q4a44579-c996-4e30-a7c1-06245f1eb1fb", 
               "status": "success", 
               "type": "repayment", 
               "reason": "",  
+              "transaction_date":"2018-10-1014:00:00",
+              "transaction_notes": "repayment Billing transid #q4a44579-c996-4e30",
+              "settled_date":"2018-10-1018:00:00",
               "amount": "100", 
               "currency": "USD",
               "source": {
@@ -684,50 +707,72 @@ Parameters:
             }
         ]
         
-        
-        
 + Response 401
-    + Headers
 
-            WWW-Authenticate: Basic realm="protected"     
+        {
+            "error": "Un-Authorized",
+            "code" : "001"
+        }
             
 + Response 400
-    
+
         {
             "error": "Bad request",
             "code" : "400"
-        }            
-                                
-### Transactions by CLOC id [GET/api/v1/users/{id}/cloc/{clocId}/transactions]  
+        }
+        
+### Transactions by CLOC id [GET/api/v1/users/{uuid}/cloc/{clocId}/transactions?type='repayment'&status='success']  
 
-- `id` (number) - user id issued by cred in the form of an integer
+- `uuid` - User uuid issued by CRED  
 - `clocId` (number) - cloc id issued by cred after cloc creation
+- `type` - Type of transactions. Supported types all,repayment,withdrawl
+- `status` - Status for the transaction type. Supported status all,pending,failed,success,future
 
 + Request (application/json)
 
     + Headers
 
-            Authorization: Basic ABC123
+            Authorization: Basic YWxhZGRpbjpvcGVuc2VzYW1l
             
    
 + Response 200 (application/json) 
 
-        {
-        
+        [   {
+                  "id": "45-FF", 
+                  "status": "success",  
+                  "type": "repayment", 
+                  "transaction_date":"2018-10-1014:00:00",
+                  "settled_date":"2018-10-1018:00:00",
+                  "error": "", 
+                  "notes": "repayment Billing transid #q4a44579-c996-4e30",
+                  "amount": "100", 
+                  "currency": "USD",
+                  "source": {
+                    "id": "5",
+                    "type": "uphold-card"
+                  }
+               
             
-              "id": "45-FF", 
-              "status": "success",  
-              "type": "repayment", 
-              "reason": "", 
-              "amount": "100", 
-              "currency": "USD",
-              "source": {
-                "id": "5",
-                "type": "uphold-card"
-              }
-           
-        
-        }
+            },
+            {
+                
+                  "id": "45-FF", 
+                  "status": "pending",  
+                  "type": "repayment", 
+                  "transaction_date":"2018-10-1014:00:00",
+                  "settled_date":"",
+                  "error": "", 
+                  "transaction_notes": "",
+                  "amount": "50", 
+                  "currency": "USD",
+                  "source": {
+                    "id": "5",
+                    "type": "uphold-card"
+                  }
+               
+            
+            }
+        ]
         
 + Response 401
     + Headers
