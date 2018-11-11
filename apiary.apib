@@ -5,11 +5,12 @@ HOST: https://api.mycred.io
 
 API documentation for CRED CLOC As A Service.
 
-## Loan Calculator [/ltv]
+## LTV [/ltv]
 
-### Loan to value collection [GET/api/v1/ltv]
+### Get LTV calculator [GET/api/v1/ltv]
 
-Loan Calculator
+LTV i.e. Loan To Value calculator
+
 + Request
 
     + Headers
@@ -17,160 +18,67 @@ Loan Calculator
             Authorization: None
 
 + Response 200 (application/json)
-       
-        {
-          "USD": {
-            "total_credit_limit": {
-              "min": "500",
-              "max": "200000",
-              "currency": "USD"
-            },
-            "fees": {
-              "origination_fee_percent": "3"
-            },
-            "ltv": [
-              {
-                "loan_duration_in_months": "36",
-                "annual_interest_percent": "12",
-                "country": "US",
-                "currencies": [
-                  {
-                    "currency": "BTC",
-                    "percent": "33"
-                  },
-                  {
-                    "currency": "ETH",
-                    "percent": "40"
-                  }
-                ],
-                "interest_rate_rebate": [
-                  {
-                    "rebate_currency": "LBA",
-                    "discount_percent_min": "1",
-                    "discount_percent_max": "3",
-                    "loan_rebate_increment": "1"
-                  }
-                  
-                ]
-              },
-              {
-                "loan_duration_in_months": "36",
-                "annual_interest_percent": "15",
-                "country": "CN",
-                "currencies": [
-                  {
-                    "currency": "BTC",
-                    "percent": "33"
-                  },
-                  {
-                    "currency": "ETH",
-                    "percent": "40"
-                  }
-                ],
-                "interest_rate_rebate": [
-                  {
-                    "rebate_currency": "LBA",
-                    "discount_percent_min": "1",
-                    "discount_percent_max": "6",
-                    "loan_rebate_increment": "1"
-                  }
-                ]
-              }
-            ]
-          },
-          "UPUSD": {
-            "total_credit_limit": {
-              "min": "500",
-              "max": "200000",
-              "currency": "UPUSD"
-            },
-            "fees": {
-              "origination_fee_percent": "3"
-            },
-            "ltv": [
-              {
-                "loan_duration_in_months": "36",
-                "annual_interest_percent": "12",
-                "country": "US",
-                "currencies": [
-                  {
-                    "currency": "BTC",
-                    "percent": "33"
-                  },
-                  {
-                    "currency": "ETH",
-                    "percent": "40"
-                  }
-                ],
-                "interest_rate_rebate": [
-                  {
-                    "rebate_currency": "LBA",
-                    "discount_percent_min": "1",
-                    "discount_percent_max": "3",
-                    "loan_rebate_increment": "1"
-                  }
-                ]
-              },
-              {
-                "loan_duration_in_months": "18",
-                "annual_interest_percent": "15",
-                "country": "DE",
-                "currencies": [
-                  {
-                    "currency": "BTC",
-                    "percent": "33"
-                  },
-                  {
-                    "currency": "ETH",
-                    "percent": "40"
-                  }
-                ],
-                "interest_rate_rebate": [
-                  {
-                    "rebate_currency": "LBA",
-                    "discount_percent_min": "1",
-                    "discount_percent_max": "6",
-                    "loan_rebate_increment": "1"
-                  }
-                ]
-              }
-            ]
-          }
-        }
+
+        [
+            {
+                "currency": "USD",
+                "max_credit": 200000,
+                "min_credit": 500,
+                "interest_rates": [
+                    {
+                        "country": "US",
+                        "tenor_in_months": 36,
+                        "rate": 12.0,
+                        "discounts": [
+                        {
+                            "currency": "LBA",
+                            "min_discount": 1.0,
+                            "max_discount": 3.0,
+                            "discount_step": 1.0
+                        }]
+                    },
+                    {
+                        "country": "NON-US",
+                        "tenor_in_months": 36,
+                        "rate": 15.0,
+                        "discounts": [
+                        {
+                            "currency": "LBA",
+                            "min_discount": 1.0,
+                            "max_discount": 6.0,
+                            "discount_step": 1.0
+                        }]
+                }],
+                "xrp_ltv": 0.33,
+                "eth_ltv": 0.33,
+                "btc_ltv": 0.33
+            }
+        ]
             
-+ Response 400
-    
++ Response 400 (application/json)
+
         {
             "error": "Bad request",
             "code" : "400"
         }
         
-## Onboarding [/users]
+## Users [/users]
 
-User onboarding with CRED platform.
+User onboarding and management with CRED platform.
 
 ### User signup [POST/api/v1/users] 
 
 Sign up a user.
 
-Required attributes: 
-
-- `email` - Email address.
-- `mobile` - Mobile number.
-- `country code` - Mobile country code.
-
-Optional attributes:
-
-- `partner_user_uuid`
-
 + Request (application/json)
 
         {
-            "email":"john@mycred.io",
-            "partner_user_uid":"c4a44579-c996-4e30-a7c1-06245f1eb1fb",
-            "mobile":"4153579089",
-            "country_code":"001"            
-
+            "country_code": "+1",
+            "mobile_number": 4156089756,
+            "partner_user_uuid": "d4a44579-c996-4e30-a7c1-06245f1eb1fb",
+            "password": "password",
+            "tc_enabled": false,
+            "username": "john@mycred.io"
         }
 
     + Headers
@@ -182,42 +90,36 @@ Optional attributes:
         {
             "uuid": "d4a44579-c996-4e30-a7c1-06245f1eb1fb",
             "email": "john@mycred.io",
+            "country_code":"001",
             "mobile": "4153579089",
+            "tc_enabled": true,
             "partner_details": {
                 "partner_name":"uphold",
-                "partner_user_uid":"c4a44579-c996-4e30-a7c1-06245f1eb1fb"
+                "partner_user_uuid":""
             }
         }
         
-+ Response 401
++ Response 401 (application/json)
 
         {
             "error": "Un-Authorized",
             "code" : "001"
         }
  
-+ Response 400
++ Response 400 (application/json)
 
         {
             "error": "Bad request",
             "code" : "400"
         }
 
-### User kyc [POST/api/v1/users/{uid}/kyc]  
+### User KYC [POST/api/v1/users/{uuid}/kyc]  
 
 Partner request for user KYC check
 
-Parameters:
-+ `uuid`: User uuid issued by CRED   
++ Parameters:
 
-Required attributes: 
-
-- `resident`
-- `first-name`          
-- `last-name`
-- `DOB`
-- `address`
-
+    + `uuid` (string) - User uuid issued by CRED   
 
 + Request (application/json)
 
@@ -260,20 +162,22 @@ Required attributes:
                 "partner_user_id":"c4a44579-c996-4e30-a7c1-06245f1eb1fb"
             },
             "mobile": "4150689089",
+            "country_code":"001",
+            "tcEnabled": true
             "resident": "US", 
             "birthdate": "09/10/1995",
             "email": "john@mycred.io",
             "resident": "US"   
         }
         
-+ Response 401
++ Response 401 (application/json)
 
         {
             "error": "Un-Authorized",
             "code" : "001"
         }
              
-+ Response 400
++ Response 400 (application/json)
 
         {
             "error": "Bad request",
@@ -281,12 +185,13 @@ Required attributes:
         }
 
 
-### Get user by uuid [GET/api/v1/users/{uuid}]  
+### Get user [GET/api/v1/users/{uuid}]  
 
 Get CRED user by uuid. Can be used in polling to check kyc status or user status.
 
-Parameters:
-- `uuid`  - user uuid issued by CRED 
++ Parameters:
+
+    + `uuid` (string) - user uuid issued by CRED 
     
 
 + Request (application/json)
@@ -341,37 +246,29 @@ Parameters:
 
 Quote generation based on available collateral, acceptance and lookup based on generated quoteId.
 
-### Quote [POST/api/v1/users/{uuid}/quotes]  
+### Create quote request [POST/api/v1/users/{uuid}/quotes]  
 
 Request quote based on available collateral.
 
-Parameters:
-- `uuid` - User uuid issued by CRED   
++ Parameters:
 
-
-Required attributes: 
-- `Collateral` - List of collateral object each containing currency and quantity.
+    + `uuid` (string) - User uuid issued by CRED
 
 
 + Request (application/json)
 
         {
-          "collateral": [{
-            "currency": "ETH",
-            "quantity": "100"
-           }, {
-            "currency": "BTC",
-            "quantity": "19.9"
-           },
-            {
-            "currency": "BTC",
-            "quantity": "19.9"
-            }
-           ],
-           "interest_rate_rebate": {
-                "currency":"LBA",
-                "loan_rebate_increment":"3"
-           }
+            "collateral": {
+                "btc": 5,
+                "eth": 3,
+                "xrp": 10
+            },
+            "currency": "USD",
+            "interest_rate_rebates": [{
+                "currency": "LBA",
+                "percentage": 1
+            }],
+            "tenor_in_months": 36
         }
         
     + Headers
@@ -382,31 +279,49 @@ Required attributes:
 + Response 200 (application/json)
 
         {
-            "quoteId": "q4a44579-c996-4e30-a7c1-06245f1eb1fb"
+            "id": "95b4bcfb-a961-4b8b-a043-d4f094021761",
+            "user_id": "c4a44579-c996-4e30-a7c1-06245f1eb1fb",
+            "status": "PENDING",
+            "msg": "",
+            "credit_line": 0,
+            "currency": "USD",
+            "annual_interest_percent": 0,
+            "tenor_in_months": 36,
+            "collateral": {
+                "btc": 5,
+                "eth": 3,
+                "xrp": 10
+            },
+            "discount": 0,
+            "interest_rate_rebates": [{
+                "currency": "LBA",
+                "percentage": 1
+            }],
+            "expiration_date": "2018-11-11T20:45:55.204+0000"
         }
 
-+ Response 401
++ Response 401 (application/json)
 
         {
             "error": "Un-Authorized",
             "code" : "001"
         }
         
-+ Response 400
++ Response 400 (application/json)
 
         {
             "error": "Bad request",
             "code" : "400"
         }
 
+### Get quote [GET/api/v1/users/{uuid}/quotes/{quoteId}]  
 
-### Quote by id [GET/api/v1/users/{uuid}/quotes/{quoteId}]  
+Request quote based on quote id.
 
-Request quote based on quote id, can be used for polling quote.
++ Parameters:
 
-Parameters:
-- `uuid`  - User uuid issued by CRED  
-- `quoteId` - quoteId issued by cred during quote create request.
+    + `uuid` (string) - User uuid issued by CRED
+    + `quoteId` (string) - quoteId issued by cred during quote create request.
 
 + Request (application/json)
 
@@ -418,27 +333,25 @@ Parameters:
 +   Response 200 (application/json)
 
         {
-          "id": "q4a44579-c996-4e30-a7c1-06245f1eb1fb",
-          "status": "success",
-          "msg": "Quote created successfully",
-          "total_credit_limit": "10000",
-          "currency": "USD", 
-          "annual_interest_percent": "9",
-          "duration": "36", 
-          "ttl_in_secs": "10800", 
-          "collateral": [{
-            "currency": "BTC",
-            "quantity": "19.9"
-          }, {
-            "currency": "ETH",
-            "quantity": "100"
-          }],
-          "annual_interest_discount": {
-                "currency":"LBA",
-                "discount_percent_max":"3",
-                "currency_amount":"6000",
-                "currency_rate":"0.05"
-          }
+            "id": "95b4bcfb-a961-4b8b-a043-d4f094021761",
+            "user_id": "c4a44579-c996-4e30-a7c1-06245f1eb1fb",
+            "status": "APPROVED",
+            "msg": "",
+            "credit_line": 10000,
+            "currency": "USD",
+            "annual_interest_percent": 12,
+            "tenor_in_months": 36,
+            "collateral": {
+                "btc": 5,
+                "eth": 3,
+                "xrp": 10
+            },
+            "discount": 1,
+            "interest_rate_rebates": [{
+                "currency": "LBA",
+                "percentage": 1
+            }],
+            "expiration_date": "2018-11-11T20:45:55.000+0000"
         }
         
 + Response 401
@@ -449,6 +362,83 @@ Parameters:
         }
         
 + Response 400
+
+        {
+            "error": "Bad request",
+            "code" : "400"
+        }
+   
+### Get all user quotes [GET/api/v1/users/{uuid}/quotes/]  
+
+Request quote based on quote id.
+
++ Parameters:
+
+    + `uuid` (string) - User uuid issued by CRED
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Basic YWxhZGRpbjpvcGVuc2VzYW1l
+            
+
++   Response 200 (application/json)
+
+        {
+            "content": [{
+                "uuid": "95b4bcfb-a961-4b8b-a043-d4f094021761",
+                "user_id": "c4a44579-c996-4e30-a7c1-06245f1eb1fb",
+                "status": "APPROVED",
+                "msg": "",
+                "credit_line": 10000,
+                "currency": "USD",
+                "annual_interest_percent": 12,
+                "tenor_in_months": 36,
+                "expiration_date": "2018-11-11T20:45:55.000+0000",
+                "collateral": {
+                    "btc": 5,
+                    "eth": 3,
+                    "xrp": 10
+                },
+                "discount": 1,
+                "interest_rate_rebates": [{
+                    "currency": "LBA",
+                    "percentage": 1
+                }]
+            }],
+            "pageable": {
+                "sort": {
+                    "unsorted": true,
+                    "sorted": false
+                },
+                "page_number": 0,
+                "page_size": 20,
+                "offset": 0,
+                "paged": true,
+                "unpaged": false
+            },
+            "total_pages": 1,
+            "last": true,
+            "total_elements": 1,
+            "first": true,
+            "sort": {
+                "unsorted": true,
+                "sorted": false
+            },
+            "number_of_elements": 1,
+            "size": 20,
+            "number": 0
+        }
+
++ Response 401 (application/json)
+
+        {
+            "error": "Un-Authorized",
+            "code" : "001"
+        }
+        
++ Response 400 (application/json)
 
         {
             "error": "Bad request",
@@ -458,47 +448,33 @@ Parameters:
 
 ## CLOC [/cloc]            
             
-### Create CLOC [POST/api/v1/users/{uuid}/cloc] 
+### Create CLOC request [POST/api/v1/users/{uuid}/cloc] 
 
-CLOC creation for a given user uuid.
+Request for creation of CLOC account for a given user uuid.
 
-Required attributes: 
-- `settings` - settings object containing collateral withdrawl and funds collections details.
++ Parameters:
 
-Parameters:
-- `uuid` -User uuid issued by CRED  
+    + `uuid` (string)- User uuid issued by CRED  
 
 + Request (application/json)
 
         {
-            "quote_id": "q4a44579-c996-4e30-a7c1-06245f1eb1fb",
-            "settings": {
-                "collateral": 
-                [{
-                    "id": "11",
-                    "type": "uphold-card"
-                    }, {
-                    "id": "12",
-                    "type": "uphold-card"
+            "esignature": "34.234.234.23-2018-11-11T20:45:55.000+0000",
+            "funding_method": {
+                "collateral": [{
+                    "id": "95bf494a-9a06-43b0-a0b6-2c3c86f2d2d7",
+                    "type": "UPHOLD"
                 }],
-                "collection": 
-                [{
-                    "id": "13",
-                    "type": "uphold-card"
-                }, {
-                    "id": "14",
-                    "type": "uphold-card"
-                }],
+                 "collection": {
+                    "id": "c9ebfc00-69cb-4b12-bde1-089ef0db1321",
+                    "type": "UPHOLD"
+                    },
                 "withdrawal": {
-                    "id": "15",
-                    "type": "uphold-card"
-                },
-                "annual_rate_discount": {
-                     "id": "16",
-                    "type": "lba or upusd uphold-card"
+                    "id": "a2ebfc23-69cb-4b12-bde1-089ef0db1321",
+                    "type": "UPHOLD"
                 }
             },
-            "e-sign": "<name>-<ip>-<timestamp>"
+            "quote_id": "95b4bcfb-a961-4b8b-a043-d4f094021761"
         }
         
     + Headers
@@ -509,17 +485,72 @@ Parameters:
 + Response 200 (application/json)
 
         {
-            "uid": "q4a44579-c996-4e30-a7c1-06245f1eb1fb"
+            "id": "3db06b74-091d-49d7-9fcf-21366c646ac5",
+            "user_id": "c4a44579-c996-4e30-a7c1-06245f1eb1fb",
+            "quote_id": "95b4bcfb-a961-4b8b-a043-d4f094021761,
+            "status": "PENDING",
+            "msg": "",
+            "credit_line": 0,
+            "annual_interest_percent": 0,
+            "tenor_in_months": 0,
+            "origination_date": "2018-11-11T20:45:55.000+0000",
+            "available_balance": 0,
+            "ltv": "0.33",
+            "two_day_average_ltv": 0,
+            "current_ltv": 0,
+            "daily_periodic_rate": 0,
+            "daily_withdrawal_limit": 0,
+            "over_limit_allowance_amount": 0,
+            "over_limit_allowance_count": 0,
+            "billing_cycle": null,
+            "funding_method": {
+                "collateral": [{
+                    "id": "95bf494a-9a06-43b0-a0b6-2c3c86f2d2d7",
+                    "type": "UPHOLD"
+                }],
+                 "collection": {
+                    "id": "c9ebfc00-69cb-4b12-bde1-089ef0db1321",
+                    "type": "UPHOLD"
+                    },
+                "withdrawal": {
+                    "id": "a2ebfc23-69cb-4b12-bde1-089ef0db1321",
+                    "type": "UPHOLD"
+                }
+            },
+            "fees": {
+                "annual_fee": 0,
+                "origination_fee": 39,
+                "administrative_fee": 0,
+                "late_fee": 0,
+                "over_limit_fee": 0,
+                "returned_payment_fee": 0,
+                "exchange_fee": 0
+            },
+            "collateral": {
+                "btc": 5,
+                "eth": 3,
+                "xrp": 1
+            },
+            "interest_rate_rebates": [{
+                "currency": "LBA",
+                "percentage": 1
+            }],
+            "booking_information": {
+                "country": "US",
+                "currency": "USD",
+                "timezone": "EST"
+            },
+            "esignature": "34.234.234.23-2018-11-11T20:45:55.000+0000"
         }
 
-+ Response 401
++ Response 401 (application/json)
 
         {
             "error": "Un-Authorized",
             "code" : "001"
         }
         
-+ Response 400
++ Response 400 (application/json)
 
         {
             "error": "Bad request",
@@ -527,13 +558,104 @@ Parameters:
         }
         
             
-### CLOC by id [GET/api/v1/users/{uuid}/cloc/{clocId}]  
+### Get CLOC [GET/api/v1/users/{uuid}/cloc/{clocId}]  
 
-Get CLOC by given id for a given user uuid
+Get CLOC account information by id for a given user
 
-Parameters:
-- `uuid` - User uuid issued by CRED  
-- `clocId` - cloc id issued by CRED
++ Parameters:
+
+    + `uuid` (string) - User uuid issued by CRED  
+    + `clocId` (string) - cloc account id issued by CRED
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Basic YWxhZGRpbjpvcGVuc2VzYW1l
+            
++ Response 200 (application/json)
+
+        {
+            "id": "3db06b74-091d-49d7-9fcf-21366c646ac5",
+            "user_id": "c4a44579-c996-4e30-a7c1-06245f1eb1fb",
+            "quote_id": "95b4bcfb-a961-4b8b-a043-d4f094021761,
+            "status": "ACTIVE",
+            "msg": "",
+            "credit_line": 10000,
+            "annual_interest_percent": 11,
+            "tenor_in_months": 36,
+            "origination_date": "2018-11-11T20:45:55.000+0000",
+            "available_balance": 0,
+            "ltv": "0.33",
+            "two_day_average_ltv": 0,
+            "current_ltv": 0,
+            "daily_periodic_rate": 0.2,
+            "daily_withdrawal_limit": 3000,
+            "over_limit_allowance_amount": 100,
+            "over_limit_allowance_count": 2,
+            "billing_cycle": null,
+            "funding_method": {
+                "collateral": [{
+                    "id": "95bf494a-9a06-43b0-a0b6-2c3c86f2d2d7",
+                    "type": "UPHOLD"
+                }],
+                 "collection": {
+                    "id": "c9ebfc00-69cb-4b12-bde1-089ef0db1321",
+                    "type": "UPHOLD"
+                    },
+                "withdrawal": {
+                    "id": "a2ebfc23-69cb-4b12-bde1-089ef0db1321",
+                    "type": "UPHOLD"
+                }
+            },
+            "fees": {
+                "annual_fee": 0,
+                "origination_fee": 39,
+                "administrative_fee": 0,
+                "late_fee": 0,
+                "over_limit_fee": 0,
+                "returned_payment_fee": 0,
+                "exchange_fee": 0
+            },
+            "collateral": {
+                "btc": 5,
+                "eth": 3,
+                "xrp": 1
+            },
+            "interest_rate_rebates": [{
+                "currency": "LBA",
+                "percentage": 1
+            }],
+            "booking_information": {
+                "country": "US",
+                "currency": "USD",
+                "timezone": "EST"
+            },
+            "esignature": "34.234.234.23-2018-11-11T20:45:55.000+0000"
+        }
+
++ Response 401 (application/json)
+
+        {
+            "error": "Un-Authorized",
+            "code" : "001"
+        }
+        
++ Response 400 (application/json)
+
+        {
+            "error": "Bad request",
+            "code" : "400"
+        }
+
+
+### Get active CLOC account [GET/api/v1/users/{uuid}/cloc/active]  
+
+Get active CLOC account for a given user uuid
+
++ Parameters:
+
+    + `uuid` (string) - User uuid issued by CRED  
 
 + Request (application/json)
 
@@ -545,91 +667,188 @@ Parameters:
 + Response 200 (application/json)
 
         {
-              "id": "q4a44579-c996-4e30-a7c1-06245f1eb1fb",
-              "status": "active", 
-              "annual_interest_percent": "9",
-              "max_withdrawl_limit":"7500",
-              "origination_date":"2018-10-1014:00:00",
-              "maturity_date":"2021-10-1014:00:00",
-              "tenor_in_months":"36",
-              "credit_line": "1000", 
-              "available_balance": "1000", 
-              "currency": "USD",
-              "fees": {
-                "origination_fee_percent":"3",
-                "origination_fee":"30",
-                "origination_fee_currency":"USD" 
-              },
-              "annual_interest_discount": {
-                "discount_percent_max":"3",
-                "curreny":"LBA",
-                "currency_amount":"6000",
-                "currency_rate":"0.05"
-              }
-              
+            "id": "3db06b74-091d-49d7-9fcf-21366c646ac5",
+            "user_id": "c4a44579-c996-4e30-a7c1-06245f1eb1fb",
+            "quote_id": "95b4bcfb-a961-4b8b-a043-d4f094021761,
+            "status": "ACTIVE",
+            "msg": "",
+            "credit_line": 10000,
+            "annual_interest_percent": 11,
+            "tenor_in_months": 36,
+            "origination_date": "2018-11-11T20:45:55.000+0000",
+            "available_balance": 0,
+            "ltv": "0.33",
+            "two_day_average_ltv": 0,
+            "current_ltv": 0,
+            "daily_periodic_rate": 0.2,
+            "daily_withdrawal_limit": 3000,
+            "over_limit_allowance_amount": 100,
+            "over_limit_allowance_count": 2,
+            "billing_cycle": null,
+            "funding_method": {
+                "collateral": [{
+                    "id": "95bf494a-9a06-43b0-a0b6-2c3c86f2d2d7",
+                    "type": "UPHOLD"
+                }],
+                 "collection": {
+                    "id": "c9ebfc00-69cb-4b12-bde1-089ef0db1321",
+                    "type": "UPHOLD"
+                    },
+                "withdrawal": {
+                    "id": "a2ebfc23-69cb-4b12-bde1-089ef0db1321",
+                    "type": "UPHOLD"
+                }
+            },
+            "fees": {
+                "annual_fee": 0,
+                "origination_fee": 39,
+                "administrative_fee": 0,
+                "late_fee": 0,
+                "over_limit_fee": 0,
+                "returned_payment_fee": 0,
+                "exchange_fee": 0
+            },
+            "collateral": {
+                "btc": 5,
+                "eth": 3,
+                "xrp": 1
+            },
+            "interest_rate_rebates": [{
+                "currency": "LBA",
+                "percentage": 1
+            }],
+            "booking_information": {
+                "country": "US",
+                "currency": "USD",
+                "timezone": "EST"
+            },
+            "esignature": "34.234.234.23-2018-11-11T20:45:55.000+0000"
         }
 
-+ Response 401
++ Response 401 (application/json)
 
         {
             "error": "Un-Authorized",
             "code" : "001"
         }
         
-+ Response 400
++ Response 400 (application/json)
 
         {
             "error": "Bad request",
             "code" : "400"
         }
 
-            
-### Get CLOC List [GET/api/v1/users/{uuid}/cloc]  
 
-Get CLOC list for a given user uuid
+### Get all user CLOC accounts [GET/api/v1/users/{uuid}/cloc]  
 
-Parameters:
-- `uuid` - User uuid issued by CRED  
+Get all CLOC accounts for a given user uuid
+
++ Parameters:
+
+    + `uuid` (string) - User uuid issued by CRED  
 
 + Request (application/json)
 
     + Headers
 
-            Authorization: Basic ABC123
+            Authorization: Basic YWxhZGRpbjpvcGVuc2VzYW1l
             
    
 + Response 200 (application/json)
 
-        [{
-            "id": "3",
-              "status": "active", 
-              "max_withdrawl_limit":"7500",
-              "origination_date":"2018-10-1014:00:00",
-              "maturity_date":"2021-10-1014:00:00",
-              "tenor_in_months":"36",
-              "annual_interest_percent": "9",
-              "credit_line": "1000", 
-              "available_balance": "1000", 
-              "currency": "USD",
-              "fees": {
-                "origination_fee_percent":"3",
-                "origination_fee":"30",
-                "origination_fee_currency":"USD"          
-              },
-              "annual_interest_discount": {
-                "discount_percent_max":"3",
-                "currency_amount":"6000",
-                "currency_rate":"0.05"
-              }
-        }]
-        
-+ Response 401
-    + Headers
+        {
+            "content": [{
+                "id": "3db06b74-091d-49d7-9fcf-21366c646ac5",
+                "user_id": "c4a44579-c996-4e30-a7c1-06245f1eb1fb",
+                "quote_id": "95b4bcfb-a961-4b8b-a043-d4f094021761,
+                "status": "ACTIVE",
+                "msg": "",
+                "credit_line": 10000,
+                "annual_interest_percent": 11,
+                "tenor_in_months": 36,
+                "origination_date": "2018-11-11T20:45:55.000+0000",
+                "available_balance": 0,
+                "ltv": "0.33",
+                "two_day_average_ltv": 0,
+                "current_ltv": 0,
+                "daily_periodic_rate": 0.2,
+                "daily_withdrawal_limit": 3000,
+                "over_limit_allowance_amount": 100,
+                "over_limit_allowance_count": 2,
+                "billing_cycle": null,
+                "funding_method": {
+                    "collateral": [{
+                        "id": "95bf494a-9a06-43b0-a0b6-2c3c86f2d2d7",
+                        "type": "UPHOLD"
+                    }],
+                     "collection": {
+                        "id": "c9ebfc00-69cb-4b12-bde1-089ef0db1321",
+                        "type": "UPHOLD"
+                        },
+                    "withdrawal": {
+                        "id": "a2ebfc23-69cb-4b12-bde1-089ef0db1321",
+                        "type": "UPHOLD"
+                    }
+                },
+                "fees": {
+                    "annual_fee": 0,
+                    "origination_fee": 39,
+                    "administrative_fee": 0,
+                    "late_fee": 0,
+                    "over_limit_fee": 0,
+                    "returned_payment_fee": 0,
+                    "exchange_fee": 0
+                },
+                "collateral": {
+                    "btc": 5,
+                    "eth": 3,
+                    "xrp": 1
+                },
+                "interest_rate_rebates": [{
+                    "currency": "LBA",
+                    "percentage": 1
+                }],
+                "booking_information": {
+                    "country": "US",
+                    "currency": "USD",
+                    "timezone": "EST"
+                },
+                "esignature": "34.234.234.23-2018-11-11T20:45:55.000+0000"
+            }],
+            "pageable": {
+                "sort": {
+                    "unsorted": true,
+                    "sorted": false
+                },
+                "page_number": 0,
+                "page_size": 20,
+                "offset": 0,
+                "paged": true,
+                "unpaged": false
+            },
+            "total_pages": 1,
+            "last": true,
+            "total_elements": 1,
+            "first": true,
+            "sort": {
+                "unsorted": true,
+                "sorted": false
+            },
+            "number_of_elements": 1,
+            "size": 20,
+            "number": 0
+        }
 
-            WWW-Authenticate: Basic realm="protected"
-            
-+ Response 400
-    
++ Response 401 (application/json)
+
+        {
+            "error": "Un-Authorized",
+            "code" : "001"
+        }
+        
++ Response 400 (application/json)
+
         {
             "error": "Bad request",
             "code" : "400"
@@ -637,94 +856,135 @@ Parameters:
 
 ## Transactions [/transactions]            
             
-### Create transactions [POST/api/v1/users/{uuid}/cloc/{clocId}/transactions]  
+### Create transaction request [POST/api/v1/users/{uuid}/cloc/{clocId}/transactions]  
 
-Parameters:
++ Parameters:
 
-- `uuid`  - User uuid issued by CRED  
-- `clocId` (number) - cloc id issued by cred after cloc creation
-
+    + `uuid` (string) - User uuid issued by CRED  
+    + `clocId` (string) - CLOC id issued by cred after cloc CLOC
 
 + Request (application/json)
 
         {
-            "amount": "100" // string
-            "type": "withdrawl" // ["repayment", "withdrawal"]
-            "source": { // deposit to this card
-                "id": "11",
-                "type": "uphold-card"
-             }
-                  
+            "amount": 1000,
+            "currency": "USD",
+            "notes": "Withdrawal request",
+            "rail": {
+                "id": "a2ebfc23-69cb-4b12-bde1-089ef0db1321",
+                "type": "UPHOLD"
+            },
+            "type": "WITHDRAWAL"
         }
 
     + Headers
 
             Authorization: Basic YWxhZGRpbjpvcGVuc2VzYW1l
-            
-    + Parameters
-        + id (number) - user id issued by cred in the form of an integer
-        + clocId (number) - cloc id issued by cred after cloc creation
         
 + Response 200 (application/json)
 
         {
-            "id": "q4a44579-c996-4e30-a7c1-06245f1eb1fb"
+            "amount": 1000,
+            "cloc_id": "3db06b74-091d-49d7-9fcf-21366c646ac5",
+            "currency": "USD",
+            "id": "992833a1-44c1-4b0a-9eba-b4b6c88b6e15",
+            "msg": "",
+            "notes": "Withdrawal request",
+            "rail": {
+                "id": "a2ebfc23-69cb-4b12-bde1-089ef0db1321",
+                "type": "UPHOLD"
+            },
+            "settlement_info": {
+                "created_date": "2018-11-11T21:45:00.367Z",
+                "representments": [{
+                    "representment_date": "2018-11-11T21:45:00.367Z",
+                    "status": "SUCCESS"
+                }],
+                "settled_date": "2018-11-11T21:45:00.367Z",
+                "status": "PENDING"
+            },
+            "status": "PENDING",
+            "transaction_date": "2018-11-11T21:45:00.367Z",
+            "type": "WITHDRAWAL",
+            "user_id": "c4a44579-c996-4e30-a7c1-06245f1eb1fb"
         }
-        
-### Transactions by id [GET/api/v1/users/{uuid}/cloc/{clocId}/transactions/{transactionId}]  
 
-- `uuid` - User uuid issued by CRED  
-- `transactionId` (number) - transaction id issued by cred after transaction request.
-- `clocId` (number) - cloc id issued by cred after cloc creation
-
-
-+ Request (application/json)
-
-    + Headers
-
-            Authorization: Basic YWxhZGRpbjpvcGVuc2VzYW1l
-
-+ Response 200 (application/json)
-
-        
-        [
-            {
-              "id": "q4a44579-c996-4e30-a7c1-06245f1eb1fb", 
-              "status": "success", 
-              "type": "repayment", 
-              "reason": "",  
-              "transaction_date":"2018-10-1014:00:00",
-              "transaction_notes": "repayment Billing transid #q4a44579-c996-4e30",
-              "settled_date":"2018-10-1018:00:00",
-              "amount": "100", 
-              "currency": "USD",
-              "source": {
-                "id": "5",
-                "type": "uphold-card"
-              }
-            }
-        ]
-        
-+ Response 401
++ Response 401 (application/json)
 
         {
             "error": "Un-Authorized",
             "code" : "001"
         }
-            
-+ Response 400
+        
++ Response 400 (application/json)
 
         {
             "error": "Bad request",
             "code" : "400"
         }
         
-### Transactions by CLOC id [GET/api/v1/users/{uuid}/cloc/{clocId}/transactions?type='repayment'&status='success']  
+### Get transaction [GET/api/v1/users/{uuid}/cloc/{clocId}/transactions/{transactionId}]  
 
-- `uuid` - User uuid issued by CRED  
-- `clocId` (number) - cloc id issued by cred after cloc creation
-- `type` - Type of transactions. Supported types all,repayment,withdrawl
-- `status` - Status for the transaction type. Supported status all,pending,failed,success,future
++ Parameters:
+
+    + `uuid` (string) - User uuid issued by CRED  
+    + `transactionId` (string) - Transaction id issued by cred after transaction request.
+    + `clocId` (string) - CLOC id issued by cred after cloc creation
+
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Basic YWxhZGRpbjpvcGVuc2VzYW1l
+
++ Response 200 (application/json)
+
+        {
+            "amount": 1000,
+            "cloc_id": "3db06b74-091d-49d7-9fcf-21366c646ac5",
+            "currency": "USD",
+            "id": "992833a1-44c1-4b0a-9eba-b4b6c88b6e15",
+            "msg": "",
+            "notes": "Withdrawal request",
+            "rail": {
+                "id": "a2ebfc23-69cb-4b12-bde1-089ef0db1321",
+                "type": "UPHOLD"
+            },
+            "settlement_info": {
+                "created_date": "2018-11-11T21:45:00.367Z",
+                "representments": [{
+                    "representment_date": "2018-11-11T21:45:00.367Z",
+                    "status": "SUCCESS"
+                }],
+                "settled_date": "2018-11-11T21:45:00.367Z",
+                "status": "PENDING"
+            },
+            "status": "PENDING",
+            "transaction_date": "2018-11-11T21:45:00.367Z",
+            "type": "WITHDRAWAL",
+            "user_id": "c4a44579-c996-4e30-a7c1-06245f1eb1fb"
+        }
+
++ Response 401 (application/json)
+
+        {
+            "error": "Un-Authorized",
+            "code" : "001"
+        }
+        
++ Response 400 (application/json)
+
+        {
+            "error": "Bad request",
+            "code" : "400"
+        }
+     
+### Get all CLOC transactions [GET/api/v1/users/{uuid}/cloc/{clocId}/transactions]  
+
++ Parameters:
+
+    + `uuid` (string)- User uuid issued by CRED  
+    + `clocId` (string) - cloc id issued by cred after cloc creation
 
 + Request (application/json)
 
@@ -732,53 +992,68 @@ Parameters:
 
             Authorization: Basic YWxhZGRpbjpvcGVuc2VzYW1l
             
-   
-+ Response 200 (application/json) 
 
-        [   {
-                  "id": "45-FF", 
-                  "status": "success",  
-                  "type": "repayment", 
-                  "transaction_date":"2018-10-1014:00:00",
-                  "settled_date":"2018-10-1018:00:00",
-                  "error": "", 
-                  "notes": "repayment Billing transid #q4a44579-c996-4e30",
-                  "amount": "100", 
-                  "currency": "USD",
-                  "source": {
-                    "id": "5",
-                    "type": "uphold-card"
-                  }
-               
-            
++ Response 200 (application/json)
+
+        {
+            "content": [{
+                "amount": 1000,
+                "cloc_id": "3db06b74-091d-49d7-9fcf-21366c646ac5",
+                "currency": "USD",
+                "id": "992833a1-44c1-4b0a-9eba-b4b6c88b6e15",
+                "msg": "",
+                "notes": "Withdrawal request",
+                "rail": {
+                    "id": "a2ebfc23-69cb-4b12-bde1-089ef0db1321",
+                    "type": "UPHOLD"
+                },
+                "settlement_info": {
+                    "created_date": "2018-11-11T21:45:00.367Z",
+                    "representments": [{
+                        "representment_date": "2018-11-11T21:45:00.367Z",
+                        "status": "SUCCESS"
+                    }],
+                    "settled_date": "2018-11-11T21:45:00.367Z",
+                    "status": "SETTLED"
+                },
+                "status": "SETTLED",
+                "transaction_date": "2018-11-11T21:45:00.367Z",
+                "type": "WITHDRAWAL",
+                "user_id": "c4a44579-c996-4e30-a7c1-06245f1eb1fb"
+            }],
+            "pageable": {
+                "sort": {
+                    "unsorted": true,
+                    "sorted": false
+                },
+                "page_number": 0,
+                "page_size": 20,
+                "offset": 0,
+                "paged": true,
+                "unpaged": false
             },
-            {
-                
-                  "id": "45-FF", 
-                  "status": "pending",  
-                  "type": "repayment", 
-                  "transaction_date":"2018-10-1014:00:00",
-                  "settled_date":"",
-                  "error": "", 
-                  "transaction_notes": "",
-                  "amount": "50", 
-                  "currency": "USD",
-                  "source": {
-                    "id": "5",
-                    "type": "uphold-card"
-                  }
-               
-            
-            }
-        ]
-        
-+ Response 401
-    + Headers
+            "total_pages": 1,
+            "last": true,
+            "total_elements": 1,
+            "first": true,
+            "sort": {
+                "unsorted": true,
+                "sorted": false
+            },
+            "number_of_elements": 1,
+            "size": 20,
+            "number": 0
+        }
 
-            WWW-Authenticate: Basic realm="protected"
-            
-+ Response 400
-    
++ Response 401 (application/json)
+
+        {
+            "error": "Un-Authorized",
+            "code" : "001"
+        }
+        
++ Response 400 (application/json)
+
         {
             "error": "Bad request",
             "code" : "400"
