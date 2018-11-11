@@ -113,7 +113,7 @@ Sign up a user.
             "code" : "400"
         }
 
-### User KYC [POST/api/v1/users/{uuid}/kyc]  
+### User KYC [POST/api/v1/users/\{uuid\}/kyc]  
 
 Partner request for user KYC check
 
@@ -185,7 +185,7 @@ Partner request for user KYC check
         }
 
 
-### Get user [GET/api/v1/users/{uuid}]  
+### Get user [GET/api/v1/users/\{uuid\}]  
 
 Get CRED user by uuid. Can be used in polling to check kyc status or user status.
 
@@ -246,7 +246,7 @@ Get CRED user by uuid. Can be used in polling to check kyc status or user status
 
 Quote generation based on available collateral, acceptance and lookup based on generated quoteId.
 
-### Create quote request [POST/api/v1/users/{uuid}/quotes]  
+### Create quote request [POST/api/v1/users/\{uuid\}/quotes]  
 
 Request quote based on available collateral.
 
@@ -314,7 +314,7 @@ Request quote based on available collateral.
             "code" : "400"
         }
 
-### Get quote [GET/api/v1/users/{uuid}/quotes/{quoteId}]  
+### Get quote [GET/api/v1/users/\{uuid\}/quotes/\{quoteId\}]  
 
 Request quote based on quote id.
 
@@ -368,7 +368,7 @@ Request quote based on quote id.
             "code" : "400"
         }
    
-### Get all user quotes [GET/api/v1/users/{uuid}/quotes/]  
+### Get all user quotes [GET/api/v1/users/\{uuid\}/quotes/]  
 
 Request quote based on quote id.
 
@@ -448,7 +448,7 @@ Request quote based on quote id.
 
 ## CLOC [/cloc]            
             
-### Create CLOC request [POST/api/v1/users/{uuid}/cloc] 
+### Create CLOC request [POST/api/v1/users/\{uuid\}/cloc] 
 
 Request for creation of CLOC account for a given user uuid.
 
@@ -558,7 +558,7 @@ Request for creation of CLOC account for a given user uuid.
         }
         
             
-### Get CLOC [GET/api/v1/users/{uuid}/cloc/{clocId}]  
+### Get CLOC [GET/api/v1/users/\{uuid\}/cloc/\{clocId\}]  
 
 Get CLOC account information by id for a given user
 
@@ -649,7 +649,7 @@ Get CLOC account information by id for a given user
         }
 
 
-### Get active CLOC account [GET/api/v1/users/{uuid}/cloc/active]  
+### Get active CLOC account [GET/api/v1/users/\{uuid\}/cloc/active]  
 
 Get active CLOC account for a given user uuid
 
@@ -740,7 +740,7 @@ Get active CLOC account for a given user uuid
         }
 
 
-### Get all user CLOC accounts [GET/api/v1/users/{uuid}/cloc]  
+### Get all user CLOC accounts [GET/api/v1/users/\{uuid\}/cloc]  
 
 Get all CLOC accounts for a given user uuid
 
@@ -856,7 +856,7 @@ Get all CLOC accounts for a given user uuid
 
 ## Transactions [/transactions]            
             
-### Create transaction request [POST/api/v1/users/{uuid}/cloc/{clocId}/transactions]  
+### Create transaction request [POST/api/v1/users/\{uuid\}/cloc/\{clocId\}/transactions]  
 
 + Parameters:
 
@@ -922,7 +922,7 @@ Get all CLOC accounts for a given user uuid
             "code" : "400"
         }
         
-### Get transaction [GET/api/v1/users/{uuid}/cloc/{clocId}/transactions/{transactionId}]  
+### Get transaction [GET/api/v1/users/\{uuid\}/cloc/\{clocId\}/transactions/\{transactionId\}]  
 
 + Parameters:
 
@@ -979,7 +979,7 @@ Get all CLOC accounts for a given user uuid
             "code" : "400"
         }
      
-### Get all CLOC transactions [GET/api/v1/users/{uuid}/cloc/{clocId}/transactions]  
+### Get all CLOC transactions [GET/api/v1/users/\{uuid\}/cloc/\{clocId\}/transactions]  
 
 + Parameters:
 
