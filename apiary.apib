@@ -7,7 +7,7 @@ API documentation for CRED CLOC As A Service.
 
 ## LTV [/ltv]
 
-### Get LTV calculator [GET/api/v1/ltv]
+### Get LTV calculator [GET /api/v1/ltv]
 
 LTV i.e. Loan To Value calculator
 
@@ -66,16 +66,16 @@ LTV i.e. Loan To Value calculator
 
 User onboarding and management with CRED platform.
 
-### User signup [POST/api/v1/users] 
+### User signup [POST /api/v1/users] 
 
 Sign up a user.
 
 + Request (application/json)
 
         {
-            "country_code": "+1",
+            "country_code": 1,
             "mobile_number": 4156089756,
-            "partner_user_uuid": "d4a44579-c996-4e30-a7c1-06245f1eb1fb",
+            "partner_user_id": "d4a44579-c996-4e30-a7c1-06245f1eb1fb",
             "password": "password",
             "tc_enabled": false,
             "username": "john@mycred.io"
@@ -88,14 +88,14 @@ Sign up a user.
 + Response 200 (application/json)
 
         {
-            "uuid": "d4a44579-c996-4e30-a7c1-06245f1eb1fb",
+            "user_id": "d4a44579-c996-4e30-a7c1-06245f1eb1fb",
             "email": "john@mycred.io",
             "country_code":"001",
             "mobile": "4153579089",
             "tc_enabled": true,
             "partner_details": {
                 "partner_name":"uphold",
-                "partner_user_uuid":""
+                "partner_user_id":"d4a44579-c996-4e30-a7c1-06245f1eb1fb"
             }
         }
         
@@ -113,13 +113,13 @@ Sign up a user.
             "code" : "400"
         }
 
-### User KYC [POST/api/v1/users/uuid/kyc] 
+### User KYC [POST /api/v1/users/user_id/kyc] 
 
 Partner request for user KYC check
 
 + Parameters:
 
-    + `uuid` (string) - User uuid issued by CRED   
+    + `user_id` (string) - User identifier issued by CRED   
 
 + Request (application/json)
 
@@ -133,7 +133,7 @@ Partner request for user KYC check
                 "zip": "94105",
                 "country": "USA"
             },
-            "DOB":"12/31/91",
+            "date_of_birth":"12/31/91",
             "resident": "US" 
         }
         
@@ -145,7 +145,7 @@ Partner request for user KYC check
 +   Response 200 (application/json)
 
         {
-            "uuid": "d4a44579-c996-4e30-a7c1-06245f1eb1fb",
+            "user_id": "d4a44579-c996-4e30-a7c1-06245f1eb1fb",
             "status": "enabled",
             "kyc": {
                 "status": "pending"
@@ -163,9 +163,9 @@ Partner request for user KYC check
             },
             "mobile": "4150689089",
             "country_code":"001",
-            "tcEnabled": true,
+            "tc_enabled": true,
             "resident": "US", 
-            "birthdate": "09/10/1995",
+            "date_of_birth": "09/10/1995",
             "email": "john@mycred.io",
             "resident": "US"   
         }
@@ -185,13 +185,13 @@ Partner request for user KYC check
         }
 
 
-### Get user [GET/api/v1/users/uuid\}]  
+### Get user [GET /api/v1/users/user_id]  
 
-Get CRED user by uuid. Can be used in polling to check kyc status or user status.
+Get CRED user by user id. Can be used in polling to check kyc status or user status.
 
 + Parameters:
 
-    + `uuid` (string) - user uuid issued by CRED 
+    + `user_id` (string) - user identifier issued by CRED 
     
 
 + Request (application/json)
@@ -204,7 +204,7 @@ Get CRED user by uuid. Can be used in polling to check kyc status or user status
 +   Response 200 (application/json)
 
         {
-            "uuid": "d4a44579-c996-4e30-a7c1-06245f1eb1fb",
+            "user_id": "d4a44579-c996-4e30-a7c1-06245f1eb1fb",
             "status": "enabled",
             "kyc": {
                 "status": "success"
@@ -222,7 +222,7 @@ Get CRED user by uuid. Can be used in polling to check kyc status or user status
             },
             "mobile": "4150689089",
             "resident": "US", 
-            "birthdate": "09/10/1995",
+            "date_of_birth": "09/10/1995",
             "email": "john@mycred.io",
             "resident": "US"   
         }
@@ -246,13 +246,13 @@ Get CRED user by uuid. Can be used in polling to check kyc status or user status
 
 Quote generation based on available collateral, acceptance and lookup based on generated quoteId.
 
-### Create quote request [POST/api/v1/users/uuid/quotes]  
+### Create quote request [POST /api/v1/users/user_id/quotes]  
 
 Request quote based on available collateral.
 
 + Parameters:
 
-    + `uuid` (string) - User uuid issued by CRED
+    + `user_id` (string) - user identifier issued by CRED
 
 
 + Request (application/json)
@@ -279,7 +279,7 @@ Request quote based on available collateral.
 + Response 200 (application/json)
 
         {
-            "id": "95b4bcfb-a961-4b8b-a043-d4f094021761",
+            "quote_id": "95b4bcfb-a961-4b8b-a043-d4f094021761",
             "user_id": "c4a44579-c996-4e30-a7c1-06245f1eb1fb",
             "status": "PENDING",
             "msg": "",
@@ -314,14 +314,14 @@ Request quote based on available collateral.
             "code" : "400"
         }
 
-### Get quote [GET/api/v1/users/uuid/quotes/quoteId\}]  
+### Get quote [GET /api/v1/users/user_id/quotes/quote_id]  
 
 Request quote based on quote id.
 
 + Parameters:
 
-    + `uuid` (string) - User uuid issued by CRED
-    + `quoteId` (string) - quoteId issued by cred during quote create request.
+    + `user_id` (string) - user identifier issued by CRED
+    + `quote_id` (string) - quote id issued by cred during quote create request.
 
 + Request (application/json)
 
@@ -333,7 +333,7 @@ Request quote based on quote id.
 +   Response 200 (application/json)
 
         {
-            "id": "95b4bcfb-a961-4b8b-a043-d4f094021761",
+            "quote_id": "95b4bcfb-a961-4b8b-a043-d4f094021761",
             "user_id": "c4a44579-c996-4e30-a7c1-06245f1eb1fb",
             "status": "APPROVED",
             "msg": "",
@@ -368,13 +368,13 @@ Request quote based on quote id.
             "code" : "400"
         }
    
-### Get all user quotes [GET/api/v1/users/uuid/quotes/]  
+### Get all user quotes [GET /api/v1/users/user_id/quotes/]  
 
-Request quote based on quote id.
+Request all quote based on user id.
 
 + Parameters:
 
-    + `uuid` (string) - User uuid issued by CRED
+    + `user_id` (string) - user identifier issued by CRED
 
 + Request (application/json)
 
@@ -387,7 +387,7 @@ Request quote based on quote id.
 
         {
             "content": [{
-                "uuid": "95b4bcfb-a961-4b8b-a043-d4f094021761",
+                "quote_id": "95b4bcfb-a961-4b8b-a043-d4f094021761",
                 "user_id": "c4a44579-c996-4e30-a7c1-06245f1eb1fb",
                 "status": "APPROVED",
                 "msg": "",
@@ -448,13 +448,13 @@ Request quote based on quote id.
 
 ## CLOC [/cloc]            
             
-### Create CLOC request [POST/api/v1/users/uuid/cloc] 
+### Create CLOC request [POST /api/v1/users/user_id/cloc] 
 
-Request for creation of CLOC account for a given user uuid.
+Request for creation of CLOC account for a given user user_id.
 
 + Parameters:
 
-    + `uuid` (string)- User uuid issued by CRED  
+    + `user_id` (string) - user identifier issued by CRED  
 
 + Request (application/json)
 
@@ -488,7 +488,7 @@ Request for creation of CLOC account for a given user uuid.
 + Response 200 (application/json)
 
         {
-            "id": "3db06b74-091d-49d7-9fcf-21366c646ac5",
+            "cloc_id": "3db06b74-091d-49d7-9fcf-21366c646ac5",
             "user_id": "c4a44579-c996-4e30-a7c1-06245f1eb1fb",
             "quote_id": "95b4bcfb-a961-4b8b-a043-d4f094021761",
             "status": "PENDING",
@@ -564,14 +564,14 @@ Request for creation of CLOC account for a given user uuid.
         }
         
             
-### Get CLOC [GET/api/v1/users/uuid/cloc/clocId\}]  
+### Get CLOC [GET /api/v1/users/user_id/cloc/cloc_id]  
 
 Get CLOC account information by id for a given user
 
 + Parameters:
 
-    + `uuid` (string) - User uuid issued by CRED  
-    + `clocId` (string) - cloc account id issued by CRED
+    + `user_id` (string) - user identifier issued by CRED  
+    + `cloc_id` (string) - cloc account id issued by CRED
 
 + Request (application/json)
 
@@ -582,7 +582,7 @@ Get CLOC account information by id for a given user
 + Response 200 (application/json)
 
         {
-            "id": "3db06b74-091d-49d7-9fcf-21366c646ac5",
+            "cloc_id": "3db06b74-091d-49d7-9fcf-21366c646ac5",
             "user_id": "c4a44579-c996-4e30-a7c1-06245f1eb1fb",
             "quote_id": "95b4bcfb-a961-4b8b-a043-d4f094021761",
             "status": "ACTIVE",
@@ -658,13 +658,13 @@ Get CLOC account information by id for a given user
         }
 
 
-### Get active CLOC account [GET/api/v1/users/uuid/cloc/active]  
+### Get active CLOC account [GET /api/v1/users/user_id/cloc/active]  
 
-Get active CLOC account for a given user uuid
+Get active CLOC account for a given user identifier
 
 + Parameters:
 
-    + `uuid` (string) - User uuid issued by CRED  
+    + `user_id` (string) - user identifier issued by CRED  
 
 + Request (application/json)
 
@@ -676,7 +676,7 @@ Get active CLOC account for a given user uuid
 + Response 200 (application/json)
 
         {
-            "id": "3db06b74-091d-49d7-9fcf-21366c646ac5",
+            "cloc_id": "3db06b74-091d-49d7-9fcf-21366c646ac5",
             "user_id": "c4a44579-c996-4e30-a7c1-06245f1eb1fb",
             "quote_id": "95b4bcfb-a961-4b8b-a043-d4f094021761",
             "status": "ACTIVE",
@@ -752,13 +752,13 @@ Get active CLOC account for a given user uuid
         }
 
 
-### Get all user CLOC accounts [GET/api/v1/users/uuid/cloc]  
+### Get all user CLOC accounts [GET /api/v1/users/user_id/cloc]  
 
-Get all CLOC accounts for a given user uuid
+Get all CLOC accounts for a given user identifier
 
 + Parameters:
 
-    + `uuid` (string) - User uuid issued by CRED  
+    + `user_id` (string) - user identifier issued by CRED  
 
 + Request (application/json)
 
@@ -771,7 +771,7 @@ Get all CLOC accounts for a given user uuid
 
         {
             "content": [{
-                "id": "3db06b74-091d-49d7-9fcf-21366c646ac5",
+                "cloc_id": "3db06b74-091d-49d7-9fcf-21366c646ac5",
                 "user_id": "c4a44579-c996-4e30-a7c1-06245f1eb1fb",
                 "quote_id": "95b4bcfb-a961-4b8b-a043-d4f094021761",
                 "status": "ACTIVE",
@@ -871,12 +871,12 @@ Get all CLOC accounts for a given user uuid
 
 ## Transactions [/transactions]            
             
-### Create transaction request [POST/api/v1/users/uuid/cloc/clocId/transactions]  
+### Create transaction request [POST /api/v1/users/user_id/cloc/cloc_id/transactions]  
 
 + Parameters:
 
-    + `uuid` (string) - User uuid issued by CRED  
-    + `clocId` (string) - CLOC id issued by cred after cloc CLOC
+    + `user_id` (string) - user identifier issued by CRED  
+    + `cloc_id` (string) - CLOC id issued by cred after cloc CLOC
 
 + Request (application/json)
 
@@ -885,7 +885,7 @@ Get all CLOC accounts for a given user uuid
             "currency": "USD",
             "notes": "Withdrawal request",
             "rail": {
-                "id": "a2ebfc23-69cb-4b12-bde1-089ef0db1321",
+                "rail_id": "a2ebfc23-69cb-4b12-bde1-089ef0db1321",
                 "type": "UPHOLD",
                 "currency": "USD"
             },
@@ -902,11 +902,11 @@ Get all CLOC accounts for a given user uuid
             "amount": 1000,
             "cloc_id": "3db06b74-091d-49d7-9fcf-21366c646ac5",
             "currency": "USD",
-            "id": "992833a1-44c1-4b0a-9eba-b4b6c88b6e15",
+            "tx_id": "992833a1-44c1-4b0a-9eba-b4b6c88b6e15",
             "msg": "",
             "notes": "Withdrawal request",
             "rail": {
-                "id": "a2ebfc23-69cb-4b12-bde1-089ef0db1321",
+                "rail_id": "a2ebfc23-69cb-4b12-bde1-089ef0db1321",
                 "type": "UPHOLD",
                 "currency": "USD"
             },
@@ -939,13 +939,13 @@ Get all CLOC accounts for a given user uuid
             "code" : "400"
         }
         
-### Get transaction [GET/api/v1/users/uuid/cloc/clocId/transactions/transactionId\}]  
+### Get transaction [GET /api/v1/users/user_id/cloc/cloc_id/transactions/transaction_id]  
 
 + Parameters:
 
-    + `uuid` (string) - User uuid issued by CRED  
+    + `user_id` (string) - user identifier issued by CRED 
     + `transactionId` (string) - Transaction id issued by cred after transaction request.
-    + `clocId` (string) - CLOC id issued by cred after cloc creation
+    + `cloc_id` (string) - CLOC id issued by cred after cloc creation
 
 
 + Request (application/json)
@@ -960,11 +960,11 @@ Get all CLOC accounts for a given user uuid
             "amount": 1000,
             "cloc_id": "3db06b74-091d-49d7-9fcf-21366c646ac5",
             "currency": "USD",
-            "id": "992833a1-44c1-4b0a-9eba-b4b6c88b6e15",
+            "tx_id": "992833a1-44c1-4b0a-9eba-b4b6c88b6e15",
             "msg": "",
             "notes": "Withdrawal request",
             "rail": {
-                "id": "a2ebfc23-69cb-4b12-bde1-089ef0db1321",
+                "rail_id": "a2ebfc23-69cb-4b12-bde1-089ef0db1321",
                 "type": "UPHOLD",
                 "currency": "USD"
             },
@@ -997,12 +997,12 @@ Get all CLOC accounts for a given user uuid
             "code" : "400"
         }
      
-### Get all CLOC transactions [GET/api/v1/users/uuid/cloc/clocId/transactions]  
+### Get all CLOC transactions [GET/api/v1/users/user_id/cloc/cloc_id/transactions]  
 
 + Parameters:
 
-    + `uuid` (string)- User uuid issued by CRED  
-    + `clocId` (string) - cloc id issued by cred after cloc creation
+    + `user_id` (string) - user identifier issued by CRED  
+    + `cloc_id` (string) - cloc id issued by cred after cloc creation
 
 + Request (application/json)
 
@@ -1018,11 +1018,11 @@ Get all CLOC accounts for a given user uuid
                 "amount": 1000,
                 "cloc_id": "3db06b74-091d-49d7-9fcf-21366c646ac5",
                 "currency": "USD",
-                "id": "992833a1-44c1-4b0a-9eba-b4b6c88b6e15",
+                "tx_id": "992833a1-44c1-4b0a-9eba-b4b6c88b6e15",
                 "msg": "",
                 "notes": "Withdrawal request",
                 "rail": {
-                    "id": "a2ebfc23-69cb-4b12-bde1-089ef0db1321",
+                    "rail_id": "a2ebfc23-69cb-4b12-bde1-089ef0db1321",
                     "type": "UPHOLD",
                     "currency": "USD"
                 },
@@ -1080,13 +1080,13 @@ Get all CLOC accounts for a given user uuid
         
 ## Wallets [/wallets]
 
-### Get Deposit Address [GET /api/v1/users/uuid/wallet/deposit/coin_type]
+### Get Deposit Address [GET /api/v1/users/user_id/wallet/deposit/coin_type]
 
 Return deposit address for specified coin and user.
 Note this will create a new wallet address if the user passed KYC and conduct deposit for the very first time.
 
 + Parameters:
-    + `uuid` (string) - ID of the CLOC user
+    + `user_id` (string) - user identifier issued by CRED
     + `coin_type` (string) - What coin address required,e.g.,BTC,ETH
     
 + Request (application/json)
@@ -1097,7 +1097,6 @@ Note this will create a new wallet address if the user passed KYC and conduct de
 + Response 200 (application/json)
 
         {
-            "success":true,
             "user_id":"c4a44579-c996-4e30-a7c1-06245f1eb1fb",
             "coin_type":"ETH",
             "address":"0xfe5f141bf94fe84bc28ded0ab966c16b17490657"
@@ -1117,12 +1116,12 @@ Note this will create a new wallet address if the user passed KYC and conduct de
             "code" : "400"
         }
            
-### Get Wallet Balance [GET /api/v1/users/uuid/wallet/balances]
+### Get Wallet Balance [GET /api/v1/users/user_id/wallet/balances]
 
 Return wallet balances for given user.
 
 + Parameters:
-    + `uuid` (string) - ID of the CLOC user
+    + `user_id` (string) - user identifier issued by CRED
 
 + Request (application/json)
     + Headers
@@ -1132,23 +1131,22 @@ Return wallet balances for given user.
 + Response 200 (application/json)
 
         {
-            "success":true,
             "user_id":"c4a44579-c996-4e30-a7c1-06245f1eb1fb",
             "balances":[
                 {
-                    "type":"BTC",
+                    "coin_type":"BTC",
                     "available":1.434343,
                     "collateralized":0.5,
                     "pending_confirm":1
                 },
                 {
-                    "type":"ETH",
+                    "coin_type":"ETH",
                     "available":1.434343,
                     "collateralized":0.5,
                     "pending_confirm":1
                 },
                 {
-                    "type":"LBA",
+                    "coin_type":"LBA",
                     "available":1001123.132,
                     "collateralized":0.5,
                     "pending_confirm":1
@@ -1170,12 +1168,12 @@ Return wallet balances for given user.
             "code" : "400"
         }
         
-### Transfer Coin [POST /api/v1/users/uuid/wallet/transfer/transfer_id]
+### Transfer Coin [POST /api/v1/users/user_id/wallet/transfer/transfer_id]
 
 Apply transfer operation to coin which is already sucessfully deposit but not used, i.e., "available" as returned by above API.
 
 + Parameters:
-    + `uuid` (string) - ID of the CLOC user
+    + `user_id` (string) - user identifier issued by CRED
     + `transfer_id` (string) - invoker to ensure unique transfer id from business perspective
     
 + Request (application/json)
@@ -1194,7 +1192,6 @@ Apply transfer operation to coin which is already sucessfully deposit but not us
 + Response 200 (application/json)
 
         {
-            "success":true,
             "user_id":"c4a44579-c996-4e30-a7c1-06245f1eb1fb",
             "coin_type":"ETH",
             "transfer_type":"WITHDRAWAL/COLLATERALIZE/CLOSECLOC",
@@ -1216,12 +1213,12 @@ Apply transfer operation to coin which is already sucessfully deposit but not us
         }
         
         
-### Get Transfer Status [GET /api/v1/users/uuid/wallet/transfer/transfer_id]
+### Get Transfer Status [GET /api/v1/users/user_id/wallet/transfer/transfer_id]
 
 Return the status of given user and transfer operation id.
 
 + Parameters:
-    + `uuid` (string) - ID of the CLOC user
+    + `user_id` (string) - user identifier issued by CRED
     + `transfer_id` (string) - invoker to ensure unique transfer id from business perspective
 
 + Request (application/json)
@@ -1232,14 +1229,15 @@ Return the status of given user and transfer operation id.
 + Response 200 (application/json)
 
         {
-            "success":true,
             "status":"SUBMITTED/PENDING/SUCCESS",
             "user_id": "c4a44579-c996-4e30-a7c1-06245f1eb1fb",
             "transfer_id":"biz123",
             "transfer_type":"WITHDRAWAL/COLLATERALIZE/UNCOLLATERALIZE",
             "amount":123.412,
             "coin_type":"ETH",
-            "blockchain_tx":"0x7e669efaba276cf087a44d153b789134e565b594b90a2892107ba57e74fb66bf"
+            "blockchain_tx":"0x7e669efaba276cf087a44d153b789134e565b594b90a2892107ba57e74fb66bf",
+            "blockchain_confirmations":20,
+            "blockchain_confirmations_required":36
         }
     
 + Response 401 (application/json)
@@ -1256,17 +1254,17 @@ Return the status of given user and transfer operation id.
             "code" : "400"
         }
 
-### Get Transfer History [GET /api/v1/users/uuid/wallet/transfer/history]
+### Get Transfer History [GET /api/v1/users/user_id/wallet/transfer/history]
 
 Return full transfer history for given user.
 
 + Parameters:
-    + `uuid` (string) - ID of the CLOC user
+    + `user_id` (string) - user identifier issued by CRED
    
 + Request (application/json)
 
         {
-            "transfer_type":"WITHDRAWAL/COLLATERALIZE/UNCOLLATERALIZE"
+            "transfer_type":"WITHDRAWAL/COLLATERALIZE/UNCOLLATERALIZE",
             "status":"SUBMITTED/PENDING/SUCCESS",
             "coin_type":"ETH"
         }
@@ -1277,10 +1275,9 @@ Return full transfer history for given user.
 
 + Response 200 (application/json)
 
-        {
-            "success":true,
-            "transfer_history": 
-               [
+        {            
+            "content": 
+            [
                   {
                     "status":"SUBMITTED/PENDING/SUCCESS",
                     "user_id":"c4a44579-c996-4e30-a7c1-06245f1eb1fb",
@@ -1288,7 +1285,9 @@ Return full transfer history for given user.
                     "transfer_type":"WITHDRAWAL/COLLATERALIZE/UNCOLLATERALIZE",
                     "amount":123.412,
                     "coin_type":"ETH",
-                    "blockchain_tx":"0x7e669efaba276cf087a44d153b789134e565b594b90a2892107ba57e74fb66bf"
+                    "blockchain_tx":"0x7e669efaba276cf087a44d153b789134e565b594b90a2892107ba57e74fb66bf",
+                    "blockchain_confirmations":20,
+                    "blockchain_confirmations_required":36
                   },
                   {
                     "status":"SUBMITTED/PENDING/SUCCESS",
@@ -1297,9 +1296,33 @@ Return full transfer history for given user.
                     "transfer_type":"WITHDRAWAL/COLLATERALIZE/UNCOLLATERALIZE",
                     "amount":123.512,
                     "coin_type":"ETH",
-                    "blockchain_tx":"0x9971205df9603993c4484f03a83da34d6915329bc75237904fcdb722a2df2a09"
+                    "blockchain_tx":"0x9971205df9603993c4484f03a83da34d6915329bc75237904fcdb722a2df2a09",
+                    "blockchain_confirmations":20,
+                    "blockchain_confirmations_required":36
                   }
-               ]
+            ],
+            "pageable": {
+                "sort": {
+                    "unsorted": true,
+                    "sorted": false
+                },
+                "page_number": 0,
+                "page_size": 20,
+                "offset": 0,
+                "paged": true,
+                "unpaged": false
+            },
+            "total_pages": 1,
+            "last": true,
+            "total_elements": 1,
+            "first": true,
+            "sort": {
+                "unsorted": true,
+                "sorted": false
+            },
+            "number_of_elements": 1,
+            "size": 20,
+            "number": 0
         }
     
 + Response 401 (application/json)
