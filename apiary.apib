@@ -1149,6 +1149,7 @@ Return wallet balances for given user.
                     "coin_type":"LBA",
                     "available":1001123.132,
                     "collateralized":0.5,
+					"staked": 1000,
                     "pending_confirm":1
                 }
             ]
@@ -1179,7 +1180,7 @@ Apply transfer operation to coin which is already sucessfully deposit but not us
 + Request (application/json)
 
         {
-            "transfer_type":"WITHDRAWAL/COLLATERALIZE/UNCOLLATERALIZE",
+            "transfer_type":"WITHDRAWAL/COLLATERALIZE/UNCOLLATERALIZE/STAKE/UNSTAKE",
             "coin_type":"ETH",
             "amount":100.121212212121,
             "withdraw_to":"0xfe5f141bf94fe84bc28ded0ab966c16b17490657"
@@ -1194,7 +1195,7 @@ Apply transfer operation to coin which is already sucessfully deposit but not us
         {
             "user_id":"c4a44579-c996-4e30-a7c1-06245f1eb1fb",
             "coin_type":"ETH",
-            "transfer_type":"WITHDRAWAL/COLLATERALIZE/UNCOLLATERALIZE",
+            "transfer_type":"WITHDRAWAL/COLLATERALIZE/UNCOLLATERALIZE/STAKE/UNSTAKE",
             "transfer_id":"biz123"
         }
     
@@ -1232,7 +1233,7 @@ Return the status of given user and transfer operation id.
             "status":"SUBMITTED/PENDING/SUCCESS",
             "user_id": "c4a44579-c996-4e30-a7c1-06245f1eb1fb",
             "transfer_id":"biz123",
-            "transfer_type":"WITHDRAWAL/COLLATERALIZE/UNCOLLATERALIZE",
+            "transfer_type":"WITHDRAWAL/COLLATERALIZE/UNCOLLATERALIZE/STAKE/UNSTAKE",
             "amount":123.412,
             "coin_type":"ETH",
             "blockchain_tx":"0x7e669efaba276cf087a44d153b789134e565b594b90a2892107ba57e74fb66bf",
@@ -1264,7 +1265,7 @@ Return full transfer history for given user.
 + Request (application/json)
 
         {
-            "transfer_type":"WITHDRAWAL/COLLATERALIZE/UNCOLLATERALIZE",
+            "transfer_type":"WITHDRAWAL/COLLATERALIZE/UNCOLLATERALIZE/STAKE/UNSTAKE",
             "status":"SUBMITTED/PENDING/SUCCESS",
             "coin_type":"ETH"
         }
@@ -1282,7 +1283,7 @@ Return full transfer history for given user.
                     "status":"SUBMITTED/PENDING/SUCCESS",
                     "user_id":"c4a44579-c996-4e30-a7c1-06245f1eb1fb",
                     "transfer_id":"biz123",
-                    "transfer_type":"WITHDRAWAL/COLLATERALIZE/UNCOLLATERALIZE",
+                    "transfer_type":"WITHDRAWAL/COLLATERALIZE/UNCOLLATERALIZE/STAKE/UNSTAKE",
                     "amount":123.412,
                     "coin_type":"ETH",
                     "blockchain_tx":"0x7e669efaba276cf087a44d153b789134e565b594b90a2892107ba57e74fb66bf",
@@ -1293,7 +1294,7 @@ Return full transfer history for given user.
                     "status":"SUBMITTED/PENDING/SUCCESS",
                     "user_id":"c4a44579-c996-4e30-a7c1-06245f1eb1fb",
                     "transfer_id":"biz124",
-                    "transfer_type":"WITHDRAWAL/COLLATERALIZE/UNCOLLATERALIZE",
+                    "transfer_type":"WITHDRAWAL/COLLATERALIZE/UNCOLLATERALIZE/STAKE/UNSTAKE",
                     "amount":123.512,
                     "coin_type":"ETH",
                     "blockchain_tx":"0x9971205df9603993c4484f03a83da34d6915329bc75237904fcdb722a2df2a09",
