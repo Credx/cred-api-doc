@@ -179,7 +179,7 @@ Partner request for user KYC check
                 "zip": "94105",
                 "country": "USA"
             },
-            "DOB":"12/31/91",
+            "dob":"12/31/91",
             "document_id":"3456",
             "resident": "US" 
         }
@@ -197,7 +197,7 @@ Partner request for user KYC check
             "last_name": "Doe",
             "status": "enabled",
             "kyc": {
-                "status": "pending"
+                "status": "PENDING"
             },
             "address": {
                 "line1": "487 Cumber Lane",
@@ -213,8 +213,7 @@ Partner request for user KYC check
             "mobile": "4150689089",
             "country_code":"+1",
             "tc_enabled": "true",
-            "DOB":"12/31/91",
-            "birthdate": "09/10/1995",
+            "dob":"12/31/91",
             "email": "john@mycred.io",
             "resident": "US"   
         }
@@ -322,8 +321,7 @@ Get CRED user by uuid. Can be used in polling to check kyc status or user status
             "mobile": "4150689089",
             "country_code":"+1",
             "tc_enabled": "true",
-            "DOB":"12/31/91",
-            "birthdate": "09/10/1995",
+            "dob":"12/31/91",
             "email": "john@mycred.io",
             "resident": "US"   
         }
@@ -612,24 +610,24 @@ Request for creation of CLOC account for a given user uuid.
                 "collateral":[  
                     {  
                         "currency":"BTC",
-                        "refId":"82b27574-9637-4156-9202-9657442ceffd",
+                        "ref_id":"82b27574-9637-4156-9202-9657442ceffd",
                         "transfer_method":"UPHOLD"
                     }
                 ],
                 "destination_account":{  
                     "currency":"USD",
-                    "refId":"92b27574-9637-4156-9202-9657442ceffd",
+                    "ref_id":"92b27574-9637-4156-9202-9657442ceffd",
                     "transfer_method":"UPHOLD"
                 },
                 "source_account":{  
                     "currency":"USD",
-                    "refId":"11b27574-9637-4156-9202-9657442ceffd",
+                    "ref_id":"11b27574-9637-4156-9202-9657442ceffd",
                     "transfer_method":"UPHOLD"
                 },
                 "stake":[  
                     {  
                         "currency":"LBA",
-                        "refId":"89b27574-9637-4156-9202-9657442ceffd",
+                        "ref_id":"89b27574-9637-4156-9202-9657442ceffd",
                         "transfer_method":"UPHOLD"
                     }
                 ]
@@ -677,24 +675,24 @@ Request for creation of CLOC account for a given user uuid.
                 "collateral":[  
                     {  
                         "currency":"BTC",
-                        "refId":"82b27574-9637-4156-9202-9657442ceffd",
+                        "ref_id":"82b27574-9637-4156-9202-9657442ceffd",
                         "transfer_method":"UPHOLD"
                     }
                 ],
                 "destination_account":{  
                     "currency":"USD",
-                    "refId":"92b27574-9637-4156-9202-9657442ceffd",
+                    "ref_id":"92b27574-9637-4156-9202-9657442ceffd",
                     "transfer_method":"UPHOLD"
                 },
                 "source_account":{  
                     "currency":"USD",
-                    "refId":"11b27574-9637-4156-9202-9657442ceffd",
+                    "ref_id":"11b27574-9637-4156-9202-9657442ceffd",
                     "transfer_method":"UPHOLD"
                 },
                 "stake":[  
                     {  
                         "currency":"LBA",
-                        "refId":"89b27574-9637-4156-9202-9657442ceffd",
+                        "ref_id":"89b27574-9637-4156-9202-9657442ceffd",
                         "transfer_method":"UPHOLD"
                     }
                 ]
@@ -777,7 +775,7 @@ Get CLOC account information by id for a given user
             "over_limit_allowance_amount":0,
             "over_limit_allowance_count_per_billing":0,
             "billing_cycle":"MONTH",
-            "account_standing":0",
+            "account_standing":0,
             "outstanding_balance":0,
             "principal_outstanding":0,
             "total_charges":0,
@@ -792,24 +790,24 @@ Get CLOC account information by id for a given user
                 "collateral":[  
                     {  
                         "currency":"BTC",
-                        "refId":"82b27574-9637-4156-9202-9657442ceffd",
+                        "ref_id":"82b27574-9637-4156-9202-9657442ceffd",
                         "transfer_method":"UPHOLD"
                     }
                 ],
                 "destination_account":{  
                     "currency":"USD",
-                    "refId":"92b27574-9637-4156-9202-9657442ceffd",
+                    "ref_id":"92b27574-9637-4156-9202-9657442ceffd",
                     "transfer_method":"UPHOLD"
                 },
                 "source_account":{  
                     "currency":"USD",
-                    "refId":"11b27574-9637-4156-9202-9657442ceffd",
+                    "ref_id":"11b27574-9637-4156-9202-9657442ceffd",
                     "transfer_method":"UPHOLD"
                 },
                 "stake":[  
                     {  
                         "currency":"LBA",
-                        "refId":"89b27574-9637-4156-9202-9657442ceffd",
+                        "ref_id":"89b27574-9637-4156-9202-9657442ceffd",
                         "transfer_method":"UPHOLD"
                     }
                 ]
@@ -907,24 +905,24 @@ Get active CLOC account for a given user uuid
                 "collateral":[  
                     {  
                         "currency":"BTC",
-                        "refId":"82b27574-9637-4156-9202-9657442ceffd",
+                        "ref_id":"82b27574-9637-4156-9202-9657442ceffd",
                         "transfer_method":"UPHOLD"
                     }
                 ],
                 "destination_account":{  
                     "currency":"USD",
-                    "refId":"92b27574-9637-4156-9202-9657442ceffd",
+                    "ref_id":"92b27574-9637-4156-9202-9657442ceffd",
                     "transfer_method":"UPHOLD"
                 },
                 "source_account":{  
                     "currency":"USD",
-                    "refId":"11b27574-9637-4156-9202-9657442ceffd",
+                    "ref_id":"11b27574-9637-4156-9202-9657442ceffd",
                     "transfer_method":"UPHOLD"
                 },
                 "stake":[  
                     {  
                         "currency":"LBA",
-                        "refId":"89b27574-9637-4156-9202-9657442ceffd",
+                        "ref_id":"89b27574-9637-4156-9202-9657442ceffd",
                         "transfer_method":"UPHOLD"
                     }
                 ]
@@ -1024,24 +1022,24 @@ Get all CLOC accounts for a given user uuid
                         "collateral":[  
                             {  
                                 "currency":"BTC",
-                                "refId":"82b27574-9637-4156-9202-9657442ceffd",
+                                "ref_id":"82b27574-9637-4156-9202-9657442ceffd",
                                 "transfer_method":"UPHOLD"
                             }
                         ],
                         "destination_account":{  
                             "currency":"USD",
-                            "refId":"92b27574-9637-4156-9202-9657442ceffd",
+                            "ref_id":"92b27574-9637-4156-9202-9657442ceffd",
                             "transfer_method":"UPHOLD"
                         },
                         "source_account":{  
                             "currency":"USD",
-                            "refId":"11b27574-9637-4156-9202-9657442ceffd",
+                            "ref_id":"11b27574-9637-4156-9202-9657442ceffd",
                             "transfer_method":"UPHOLD"
                         },
                         "stake":[  
                             {  
                                 "currency":"LBA",
-                                "refId":"89b27574-9637-4156-9202-9657442ceffd",
+                                "ref_id":"89b27574-9637-4156-9202-9657442ceffd",
                                 "transfer_method":"UPHOLD"
                             }
                         ]
@@ -1125,10 +1123,10 @@ Get all CLOC accounts for a given user uuid
 
         {  
             "amount":1000,
-            "notes":"Sample withdrawl",
+            "notes":"Sample withdrawal",
             "destination_account":{  
                 "currency":"USD",
-                "refId":"c61fbb14-64f3-4693-b904-f799ff1dd84a",
+                "ref_id":"c61fbb14-64f3-4693-b904-f799ff1dd84a",
                 "transfer_method":"UPHOLD"
             }
         }
@@ -1147,7 +1145,7 @@ Get all CLOC accounts for a given user uuid
             "notes": "Withdrawal request",
             "destination_account": {
                 "currency": "USD",
-                "refId": "a2ebfc23-69cb-4b12-bde1-089ef0db1321",
+                "ref_id": "a2ebfc23-69cb-4b12-bde1-089ef0db1321",
                 "transfer_method": "UPHOLD"
             },
             "settlement_info": {
@@ -1201,7 +1199,7 @@ Get all CLOC accounts for a given user uuid
             "msg": "",
             "notes": "Withdrawal request",
             "destination_account": {
-                "refId": "a2ebfc23-69cb-4b12-bde1-089ef0db1321",
+                "ref_id": "a2ebfc23-69cb-4b12-bde1-089ef0db1321",
                 "transfer_method": "UPHOLD",
                 "currency": "USD"
             },
@@ -1247,9 +1245,9 @@ Get all CLOC accounts for a given user uuid
         {  
             "amount":1000,
             "notes":"Sample Repayment",
-            "destination_account":{  
+            "source_account":{  
                 "currency":"USD",
-                "refId":"c61fbb14-64f3-4693-b904-f799ff1dd84a",
+                "ref_id":"c61fbb14-64f3-4693-b904-f799ff1dd84a",
                 "transfer_method":"UPHOLD"
             }
         }
@@ -1268,7 +1266,7 @@ Get all CLOC accounts for a given user uuid
             "notes": "Withdrawal request",
             "destination_account": {
                 "currency": "USD",
-                "refId": "a2ebfc23-69cb-4b12-bde1-089ef0db1321",
+                "ref_id": "a2ebfc23-69cb-4b12-bde1-089ef0db1321",
                 "transfer_method": "UPHOLD"
             },
             "settlement_info": {
@@ -1324,7 +1322,7 @@ Get all CLOC accounts for a given user uuid
                     "msg": "",
                     "notes": "Withdrawal request",
                     "destination_account": {
-                        "refId": "a2ebfc23-69cb-4b12-bde1-089ef0db1321",
+                        "ref_id": "a2ebfc23-69cb-4b12-bde1-089ef0db1321",
                         "transfer_method": "UPHOLD",
                         "currency": "USD"
                     },
