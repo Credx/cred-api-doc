@@ -7,10 +7,15 @@ API documentation for CRED CRYPTO Lending as a service API
 
 ## Loan proposition  [/ltv]
 
-### Get LTV calculator [GET/api/v1/ltv]
+### Get LTV calculator [GET/api/v1/ltv/partnerid]
 
 Cred offers various customized CLOC programs to meet the needs and requirements for each partner based on business arrangements.  A detailed loan proposition is returned to you with all the details you need to present to your customers
 in the  format that is best suited for your application.
+
++ Parameters:
+
+    + `partnerid` (string) - Partner ID issued by CRED  
+    
 + Request
 
     + Headers
@@ -23,7 +28,7 @@ in the  format that is best suited for your application.
             {  
                 "currency":"USD",
                 "max_credit":200000,
-                "min_credit":500,
+                "min_credit":2000,
                 "interest_rates":[  
                     {  
                         "borrower_residence":"US",
@@ -52,13 +57,13 @@ in the  format that is best suited for your application.
                         ]
                     }
                 ],
-                "eth_ltv":0.33,
-                "btc_ltv":0.33,
-                "xrp_ltv":0.33,
+                "eth_ltv":0.50,
+                "btc_ltv":0.50,
+                "xrp_ltv":0.50,
                 "fees_response": {
-                    "administrative_fee":39,
+                    "administrative_fee":0,
                     "annual_fee":0,
-                    "exchange_fee_in_percentage":1,
+                    "exchange_fee_in_percentage":0,
                     "late_fee":0,
                     "origination_fee_in_percentage":0,
                     "over_limit_fee":0,
@@ -239,6 +244,10 @@ Customer to submit goverment ID to check for autheticity validation.  This is a 
 + Parameters:
 
     + `uuid` (string) - User uuid issued by CRED   
+    + `country_code` (string) - country code of the ID document issuing country 
+    + `document_type` (string) - type of document for upload (DriverLicense, Passport, NatoinalID)
+    + `document_front_image` (base64imaagestring)
+    + `document_back_image` (base64imagestring)
 
 + Request (application/json)
 
@@ -248,11 +257,11 @@ Customer to submit goverment ID to check for autheticity validation.  This is a 
             "country_code": "US",
             "data_fields": {
                 "document": {
-                  "document_back_image": "base64imagestring",
+                  "document_type": "DriverLicense",
                   "document_front_image": "base64imagestring",
-                  "document_type": "string"
-                }
-            }
+                  "document_back_image": "base64imagestring",
+                            }
+                            }
             }
         }
         
