@@ -77,7 +77,8 @@ in the  format that is best suited for your application.
         
 ### Fair Market Value of coins [GET/api/v1/oracle/fmv?{convert}=USD&{numberOfCoins}=1&{symbol}=ETH]
 
-FMV i.e. Fair Market Value of coins
+The crypto assets' Fair Market Value (FMV) allows you to calculate the estimated loan amount to be made available to the borrowers
+
 
 + Parameters
 
@@ -114,7 +115,9 @@ User onboarding and management with CRED platform.
 
 ### User signup [POST/api/v1/users] 
 
-Sign up a user.
+The Sign-Up API is the first step to customer onboarding to collect their basic account information.  This returns a unqiue identifier for each user.  The user_id should be kept on the partner's system for future reference or inquiry for a specific user/account
+
+
 
 + Request (application/json)
 
@@ -160,7 +163,7 @@ Sign up a user.
 
 ### User KYC [POST/api/v1/users/uuid/kyc] 
 
-Partner request for user KYC check
+The KYC API collects the member’s PIIs for Cred to fulfill our KYC requirements.  Cred is required to perform our own KYC for each CLOC customer. Partner should only allow member to move forward with C-LOC application if both account status and kyc status are in good standing.
 
 + Parameters:
 
@@ -232,8 +235,7 @@ Partner request for user KYC check
         }
 ### User KYC Document verification [POST/api/v1/users/uuid/kyc/verify/documents] 
 
-Partner request for user KYC document verification
-
+Customer to submit goverment ID to check for autheticity validation.  This is a part of the KYC service.
 + Parameters:
 
     + `uuid` (string) - User uuid issued by CRED   
@@ -282,7 +284,8 @@ Partner request for user KYC document verification
 
 ### Get user [GET/api/v1/users/uuid]  
 
-Get CRED user by uuid. Can be used in polling to check kyc status or user status.
+The user's account status is updated throughout the lifecycle of the account.  This API is used to get the most up-to-date status of the user account.
+
 
 + Parameters:
 
@@ -343,16 +346,16 @@ Get CRED user by uuid. Can be used in polling to check kyc status or user status
             
 ## Quotes [/quotes]
 
-Quote generation based on available collateral, acceptance and lookup based on generated quoteId.
+Based on the details of collateral available, Cred generates the CLOC quote for the user.  The CLOC quote has an expiration of 3 hours from the time it is issued. The customer must AGREE to the loan agree to proceed furhter.
+
 
 ### Create quote request [POST/api/v1/users/uuid/quotes]  
 
-Request quote based on available collateral.
+Based on the available collateral, a time limited CLOC quote is generated for the borrower. 
 
 + Parameters:
 
     + `uuid` (string) - User uuid issued by CRED
-
 
 + Request (application/json)
 
@@ -430,8 +433,7 @@ Request quote based on available collateral.
         }
 
 ### Get quote [GET/api/v1/users/uuid/quotes/quoteId]  
-
-Request quote based on quote id.
+Retrieve CLOC quote status (i.e. approved, expired etc) and details
 
 + Parameters:
 
