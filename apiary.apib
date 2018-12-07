@@ -253,7 +253,7 @@ The KYC API collects the member’s PIIs for Cred to fulfill our KYC requirement
                 "state": "CA",
                 "zip": "94105",
                 "country": "USA"
-            },
+                        },
             "dob":"12/31/91",
             "document_id":"3456",
             "resident": "US" 
@@ -312,16 +312,16 @@ Customer to submit goverment ID to check for autheticity validation.  This is a 
 
 + Parameters
     + `uuid` (string) - User id issued by CRED   
++ Attributes   
     + `country_code` (string) - country code of the ID document issuing country 
     + `document` (object)
         + `document_type` (string) - type of document for upload (DriverLicense, Passport, NatoinalID)
-        + `document_front_image` (base64imaagestring)
-        + `document_back_image` (base64imagestring)
+        + `document_front_image` (string) - image to be saved as base64imagestring
+        + `document_back_image` (string) - image to be saved as base64imagestring
 
 + Request (application/json)
         {
             {
-            
             "country_code": "US",
             "document": {
                   "document_type": "DriverLicense",
@@ -955,14 +955,13 @@ Get CLOC account information by id for a given user
         }
 
 
-### Get active CLOC account [GET/api/v1/users/user_id/cloc/active]  
+### Get active CLOC account [GET/api/v1/users/{uid}/cloc/active]  
 
 Get active CLOC account for a given user_id
 
 + Parameters
 
-    + `user_id
-    ` (string) - User uuid issued by CRED  
+    + `uid` (string) - User uuid issued by CRED  
 
 + Request (application/json)
 
