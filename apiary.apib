@@ -7,14 +7,31 @@ API documentation for CRED CRYPTO Lending as a service API
 
 ## Loan proposition  [/ltv]
 
-### Get LTV calculator [GET/api/v1/ltv/partnerid]
+### Get LTV calculator [GET/api/v1/ltv/{partnerid}]
 
 Cred offers various customized CLOC programs to meet the needs and requirements for each partner based on business arrangements.  A detailed loan proposition is returned to you with all the details you need to present to your customers
 in the  format that is best suited for your application.
 
-+ Parameters:
++ Parameters
 
-    + `partnerid` (string) - Partner ID issued by CRED  
+    + `partnerid` - Partner ID issued by CRED  
+    
++ Attributes
+    + `currency` (string) - currency of the CLOC 
+    + `max_credit` (number) - maximum amount for CLOC offer
+    + `min_credit` (number) - minimum amount for CLOC offer
+    + `interet_rates` (object) - This is list of interest profiles for the CLOC available for the partner  
+        + `borrower_residence` (string) - US or non-US
+        + `tenor_in_months` (number) - the duration of loan term  
+        + `rate` (number) - interest rate in percentage
+        + `discounts` (object) -  discounted interest rate given to borrower who holds specific amount of utility reservse (currency) at the time of loan origination.  The interest rate would be lowered by discount_step in percentage with each 1% of the utility reserve held.  The discount range is defined by min_discount and max_discount.  For example, for US borrower, they can hold LBA of at least 1% of the principal value of the loan at the time of origination to benefit from reduced interest rate from 12% to 11%.  Borrower can hold up to 3% of LBA of loan amount to get the optimal discounted rate of 9% for their loan. 
+            + `discounts: currency` (string) 
+            + `min_discount: currency` (string)
+            + `max_discount: currency` (string)
+            + `discount_step: currency` (string)
+    + `eth_ltv` (number) - loan to value ratio for Etherum as collateral
+    + `btc_ltv` (number) - loan to value ratio for Bitcoin as collateral
+    + `xrp_ltv` (number) - loan to value ratio for Ripple as collateralpdate
     
 + Request
 
