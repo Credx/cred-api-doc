@@ -711,11 +711,31 @@ source account - repayment account
     + `uid` (string)- User uuid issued by CRED  
 
 
-
-
 + Request (application/json)
 
-        {  
+    + Attributes
+        + `esignature` (string) - concatenation of IP address and timestamp when user signs the loan agreement.  This is used as official e-signature for the CLOC agreement.
+        + `funding_method` - contains all the details for asset transfer
+            + `collateral` (object) - contains details on collateral to be pledged to obtain CLOC
+                + `currency` (string) - cryptocurrency type to be used for collateral (BTC, ETH, XRP)
+                + `ref_id` (string) - reference ID of source wallet address for collateral (i.e. public wallet address or other reference)
+                + `transfer_method` (string) - method of cryptocurrency transfer for the collateral (i.e CRED, ONUS, ACH, DEBITCARD, SEPA)
+            + `stake` (object) - contains details on utility tokens to be held for the discounted interest rate
+                + `currency` (string) - utility token (LBA)
+                + `ref_id` (string) - reference ID of source wallet address for utility tokens (i.e. public wallet address or other reference)
+                + `transfer_method` (string) - method of cryptocurrency transfer for the reserved tokens (i.e CRED, ONUS, ACH, DEBITCARD, SEPA)
+            + `destination account` (object) - contains details for withdrawal account
+                + `currency` (string) - currency for withdrawal for the CLOC
+                + `ref_id` (string) - reference ID of customer's withdrawal account (i.e. bank account number, debit card number)
+                + `transfer_method` (string) - method for disbursing fiat for CLOC withdrawal (i.e ONUS, ACH, DEBITCARD, SEPA)
+            + `source account` (object) - contains details for repayment account
+                + `currency` (string) - currency for CLOC repayment
+                + `ref_id` (string) - reference ID of customer's repayment account (i.e. bank account number, debit card number)
+                + `transfer_method` (string) - method for repayment (i.e ONUS, ACH, DEBITCARD, SEPA)
+
+    + Body  
+    
+            {  
             "esignature":"34.234.234.23-2018-11-11T20:45:55.000+0000",
             "funding_method":{  
                 "collateral":[  
@@ -744,30 +764,12 @@ source account - repayment account
                 },
             },
             "quote_id":"461022b1-9875-437c-b83f-6bc4c6e64434"
-        }
+            }
 
             
-+ Attributes
-    + `esignature` (string) - concatenation of IP address and timestamp when user signs the loan agreement.  This is used as official e-signature for the CLOC agreement.
-    + `funding_method` - contains all the details for asset transfer
-        + `collateral` (object) - contains details on collateral to be pledged to obtain CLOC
-            + `currency` (string) - cryptocurrency type to be used for collateral (BTC, ETH, XRP)
-            + `ref_id` (string) - reference ID of source wallet address for collateral (i.e. public wallet address or other reference)
-            + `transfer_method` (string) - method of cryptocurrency transfer for the collateral (i.e CRED, ONUS, ACH, DEBITCARD, SEPA)
-        + `stake` (object) - contains details on utility tokens to be held for the discounted interest rate
-            + `currency` (string) - utility token (LBA)
-            + `ref_id` (string) - reference ID of source wallet address for utility tokens (i.e. public wallet address or other reference)
-            + `transfer_method` (string) - method of cryptocurrency transfer for the reserved tokens (i.e CRED, ONUS, ACH, DEBITCARD, SEPA)
-        + `destination account` (object) - contains details for withdrawal account
-            + `currency` (string) - currency for withdrawal for the CLOC
-            + `ref_id` (string) - reference ID of customer's withdrawal account (i.e. bank account number, debit card number)
-            + `transfer_method` (string) - method for disbursing fiat for CLOC withdrawal (i.e ONUS, ACH, DEBITCARD, SEPA)
-        + `source account` (object) - contains details for repayment account
-            + `currency` (string) - currency for CLOC repayment
-            + `ref_id` (string) - reference ID of customer's repayment account (i.e. bank account number, debit card number)
-            + `transfer_method` (string) - method for repayment (i.e ONUS, ACH, DEBITCARD, SEPA)
+
             
-+ Response 200 (application/json)
++ Response 200 (applicantion/json)
     + Attributes 
         + `id` (string) - CLOC id generated for reference
         + `uid` (string) - the user ID submitted in the create CLOC request
@@ -775,41 +777,62 @@ source account - repayment account
         + `status` (string) - status of CLOC account (PENDING, ACTIVE, SUSPENDED)
         + `msg` (string) - additional message for notes if the CLOC account is SUSPENDED
         + `credit_line` (number) - credit line amount
-        + `credit_line` (number) - credit line amount
-        + `credit_line` (number) - credit line amount
-        + `credit_line` (number) - credit line amount
-        + `credit_line` (number) - credit line amount
-        
-        {  
-            "id":"f92a6141-c567-469f-af47-d66457722762",
-            "uid":"c61fbb14-64f3-4693-b904-f799ff1dd84a",
-            "quote_id":"461022b1-9875-437c-b83f-6bc4c6e64434",
-            "status":"PENDING",
-            "msg":"",
-            "credit_line":200000,
-            "annual_interest_percent":0,
-            "discount":0,
-            "tenor_in_months":0,
-            "origination_date":"2018-11-28T13:59:16.848+0000",
-            "available_credit":0,
-            "ltv":0,
-            "maintenance_ltv":0,
-            "daily_withdrawal_limit":0,
-            "over_limit_allowance_amount":0,
-            "over_limit_allowance_count_per_billing":0,
-            "billing_cycle":"MONTH",
-            "account_standing":0,
-            "outstanding_balance":0,
-            "principal_outstanding":0,
-            "total_charges":0,
-            "current_cycle_interest":0,
-            "current_cycle_fees":0,
-            "net_current_charges":0,
-            "minimum_payment_due_date":"2018-11-28T13:59:16.848+0000",
-            "billed_interest":0,
-            "billed_fees":0,
-            "net_billed_charges":0,
-            "funding_method":{  
+        + `annual_interest_percent` (number) - 
+        + `discount` (number) - 
+        + `tenor_in_months` (number) - 
+        + `origination_date` (string) - 
+        + `available_credit` (number) - 
+        + `ltv` (number) - 
+        + `maintenace_ltv` (number) - 
+        + `annual_interest_percent` (number) - 
+        + `daily_withdrawal_limit` (number) - 
+        + `over_limit_allowance_amount` (number) - 
+        + `over_limit_allowance_count_per_billing` (number) - 
+        + `billing_cycle` (string) - MONTHLY 
+        + `accounting_standing` (number) -
+        + `outstanding_balance` (number) -
+        + `principal_standing` (number) -
+        + `total_charges` (number) -
+        + `current_cycle_interest` (number) -
+        + `current_cycle_fees` (number) -
+        + `net_current_charges` (number) -
+        + `minimum_payment_due_date`(string) - 
+        + `billed_interest":0,
+        + `billed_fees":0,
+        + `net_billed_charges":0,
+        + `funding_method":{  
+    + Body
+    
+            {  
+                "id":"f92a6141-c567-469f-af47-d66457722762",
+                "uid":"c61fbb14-64f3-4693-b904-f799ff1dd84a",
+                "quote_id":"461022b1-9875-437c-b83f-6bc4c6e64434",
+                "status":"PENDING",
+                 "msg":"",
+                "credit_line":200000,
+                "annual_interest_percent":0,
+                "discount":0,
+                "tenor_in_months":0,
+                "origination_date":"2018-11-28T13:59:16.848+0000",
+                "available_credit":0,
+                "ltv":0,
+                "maintenance_ltv":0,
+                "daily_withdrawal_limit":0,
+                "over_limit_allowance_amount":0,
+                "over_limit_allowance_count_per_billing":0,
+                "billing_cycle":"MONTH",
+                "account_standing":0,
+                "outstanding_balance":0,
+                "principal_outstanding":0,
+                "total_charges":0,
+                "current_cycle_interest":0,
+                "current_cycle_fees":0,
+                "net_current_charges":0,
+                "minimum_payment_due_date":"2018-11-28T13:59:16.848+0000",
+                "billed_interest":0,
+                "billed_fees":0,
+                "net_billed_charges":0,
+                "funding_method":{  
                 "collateral":[  
                     {  
                         "currency":"BTC",
@@ -861,7 +884,7 @@ source account - repayment account
                 "timezone": "EST"
             },
             "esignature":"34.234.234.23-2018-11-11T20:45:55.000+0000"
-        }
+            }
         
 + Response 401 (application/json)
 
