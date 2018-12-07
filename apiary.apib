@@ -15,12 +15,12 @@ in the  format that is best suited for your application.
 + Parameters
 
     + `partnerid` - Partner ID issued by CRED  
-    
+
 + Attributes
     + `currency` (string) - currency of the CLOC 
     + `max_credit` (number) - maximum amount for CLOC offer
     + `min_credit` (number) - minimum amount for CLOC offer
-    + `interet_rates` (object) - This is list of interest profiles for the CLOC available for the partner  
+    + `interet_rates` (object) - list of interest profiles for the CLOC available for the partner  
         + `borrower_residence` (string) - US or non-US
         + `tenor_in_months` (number) - the duration of loan term  
         + `rate` (number) - interest rate in percentage
@@ -32,12 +32,24 @@ in the  format that is best suited for your application.
     + `eth_ltv` (number) - loan to value ratio for Etherum as collateral
     + `btc_ltv` (number) - loan to value ratio for Bitcoin as collateral
     + `xrp_ltv` (number) - loan to value ratio for Ripple as collateralpdate
+    + `fee_response` (object) - all the finance charges related to the CLOC
+        +`administrative_fee` (number) 
+        +`annual_fee` (number)
+        +`exchange_fee_in_percentage` (number) 
+        +`late_fee` (number)
+        +`origiation_fee_in_percentage` (number) 
+        +`over_limit_fee` (number)
+        +`returned_payment_fee` (number) 
+    + `daily_withdrawal_limit` (number) - daily withdrawal limit for CLOC which borrower must adhere to
+
     
 + Request
 
     + Headers
 
             Authorization: None
+
+
 
 + Response 200 (application/json)
 
@@ -89,7 +101,8 @@ in the  format that is best suited for your application.
                 "daily_withdrawal_limit": 0,
             }
         ]
-            
+
+
 + Response 400 (application/json)
 
         {
@@ -103,10 +116,15 @@ The crypto assets' Fair Market Value (FMV) allows you to calculate the estimated
 
 
 + Parameters
+    + convert (required) - Legal money symbol to get fair market value for (ISO 4217 Currency Codes)
+    + numberOfCoins (required) - Number of coins intended to pledge for collateral
+    + symbol (required) - Coin symbol (BTC, ETH or XRP)
 
-    + convert (required) - Legal money symbol which you want convert to
-    + numberOfCoins (required) - Number of coins
-    + symbol (required) - Coin symbol
++ Attributes
+    + `symbol` (string) - Coin symbol (BTC, ETH or XRP)
+    + `convert` (string) - Legal money symbol to get fair market value for (ISO 4217 Currency Codes)
+    + `number_of_coins` (number) - Number of coins intended to pledge for collateral
+    + `fair_market_value` (number) - Fair market value of pledged collateral
 
 + Request
 
@@ -137,18 +155,26 @@ User onboarding and management with CRED platform.
 
 ### User signup [POST/api/v1/users] 
 
-The Sign-Up API is the first step to customer onboarding to collect their basic account information.  This returns a unqiue identifier for each user.  The user_id should be kept on the partner's system for future reference or inquiry for a specific user/account
+The User Signup API is the first step to customer onboarding to collect their basic account information.  This returns a unqiue identifier for each user.  The user_id should be kept on the partner's system for future reference or inquiry for a specific user/account
 
-
-
++ Attributes
+    + `user_id` (string) - user ID returned from CRED as unique user identifier
+    + `user_name` (string) - email address of the member and needs to be unique per member
+    + `country_code` (string) - the country code for the member’s mobile number
+    + `mobile_number` (number) - mobile phone number of the member
+    + `tc_Enabled` (boolean) - To indicate whether the member has agreed to Terms and Conditions as listed on the partner’s site/mobile app. If tc_enabled = false, the user will not be created
+    + `partner` (object) - partner parameters returned to partner by Cred
+        + `partner_name`
+        + `partner_id`
+        
 + Request (application/json)
 
         {
+            "user_name": "john@mycred.io"
             "country_code": "+1",
             "mobile_number": "4156089756",
             "partner_user_uuid": "d4a44579-c996-4e30-a7c1-06245f1eb1fb",
             "tc_enabled": "true",
-            "user_name": "john@mycred.io"
         }
 
     + Headers
@@ -183,14 +209,39 @@ The Sign-Up API is the first step to customer onboarding to collect their basic 
             "code" : "400"
         }
 
-### User KYC [POST/api/v1/users/uuid/kyc] 
+### User KYC [POST/api/v1/users/{uuid}/kyc] 
 
 The KYC API collects the member’s PIIs for Cred to fulfill our KYC requirements.  Cred is required to perform our own KYC for each CLOC customer. Partner should only allow member to move forward with C-LOC application if both account status and kyc status are in good standing.
 
-+ Parameters:
-
++ Parameters
     + `uuid` (string) - User uuid issued by CRED   
 
++ Attributes
+    + `user_id` (string) - unique user identifier
+    + `first_name` (string)
+    + `last_name` (string)
+    + `status` (string) - Status of the user account. This can be enabled, suspended or disabled
+    + `kyc` (object) - personal information submitted to Cred is used to run kyc via third party vendor. this provides details on the verification process
+        + `status` (string) - APPROVED, PENDING or DECLINED
+    + `address` (object)
+        + `line1` (string)
+        + `line2` (string)
+        + `state` (string)
+        + `zip` (string)
+        + `country` (string)
+    + `partner` (object) - partner parameters returned to partner by Cred
+        + `partner_name`
+        + `partner_id`   
+       
+    + `mobile` (number)
+    + `country_code` (number)
+    + `tc_enabled` (boolean)
+    + `dob` (string)
+    + `user_name` (string)
+    + `resident` (string)
+        
+        
+        
 + Request (application/json)
 
         {
@@ -255,29 +306,27 @@ The KYC API collects the member’s PIIs for Cred to fulfill our KYC requirement
             "error": "Bad request",
             "code" : "400"
         }
-### User KYC Document verification [POST/api/v1/users/uuid/kyc/verify/documents] 
+### User KYC Document verification [POST/api/v1/users/{uuid}/kyc/verify/documents] 
 
 Customer to submit goverment ID to check for autheticity validation.  This is a part of the KYC service.
-+ Parameters:
 
-    + `uuid` (string) - User uuid issued by CRED   
++ Parameters
+    + `uuid` (string) - User id issued by CRED   
     + `country_code` (string) - country code of the ID document issuing country 
-    + `document_type` (string) - type of document for upload (DriverLicense, Passport, NatoinalID)
-    + `document_front_image` (base64imaagestring)
-    + `document_back_image` (base64imagestring)
+    + `document` (object)
+        + `document_type` (string) - type of document for upload (DriverLicense, Passport, NatoinalID)
+        + `document_front_image` (base64imaagestring)
+        + `document_back_image` (base64imagestring)
 
 + Request (application/json)
-
         {
             {
             
             "country_code": "US",
-            "data_fields": {
-                "document": {
+            "document": {
                   "document_type": "DriverLicense",
                   "document_front_image": "base64imagestring",
                   "document_back_image": "base64imagestring",
-                            }
                             }
             }
         }
@@ -308,15 +357,38 @@ Customer to submit goverment ID to check for autheticity validation.  This is a 
         }
 
 
-### Get user [GET/api/v1/users/uuid]  
+### Get user [GET/api/v1/users/{user_id}]  
 
 The user's account status is updated throughout the lifecycle of the account.  This API is used to get the most up-to-date status of the user account.
 
 
-+ Parameters:
++ Parameters
+    + `user_id` (string) - user uuid issued by CRED 
 
-    + `uuid` (string) - user uuid issued by CRED 
-    
++ Attributes
+    + `user_id` (string) - unique user identifier
+    + `first_name` (string)
+    + `last_name` (string)
+    + `status` (string) - Status of the user account. This can be enabled, suspended or disabled
+    + `kyc` (object) - personal information submitted to Cred is used to run kyc via third party vendor. this provides details on the verification process
+        + `status` (string) - APPROVED, PENDING or DECLINED
+    + `address` (object)
+        + `line1` (string)
+        + `line2` (string)
+        + `state` (string)
+        + `zip` (string)
+        + `country` (string)
+    + `partner` (object) - partner parameters returned to partner by Cred
+        + `partner_name`
+        + `partner_id`   
+       
+    + `mobile` (number)
+    + `country_code` (number)
+    + `tc_enabled` (boolean)
+    + `dob` (string)
+    + `user_name` (string)
+    + `resident` (string)
+
 
 + Request (application/json)
 
@@ -372,12 +444,11 @@ The user's account status is updated throughout the lifecycle of the account.  T
             
 ## Quotes [/quotes]
 
-Based on the details of collateral available, Cred generates the CLOC quote for the user.  The CLOC quote has an expiration of 3 hours from the time it is issued. The customer must AGREE to the loan agree to proceed furhter.
+The CLOC quote is generated based customer's input on collateral type and amount, interest rate, loan term, and others. 
+Each CLOC quote is returned with a quoteID for future reference.  The quote is valid for 3 hours only the time it is issued. The customer must read and agree to the loan agreement to proceed furhter.
 
 
-### Create quote request [POST/api/v1/users/uuid/quotes]  
-
-Based on the available collateral, a time limited CLOC quote is generated for the borrower. 
+### Create quote request [POST/api/v1/users/{uuid}/quotes]  
 
 + Parameters:
 
@@ -525,9 +596,9 @@ Retrieve CLOC quote status (i.e. approved, expired etc) and details
             "code" : "400"
         }
    
-### Get all user quotes [GET/api/v1/users/uuid/quotes/]  
+### Get all user quotes [GET/api/v1/users/{uuid}/quotes/]  
 
-Request quote based on quote id.
+Request all the quotes for a specific user 
 
 + Parameters:
 
@@ -623,7 +694,9 @@ Request quote based on quote id.
             
 ### Create CLOC request [POST/api/v1/users/uuid/cloc] 
 
-Request for creation of CLOC account for a given user uuid.
+Upon borrower signing the loan agreement, a CLOC contract is generated detailing the CLOC.  The esignature is captured by concatanting the ipaddress and timestamp of agreement.
+Upon signing the loan agreement, the immeidate steps to follow is for borrower to move collateral and staked coins into the Cred vault.
+The destination account and source account are used for loan disbursement.
 
 + Parameters:
 
@@ -767,7 +840,7 @@ Request for creation of CLOC account for a given user uuid.
         }
         
             
-### Get CLOC [GET/api/v1/users/uuid/cloc/clocId]  
+### Get CLOC [GET/api/v1/users/{uuid}/cloc/{clocId}]  
 
 Get CLOC account information by id for a given user
 
@@ -882,13 +955,14 @@ Get CLOC account information by id for a given user
         }
 
 
-### Get active CLOC account [GET/api/v1/users/uuid/cloc/active]  
+### Get active CLOC account [GET/api/v1/users/user_id/cloc/active]  
 
-Get active CLOC account for a given user uuid
+Get active CLOC account for a given user_id
 
-+ Parameters:
++ Parameters
 
-    + `uuid` (string) - User uuid issued by CRED  
+    + `user_id
+    ` (string) - User uuid issued by CRED  
 
 + Request (application/json)
 
@@ -999,7 +1073,7 @@ Get active CLOC account for a given user uuid
 
 ### Get all user CLOC accounts [GET/api/v1/users/uuid/cloc]  
 
-Get all CLOC accounts for a given user uuid
+Get all CLOC accounts for a given user_id
 
 + Parameters:
 
@@ -1140,6 +1214,9 @@ Get all CLOC accounts for a given user uuid
 ## Transactions [/transactions]            
             
 ### Create withdraw authorization [POST/api/v1/users/uuid/cloc/clocId/transaction/]  
+
+withdraw API allows borrower to draw on their CLOC via the selected mechanism.  Essentially, the borrower is initiating a transfer of funds from their CLOC account into an account/card where they can spend the legal currency.
+The desintation account and transfer method specify where to move the funds.
 
 + Parameters:
 
