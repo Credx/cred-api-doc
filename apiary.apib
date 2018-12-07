@@ -1,154 +1,19 @@
 FORMAT: 1A
 HOST: https://api.mycred.io
 
-# CRED CLaaS API
+# CRED API
 
-API documentation for CRED CRYPTO Lending as a service API
+Cred’s comprehensive suite of APIs are designed for everyone looking to build powerful crypto-based financial applications.
+The Cred APIs are grouped into four different areas and provide end-to-end functionality.
+We support the loan cycle user journey from onboarding to loan origination, disbursement to repayment. Cred even supports wallet management.
 
-## Loan proposition  [/ltv]
+# USER
+In order to onboard a user onto the Cred’s platform and apply for C-Loc, we collect basic personal information to create an account.  In addition, to comply with lending regulations in each region, we are obligated to collect additional personal data including an image of a government issued ID to fulfill these requirements.  Partner should only allow member to proceed with C-LOC application if both account status and kyc status are in good standing.
 
-### Get LTV calculator [GET/api/v1/ltv/{partnerid}]
+# LOAN
 
-Cred offers various customized CLOC programs to meet the needs and requirements for each partner based on business arrangements.  A detailed loan proposition is returned to you with all the details you need to present to your customers
-in the  format that is best suited for your application.
+# TRANSACTION
 
-+ Parameters
-
-    + `partnerid` - Partner ID issued by CRED  
-
-+ Attributes
-    + `currency` (string) - currency of the CLOC 
-    + `max_credit` (number) - maximum amount for CLOC offer
-    + `min_credit` (number) - minimum amount for CLOC offer
-    + `interet_rates` (object) - list of interest profiles for the CLOC available for the partner  
-        + `borrower_residence` (string) - US or non-US
-        + `tenor_in_months` (number) - the duration of loan term  
-        + `rate` (number) - interest rate in percentage
-        + `discounts` (object) -  discounted interest rate given to borrower who holds specific amount of utility reservse (currency) at the time of loan origination.  The interest rate would be lowered by discount_step in percentage with each 1% of the utility reserve held.  The discount range is defined by min_discount and max_discount.  For example, for US borrower, they can hold LBA of at least 1% of the principal value of the loan at the time of origination to benefit from reduced interest rate from 12% to 11%.  Borrower can hold up to 3% of LBA of loan amount to get the optimal discounted rate of 9% for their loan. 
-            + `discounts: currency` (string) 
-            + `min_discount: currency` (string)
-            + `max_discount: currency` (string)
-            + `discount_step: currency` (string)
-    + `eth_ltv` (number) - loan to value ratio for Etherum as collateral
-    + `btc_ltv` (number) - loan to value ratio for Bitcoin as collateral
-    + `xrp_ltv` (number) - loan to value ratio for Ripple as collateralpdate
-    + `fee_response` (object) - all the finance charges related to the CLOC
-        +`administrative_fee` (number) 
-        +`annual_fee` (number)
-        +`exchange_fee_in_percentage` (number) 
-        +`late_fee` (number)
-        +`origiation_fee_in_percentage` (number) 
-        +`over_limit_fee` (number)
-        +`returned_payment_fee` (number) 
-    + `daily_withdrawal_limit` (number) - daily withdrawal limit for CLOC which borrower must adhere to
-
-    
-+ Request
-
-    + Headers
-
-            Authorization: None
-
-
-
-+ Response 200 (application/json)
-
-        [  
-            {  
-                "currency":"USD",
-                "max_credit":200000,
-                "min_credit":2000,
-                "interest_rates":[  
-                    {  
-                        "borrower_residence":"US",
-                        "tenor_in_months":36,
-                        "rate":12,
-                        "discounts":[  
-                            {  
-                                "currency":"LBA",
-                                "min_discount":1,
-                                "max_discount":3,
-                                "discount_step":1
-                            }
-                        ]
-                    },
-                    {  
-                        "borrower_residence":"NON-US",
-                        "tenor_in_months":36,
-                        "rate":15,
-                        "discounts":[  
-                            {  
-                                "currency":"LBA",
-                                "min_discount":1,
-                                "max_discount":6,
-                                "discount_step":1
-                            }
-                        ]
-                    }
-                ],
-                "eth_ltv":0.50,
-                "btc_ltv":0.50,
-                "xrp_ltv":0.50,
-                "fees_response": {
-                    "administrative_fee":0,
-                    "annual_fee":0,
-                    "exchange_fee_in_percentage":0,
-                    "late_fee":0,
-                    "origination_fee_in_percentage":0,
-                    "over_limit_fee":0,
-                    "returned_payment_fee":0
-                },
-                "daily_withdrawal_limit": 0,
-            }
-        ]
-
-
-+ Response 400 (application/json)
-
-        {
-            "error": "Bad request",
-            "code" : "400"
-        }
-        
-### Fair Market Value of coins [GET/api/v1/oracle/fmv?{convert}=USD&{numberOfCoins}=1&{symbol}=ETH]
-
-The crypto assets' Fair Market Value (FMV) allows you to calculate the estimated loan amount to be made available to the borrowers
-
-
-+ Parameters
-    + convert (required) - Legal money symbol to get fair market value for (ISO 4217 Currency Codes)
-    + numberOfCoins (required) - Number of coins intended to pledge for collateral
-    + symbol (required) - Coin symbol (BTC, ETH or XRP)
-
-+ Attributes
-    + `symbol` (string) - Coin symbol (BTC, ETH or XRP)
-    + `convert` (string) - Legal money symbol to get fair market value for (ISO 4217 Currency Codes)
-    + `number_of_coins` (number) - Number of coins intended to pledge for collateral
-    + `fair_market_value` (number) - Fair market value of pledged collateral
-
-+ Request
-
-    + Headers
-
-            Authorization: None
-
-+ Response 200 (application/json)
-
-        {
-            "symbol": "ETH",
-            "convert": "USD",
-            "number_of_coins": 1,
-            "fair_market_value": 113.583
-        }
-
-
-+ Response 400 (application/json)
-
-        {
-            "error": "Bad request",
-            "code" : "400"
-        }
-        
 ## Users [/users]
 
 User onboarding and management with CRED platform.
@@ -441,6 +306,152 @@ The user's account status is updated throughout the lifecycle of the account.  T
             "code" : "400"
         }
          
+
+
+## Loan proposition  [/ltv]
+
+### Loan proposition [GET/api/v1/ltv/{partnerid}]
+
+Cred offers various customized CLOC programs to meet the needs and requirements for each partner based on business arrangements.  A detailed loan proposition is returned to you with all the details you need to present to your customers
+in the  format that is best suited for your application.
+
++ Parameters
+
+    + `partnerid` - Partner ID issued by CRED  
+
++ Attributes
+    + `currency` (string) - currency of the CLOC 
+    + `max_credit` (number) - maximum amount for CLOC offer
+    + `min_credit` (number) - minimum amount for CLOC offer
+    + `interet_rates` (object) - list of interest profiles for the CLOC available for the partner  
+        + `borrower_residence` (string) - US or non-US
+        + `tenor_in_months` (number) - the duration of loan term  
+        + `rate` (number) - interest rate in percentage
+        + `discounts` (object) -  discounted interest rate given to borrower who holds specific amount of utility reservse (currency) at the time of loan origination.  The interest rate would be lowered by discount_step in percentage with each 1% of the utility reserve held.  The discount range is defined by min_discount and max_discount.  For example, for US borrower, they can hold LBA of at least 1% of the principal value of the loan at the time of origination to benefit from reduced interest rate from 12% to 11%.  Borrower can hold up to 3% of LBA of loan amount to get the optimal discounted rate of 9% for their loan. 
+            + `discounts: currency` (string) 
+            + `min_discount: currency` (string)
+            + `max_discount: currency` (string)
+            + `discount_step: currency` (string)
+    + `eth_ltv` (number) - loan to value ratio for Etherum as collateral
+    + `btc_ltv` (number) - loan to value ratio for Bitcoin as collateral
+    + `xrp_ltv` (number) - loan to value ratio for Ripple as collateralpdate
+    + `fee_response` (object) - all the finance charges related to the CLOC
+        +`administrative_fee` (number) 
+        +`annual_fee` (number)
+        +`exchange_fee_in_percentage` (number) 
+        +`late_fee` (number)
+        +`origiation_fee_in_percentage` (number) 
+        +`over_limit_fee` (number)
+        +`returned_payment_fee` (number) 
+    + `daily_withdrawal_limit` (number) - daily withdrawal limit for CLOC which borrower must adhere to
+
+    
++ Request
+
+    + Headers
+
+            Authorization: None
+
+
+
++ Response 200 (application/json)
+
+        [  
+            {  
+                "currency":"USD",
+                "max_credit":200000,
+                "min_credit":2000,
+                "interest_rates":[  
+                    {  
+                        "borrower_residence":"US",
+                        "tenor_in_months":36,
+                        "rate":12,
+                        "discounts":[  
+                            {  
+                                "currency":"LBA",
+                                "min_discount":1,
+                                "max_discount":3,
+                                "discount_step":1
+                            }
+                        ]
+                    },
+                    {  
+                        "borrower_residence":"NON-US",
+                        "tenor_in_months":36,
+                        "rate":15,
+                        "discounts":[  
+                            {  
+                                "currency":"LBA",
+                                "min_discount":1,
+                                "max_discount":6,
+                                "discount_step":1
+                            }
+                        ]
+                    }
+                ],
+                "eth_ltv":0.50,
+                "btc_ltv":0.50,
+                "xrp_ltv":0.50,
+                "fees_response": {
+                    "administrative_fee":0,
+                    "annual_fee":0,
+                    "exchange_fee_in_percentage":0,
+                    "late_fee":0,
+                    "origination_fee_in_percentage":0,
+                    "over_limit_fee":0,
+                    "returned_payment_fee":0
+                },
+                "daily_withdrawal_limit": 0,
+            }
+        ]
+
+
++ Response 400 (application/json)
+
+        {
+            "error": "Bad request",
+            "code" : "400"
+        }
+        
+### Fair Market Value of coins [GET/api/v1/oracle/fmv?{convert}=USD&{numberOfCoins}=1&{symbol}=ETH]
+
+The crypto assets' Fair Market Value (FMV) allows you to calculate the estimated loan amount to be made available to the borrowers
+
+
++ Parameters
+    + convert (required) - Legal money symbol to get fair market value for (ISO 4217 Currency Codes)
+    + numberOfCoins (required) - Number of coins intended to pledge for collateral
+    + symbol (required) - Coin symbol (BTC, ETH or XRP)
+
++ Attributes
+    + `symbol` (string) - Coin symbol (BTC, ETH or XRP)
+    + `convert` (string) - Legal money symbol to get fair market value for (ISO 4217 Currency Codes)
+    + `number_of_coins` (number) - Number of coins intended to pledge for collateral
+    + `fair_market_value` (number) - Fair market value of pledged collateral
+
++ Request
+
+    + Headers
+
+            Authorization: None
+
++ Response 200 (application/json)
+
+        {
+            "symbol": "ETH",
+            "convert": "USD",
+            "number_of_coins": 1,
+            "fair_market_value": 113.583
+        }
+
+
++ Response 400 (application/json)
+
+        {
+            "error": "Bad request",
+            "code" : "400"
+        }
+
             
 ## Quotes [/quotes]
 
