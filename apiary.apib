@@ -17,6 +17,7 @@ In order to onboard a user onto the Cred’s platform and apply for C-Loc, we co
 The User Signup API is the first step to customer onboarding to collect their basic account information.  This returns a unqiue identifier for each user.  The user id should be kept on the partner's system for future reference or inquiry for a specific user/account
 
 + Attributes
+
     + `uid` (string) - user ID returned from CRED as unique user identifier
     + `user_name` (string) - email address of the member and needs to be unique per member
     + `country_code` (string) - the country code for the member’s mobile number
@@ -709,13 +710,10 @@ Request all the quotes for a specific user
             
 ### Create CLOC request [POST/api/v1/users/{uid}/cloc] 
 
-The official CLOC quote should be presented to the customer with all the details including an official loan agreement for them to provide their e-signature.  The loan agreement is a legally binding document and Cred will provide this to the partner to be hosted on their site.
-Upon borrower signing the loan agreement, a CLOC contract is generated and a CLOC id is created for reference.  The esignature the concatenation of the user's ipaddress and timestamp at the time of signing.
-The immeidate next steps is to allow customer to pledge the collateral and stake the coins per loan agreement.
-Collateral - BTC, ref-id where the coins are coming from
-Stake - LBA, ref-id where the coins are coming from 
-The destination account - withdrawal account
-source account - repayment account
+Whe customer agrees and wants to proceed with CLOC presented in the official quote.  The official loan agreement would be presented for their e-signature.  The loan agreement is a legally binding document and Cred will provide this to the partner to be hosted on their site.
+Upon borrower signing the loan agreement, a CLOC contract is generated and a CLOC id is created for reference.  The esignature is the concatenation of the user's ipaddress and timestamp at the time of signing.
+The immeidate next steps is to allow customer to pledge the collateral and stake the coins per loan agreement.  The destination addresses should be presented to the customer for the transfers.
+
 
 + Parameters
 
