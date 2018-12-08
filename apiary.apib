@@ -14,7 +14,7 @@ In order to onboard a user onto the Cred’s platform and apply for C-Loc, we co
 
 ### User signup [POST/api/v1/users] 
 
-The User Signup API is the first step to customer onboarding to collect their basic account information.  This returns a unqiue identifier for each user.  The user_id should be kept on the partner's system for future reference or inquiry for a specific user/account
+The User Signup API is the first step to customer onboarding to collect their basic account information.  This returns a unqiue identifier for each user.  The user id should be kept on the partner's system for future reference or inquiry for a specific user/account
 
 + Attributes
     + `uid` (string) - user ID returned from CRED as unique user identifier
@@ -32,7 +32,7 @@ The User Signup API is the first step to customer onboarding to collect their ba
             "user_name": "john@mycred.io"
             "country_code": "+1",
             "mobile_number": "4156089756",
-            "partner_user_uuid": "d4a44579-c996-4e30-a7c1-06245f1eb1fb",
+            "partner_user_uid": "d4a44579-c996-4e30-a7c1-06245f1eb1fb",
             "tc_enabled": "true",
         }
 
@@ -49,7 +49,7 @@ The User Signup API is the first step to customer onboarding to collect their ba
             "mobile_number": "4153579089",
             "tc_enabled": "true",
             "partner_details": {
-                "partner_name":"uphold",
+                "partner_name":"DEBITCARD",
                 "partner_id":"d4a44579-c996-4e30-a7c1-06245f1eb1fb"
             }
         }
@@ -73,7 +73,7 @@ The User Signup API is the first step to customer onboarding to collect their ba
 The KYC API collects the member’s PIIs for Cred to fulfill our KYC requirements.  Cred is required to perform our own KYC for each CLOC customer. Partner should only allow member to move forward with C-LOC application if both account status and kyc status are in good standing.
 
 + Parameters
-    + `uid` (string) - User uuid issued by CRED   
+    + `uid` (string) - User uid issued by CRED   
 
 + Attributes
     + `uid` (string) - unique user identifier
@@ -141,7 +141,7 @@ The KYC API collects the member’s PIIs for Cred to fulfill our KYC requirement
                 "country": "USA"
             },
             "partner_details": {
-                "partner_name":"uphold",
+                "partner_name":"partner_example",
                 "partner_id":"d4a44579-c996-4e30-a7c1-06245f1eb1fb"
             },
             "mobile": "4150689089",
@@ -171,24 +171,30 @@ Customer to submit goverment ID to check for autheticity validation.  This is a 
 
 + Parameters
     + `uid` (string) - User id issued by CRED   
-+ Attributes   
-    + `country_code` (string) - country code of the ID document issuing country 
-    + `document` (object)
-        + `document_type` (string) - type of document for upload (DriverLicense, Passport, NatoinalID)
-        + `document_front_image` (string) - image to be saved as base64imagestring
-        + `document_back_image` (string) - image to be saved as base64imagestring
+    
 
 + Request (application/json)
-        {
+
+    + Attributes   
+        + `country_code` (string) - country code of the ID document issuing country 
+        + `document` (object)
+            + `document_type` (string) - type of document for upload (DriverLicense, Passport, NatoinalID)
+            + `document_front_image` (string) - image to be saved as base64imagestring
+            + `document_back_image` (string) - image to be saved as base64imagestring
+
+        
+    + Body
+        
             {
-            "country_code": "US",
-            "document": {
-                  "document_type": "DriverLicense",
-                  "document_front_image": "base64imagestring",
-                  "document_back_image": "base64imagestring",
-                            }
+                {
+                    "country_code": "US",
+                    "document": {
+                        "document_type": "DriverLicense",
+                        "document_front_image": "base64imagestring",
+                        "document_back_image": "base64imagestring",
+                                }
+                }
             }
-        }
         
     + Headers
 
@@ -222,7 +228,7 @@ The user's account status is updated throughout the lifecycle of the account.  T
 
 
 + Parameters
-    + `uid` (string) - user uuid issued by CRED 
+    + `uid` (string) - user uid issued by CRED 
 
 + Attributes
     + `uid` (string) - unique user identifier
@@ -274,8 +280,8 @@ The user's account status is updated throughout the lifecycle of the account.  T
                 "country": "USA"
             },
             "partner_details": {
-                "partner_name":"uphold",
-                "partner_user_id":"d4a44579-c996-4e30-a7c1-06245f1eb1fb"
+                "partner_name":"partner_example",
+                "uid":"d4a44579-c996-4e30-a7c1-06245f1eb1fb"
             },
             "mobile": "4150689089",
             "country_code":"+1",
@@ -315,33 +321,6 @@ The crypto assets' Fair Market Value (FMV) allows you to calculate the estimated
 
     + `partner_id` - Partner ID issued by CRED  
 
-+ Attributes
-    + `currency` (string) - currency of the CLOC 
-    + `max_credit` (number) - maximum amount for CLOC offer
-    + `min_credit` (number) - minimum amount for CLOC offer
-    + `interet_rates` (object) - list of interest profiles for the CLOC available for the partner  
-        + `borrower_residence` (string) - US or non-US
-        + `tenor_in_months` (number) - the duration of loan term  
-        + `rate` (number) - interest rate in percentage
-        + `discounts` (object) -  discounted interest rate given to borrower who holds specific amount of utility reservse (currency) at the time of loan origination.  The interest rate would be lowered by discount_step in percentage with each 1% of the utility reserve held.  The discount range is defined by min_discount and max_discount.  For example, for US borrower, they can hold LBA of at least 1% of the principal value of the loan at the time of origination to benefit from reduced interest rate from 12% to 11%.  Borrower can hold up to 3% of LBA of loan amount to get the optimal discounted rate of 9% for their loan. 
-            + `discounts: currency` (string) 
-            + `min_discount: currency` (string)
-            + `max_discount: currency` (string)
-            + `discount_step: currency` (string)
-    + `eth_ltv` (number) - loan to value ratio for Etherum as collateral
-    + `btc_ltv` (number) - loan to value ratio for Bitcoin as collateral
-    + `xrp_ltv` (number) - loan to value ratio for Ripple as collateralpdate
-    + `fee_response` (object) - all the finance charges related to the CLOC
-        +`administrative_fee` (number) 
-        +`annual_fee` (number)
-        +`exchange_fee_in_percentage` (number) 
-        +`late_fee` (number)
-        +`origiation_fee_in_percentage` (number) 
-        +`over_limit_fee` (number)
-        +`returned_payment_fee` (number) 
-    + `daily_withdrawal_limit` (number) - daily withdrawal limit for CLOC which borrower must adhere to
-
-    
 + Request
 
     + Headers
@@ -352,54 +331,83 @@ The crypto assets' Fair Market Value (FMV) allows you to calculate the estimated
 
 + Response 200 (application/json)
 
-        [  
-            {  
-                "currency":"USD",
-                "max_credit":200000,
-                "min_credit":2000,
-                "interest_rates":[  
-                    {  
-                        "borrower_residence":"US",
-                        "tenor_in_months":36,
-                        "rate":12,
-                        "discounts":[  
-                            {  
-                                "currency":"LBA",
-                                "min_discount":1,
-                                "max_discount":3,
-                                "discount_step":1
-                            }
-                        ]
+    + Attributes
+
+        + `currency` (string) - currency of the CLOC 
+        + `max_credit` (number) - maximum amount for CLOC offer
+        + `min_credit` (number) - minimum amount for CLOC offer
+        + `interet_rates` (object) - list of interest profiles for the CLOC available for the partner  
+            + `borrower_residence` (string) - US or non-US
+            + `tenor_in_months` (number) - the duration of loan term  
+            + `rate` (number) - interest rate in percentage
+            + `discounts` (object) -  discounted interest rate given to borrower who holds specific amount of utility reservse (currency) at the time of loan origination.  The interest rate would be lowered by discount_step in percentage with each 1% of the utility reserve held.  The discount range is defined by min_discount and max_discount.  For example, for US borrower, they can hold LBA of at least 1% of the principal value of the loan at the time of origination to benefit from reduced interest rate from 12% to 11%.  Borrower can hold up to 3% of LBA of loan amount to get the optimal discounted rate of 9% for their loan. 
+                + `discounts: currency` (string) 
+                + `min_discount: currency` (string)
+                + `max_discount: currency` (string)
+                + `discount_step: currency` (string)
+        + `eth_ltv` (number) - loan to value ratio for Etherum as collateral
+        + `btc_ltv` (number) - loan to value ratio for Bitcoin as collateral
+        + `xrp_ltv` (number) - loan to value ratio for Ripple as collateralpdate
+        + `fee_response` (object) - all the finance charges related to the CLOC
+            +`administrative_fee` (number) 
+            +`annual_fee` (number)
+            +`exchange_fee_in_percentage` (number) 
+            +`late_fee` (number)
+            +`origiation_fee_in_percentage` (number) 
+            +`over_limit_fee` (number)
+            +`returned_payment_fee` (number) 
+        + `daily_withdrawal_limit` (number) - daily withdrawal limit for CLOC which borrower must adhere to
+
+    + Body
+
+            { 
+                {  
+                    "currency":"USD",
+                    "max_credit":200000,
+                    "min_credit":2000,
+                    "interest_rates":[  
+                        {  
+                            "borrower_residence":"US",
+                            "tenor_in_months":36,
+                            "rate":12,
+                            "discounts":[  
+                                {  
+                                    "currency":"LBA",
+                                    "min_discount":1,
+                                    "max_discount":3,
+                                    "discount_step":1
+                                }
+                            ]
+                        },
+                        {  
+                            "borrower_residence":"NON-US",
+                            "tenor_in_months":36,
+                            "rate":15,
+                            "discounts":[  
+                                {  
+                                    "currency":"LBA",
+                                    "min_discount":1,
+                                    "max_discount":6,
+                                    "discount_step":1
+                                }
+                            ]
+                        }
+                    ],
+                    "eth_ltv":0.50,
+                    "btc_ltv":0.50,
+                    "xrp_ltv":0.50,
+                    "fees_response": {
+                        "administrative_fee":0,
+                        "annual_fee":0,
+                        "exchange_fee_in_percentage":0,
+                        "late_fee":0,
+                        "origination_fee_in_percentage":0,
+                        "over_limit_fee":0,
+                        "returned_payment_fee":0
                     },
-                    {  
-                        "borrower_residence":"NON-US",
-                        "tenor_in_months":36,
-                        "rate":15,
-                        "discounts":[  
-                            {  
-                                "currency":"LBA",
-                                "min_discount":1,
-                                "max_discount":6,
-                                "discount_step":1
-                            }
-                        ]
-                    }
-                ],
-                "eth_ltv":0.50,
-                "btc_ltv":0.50,
-                "xrp_ltv":0.50,
-                "fees_response": {
-                    "administrative_fee":0,
-                    "annual_fee":0,
-                    "exchange_fee_in_percentage":0,
-                    "late_fee":0,
-                    "origination_fee_in_percentage":0,
-                    "over_limit_fee":0,
-                    "returned_payment_fee":0
-                },
-                "daily_withdrawal_limit": 0,
+                    "daily_withdrawal_limit": 0,
+                }
             }
-        ]
 
 
 + Response 400 (application/json)
@@ -416,11 +424,6 @@ The crypto assets' Fair Market Value (FMV) allows you to calculate the estimated
     + numberOfCoins (required) - Number of coins intended to pledge for collateral
     + symbol (required) - Coin symbol (BTC, ETH or XRP)
 
-+ Attributes
-    + `symbol` (string) - Coin symbol (BTC, ETH or XRP)
-    + `convert` (string) - Legal money symbol to get fair market value for (ISO 4217 Currency Codes)
-    + `number_of_coins` (number) - Number of coins intended to pledge for collateral
-    + `fair_market_value` (number) - Fair market value of pledged collateral
 
 + Request
 
@@ -429,6 +432,14 @@ The crypto assets' Fair Market Value (FMV) allows you to calculate the estimated
             Authorization: None
 
 + Response 200 (application/json)
+
++ Attributes
+    + `symbol` (string) - Coin symbol (BTC, ETH or XRP)
+    + `convert` (string) - Legal money symbol to get fair market value for (ISO 4217 Currency Codes)
+    + `number_of_coins` (number) - Number of coins intended to pledge for collateral
+    + `fair_market_value` (number) - Fair market value of pledged collateral
+
+    + Body
 
         {
             "symbol": "ETH",
@@ -452,11 +463,11 @@ A CLOC quote is generated based customer's input on collateral type and amount, 
 Each CLOC quote is returned with a quoteID for future reference.  The quote is valid for only 3 hours from the time of issue. The customer must read and agree to the loan agreement to proceed furhter.
 
 
-### Create quote request [POST/api/v1/users/{uuid}/quotes]  
+### Create quote request [POST/api/v1/users/{uid}/quotes]  
 
 + Parameters:
 
-    + `uid` (string) - User uuid issued by CRED
+    + `uid` (string) - User uid issued by CRED
 
 + Request (application/json)
 
@@ -485,7 +496,7 @@ Each CLOC quote is returned with a quoteID for future reference.  The quote is v
 
         {  
             "id":"461022b1-9875-437c-b83f-6bc4c6e64434",
-            "user_id":"c61fbb14-64f3-4693-b904-f799ff1dd84a",
+            "uid":"c61fbb14-64f3-4693-b904-f799ff1dd84a",
             "status":"PENDING",
             "msg":"",
             "credit_line":0,
@@ -533,12 +544,12 @@ Each CLOC quote is returned with a quoteID for future reference.  The quote is v
             "code" : "400"
         }
 
-### Get quote [GET/api/v1/users/uuid/quotes/quoteId]  
+### Get quote [GET/api/v1/users/uid/quotes/quoteId]  
 Retrieve CLOC quote status (i.e. approved, expired etc) and details using the quoteID returned from POST
 
 + Parameters:
 
-    + `uid` (string) - User uuid issued by CRED
+    + `uid` (string) - User uid issued by CRED
     + `quoteId` (string) - quoteId issued by cred during quote create request.
 
 + Request (application/json)
@@ -606,7 +617,7 @@ Request all the quotes for a specific user
 
 + Parameters:
 
-    + `uid` (string) - User uuid issued by CRED
+    + `uid` (string) - User uid issued by CRED
 
 + Request (application/json)
 
@@ -708,7 +719,7 @@ source account - repayment account
 
 + Parameters
 
-    + `uid` (string)- User uuid issued by CRED  
+    + `uid` (string)- User uid issued by CRED  
 
 
 + Request (application/json)
@@ -797,10 +808,47 @@ source account - repayment account
         + `current_cycle_fees` (number) -
         + `net_current_charges` (number) -
         + `minimum_payment_due_date`(string) - 
-        + `billed_interest":0,
-        + `billed_fees":0,
-        + `net_billed_charges":0,
-        + `funding_method":{  
+        + `billed_interest":0`(string) - 
+        + `billed_fees":0`(string) - 
+        + `net_billed_charges":0`(string) - 
+        + `funding_method` - contains all the details for asset transfer
+            + `collateral` (object) - contains details on collateral to be pledged to obtain CLOC
+                + `currency` (string) - cryptocurrency type to be used for collateral (BTC, ETH, XRP)
+                + `ref_id` (string) - reference ID of source wallet address for collateral (i.e. public wallet address or other reference)
+                + `transfer_method` (string) - method of cryptocurrency transfer for the collateral (i.e CRED, ONUS, ACH, DEBITCARD, SEPA)
+            + `stake` (object) - contains details on utility tokens to be held for the discounted interest rate
+                + `currency` (string) - utility token (LBA)
+                + `ref_id` (string) - reference ID of source wallet address for utility tokens (i.e. public wallet address or other reference)
+                + `transfer_method` (string) - method of cryptocurrency transfer for the reserved tokens (i.e CRED, ONUS, ACH, DEBITCARD, SEPA)
+            + `destination account` (object) - contains details for withdrawal account
+                + `currency` (string) - currency for withdrawal for the CLOC
+                + `ref_id` (string) - reference ID of customer's withdrawal account (i.e. bank account number, debit card number)
+                + `transfer_method` (string) - method for disbursing fiat for CLOC withdrawal (i.e ONUS, ACH, DEBITCARD, SEPA)
+            + `source account` (object) - contains details for repayment account
+                + `currency` (string) - currency for CLOC repayment
+                + `ref_id` (string) - reference ID of customer's repayment account (i.e. bank account number, debit card number)
+                + `transfer_method` (string) - method for repayment (i.e ONUS, ACH, DEBITCARD, SEPA) 
+        + `fees` (object) 
+                + `annual_fee` (number)
+                + `origination_fee` (number)
+                + `administrative_fee` (number)
+                + `late_fee` (number)
+                + `over_limit_fee` (number)
+                + `returned_payment_fee` (number)
+                + `exchange_fee_in_percentage` (number) 
+        + `collateral` (object)  
+                + `btc` (number)
+                + `eth` (number)
+                + `xrp` (number)
+        + `interest_rate_rebates` (object)
+                + `currency` (string) - LBA
+                + "percentage` (number)
+        + `booking_information` (object) 
+                + `country`(string) - US
+                + `currency` (string) - USD
+                + `timezone` (string) - EST
+        + `esignature` (string) - 
+           
     + Body
     
             {  
@@ -837,26 +885,27 @@ source account - repayment account
                     {  
                         "currency":"BTC",
                         "ref_id":"82b27574-9637-4156-9202-9657442ceffd",
-                        "transfer_method":"UPHOLD"
+                        "transfer_method":"CRED"
+                    }
+                ],
+                "stake":[  
+                    {  
+                        "currency":"LBA",
+                        "ref_id":"89b27574-9637-4156-9202-9657442ceffd",
+                        "transfer_method":"CRED"
                     }
                 ],
                 "destination_account":{  
                     "currency":"USD",
                     "ref_id":"92b27574-9637-4156-9202-9657442ceffd",
-                    "transfer_method":"UPHOLD"
+                    "transfer_method":"DEBITCARD"
                 },
                 "source_account":{  
                     "currency":"USD",
                     "ref_id":"11b27574-9637-4156-9202-9657442ceffd",
-                    "transfer_method":"UPHOLD"
+                    "transfer_method":"DEBITCARD"
                 },
-                "stake":[  
-                    {  
-                        "currency":"LBA",
-                        "ref_id":"89b27574-9637-4156-9202-9657442ceffd",
-                        "transfer_method":"UPHOLD"
-                    }
-                ]
+                
             },
             "fees":{  
                 "annual_fee":0,
@@ -901,13 +950,13 @@ source account - repayment account
         }
         
             
-### Get CLOC [GET/api/v1/users/{uuid}/cloc/{clocId}]  
+### Get CLOC [GET/api/v1/users/{uid}/cloc/{clocId}]  
 
 Get CLOC account information by id for a given user
 
 + Parameters:
 
-    + `uuid` (string) - User uuid issued by CRED  
+    + `uid` (string) - User uid issued by CRED  
     + `clocId` (string) - cloc account id issued by CRED
 
 + Request (application/json)
@@ -920,7 +969,7 @@ Get CLOC account information by id for a given user
 
         {  
             "id":"f92a6141-c567-469f-af47-d66457722762",
-            "user_id":"c61fbb14-64f3-4693-b904-f799ff1dd84a",
+            "uid":"c61fbb14-64f3-4693-b904-f799ff1dd84a",
             "quote_id":"461022b1-9875-437c-b83f-6bc4c6e64434",
             "status":"ACTIVE",
             "msg":"",
@@ -952,24 +1001,24 @@ Get CLOC account information by id for a given user
                     {  
                         "currency":"BTC",
                         "ref_id":"82b27574-9637-4156-9202-9657442ceffd",
-                        "transfer_method":"UPHOLD"
+                        "transfer_method":"CRED"
                     }
                 ],
                 "destination_account":{  
                     "currency":"USD",
                     "ref_id":"92b27574-9637-4156-9202-9657442ceffd",
-                    "transfer_method":"UPHOLD"
+                    "transfer_method":"CRED"
                 },
                 "source_account":{  
                     "currency":"USD",
                     "ref_id":"11b27574-9637-4156-9202-9657442ceffd",
-                    "transfer_method":"UPHOLD"
+                    "transfer_method":"DEBITCARD"
                 },
                 "stake":[  
                     {  
                         "currency":"LBA",
                         "ref_id":"89b27574-9637-4156-9202-9657442ceffd",
-                        "transfer_method":"UPHOLD"
+                        "transfer_method":"DEBITCARD"
                     }
                 ]
             },
@@ -1018,11 +1067,11 @@ Get CLOC account information by id for a given user
 
 ### Get active CLOC account [GET/api/v1/users/{uid}/cloc/active]  
 
-Get active CLOC account for a given user_id
+Get active CLOC account for a given user id (uid)
 
 + Parameters
 
-    + `uid` (string) - User uuid issued by CRED  
+    + `uid` (string) - User uid issued by CRED  
 
 + Request (application/json)
 
@@ -1035,7 +1084,7 @@ Get active CLOC account for a given user_id
 
         {  
             "id":"f92a6141-c567-469f-af47-d66457722762",
-            "user_id":"c61fbb14-64f3-4693-b904-f799ff1dd84a",
+            "uid":"c61fbb14-64f3-4693-b904-f799ff1dd84a",
             "quote_id":"461022b1-9875-437c-b83f-6bc4c6e64434",
             "status":"ACTIVE",
             "msg":"",
@@ -1067,26 +1116,27 @@ Get active CLOC account for a given user_id
                     {  
                         "currency":"BTC",
                         "ref_id":"82b27574-9637-4156-9202-9657442ceffd",
-                        "transfer_method":"UPHOLD"
+                        "transfer_method":"CRED"
+                    }
+                ],
+                "stake":[  
+                    {  
+                        "currency":"LBA",
+                        "ref_id":"89b27574-9637-4156-9202-9657442ceffd",
+                        "transfer_method":"CRED"
                     }
                 ],
                 "destination_account":{  
                     "currency":"USD",
                     "ref_id":"92b27574-9637-4156-9202-9657442ceffd",
-                    "transfer_method":"UPHOLD"
+                    "transfer_method":"DEBITCARD"
                 },
                 "source_account":{  
                     "currency":"USD",
                     "ref_id":"11b27574-9637-4156-9202-9657442ceffd",
-                    "transfer_method":"UPHOLD"
+                    "transfer_method":"DEBITCARD"
                 },
-                "stake":[  
-                    {  
-                        "currency":"LBA",
-                        "ref_id":"89b27574-9637-4156-9202-9657442ceffd",
-                        "transfer_method":"UPHOLD"
-                    }
-                ]
+                
             },
             "fees":{  
                 "annual_fee":0,
@@ -1131,13 +1181,13 @@ Get active CLOC account for a given user_id
         }
 
 
-### Get all user CLOC accounts [GET/api/v1/users/uuid/cloc]  
+### Get all user CLOC accounts [GET/api/v1/users/uid/cloc]  
 
-Get all CLOC accounts for a given user_id
+Get all CLOC accounts for a given user id (uid)
 
 + Parameters:
 
-    + `uuid` (string) - User uuid issued by CRED  
+    + `uid` (string) - User uid issued by CRED  
 
 + Request (application/json)
 
@@ -1152,7 +1202,7 @@ Get all CLOC accounts for a given user_id
             "content": [
                 {  
                     "id":"f92a6141-c567-469f-af47-d66457722762",
-                    "user_id":"c61fbb14-64f3-4693-b904-f799ff1dd84a",
+                    "uid":"c61fbb14-64f3-4693-b904-f799ff1dd84a",
                     "quote_id":"461022b1-9875-437c-b83f-6bc4c6e64434",
                     "status":"ACTIVE",
                     "msg":"",
@@ -1184,26 +1234,27 @@ Get all CLOC accounts for a given user_id
                             {  
                                 "currency":"BTC",
                                 "ref_id":"82b27574-9637-4156-9202-9657442ceffd",
-                                "transfer_method":"UPHOLD"
+                                "transfer_method":"CRED"
+                            }
+                        ],
+                        "stake":[  
+                            {  
+                                "currency":"LBA",
+                                "ref_id":"89b27574-9637-4156-9202-9657442ceffd",
+                                "transfer_method":"DEBITCARD"
                             }
                         ],
                         "destination_account":{  
                             "currency":"USD",
                             "ref_id":"92b27574-9637-4156-9202-9657442ceffd",
-                            "transfer_method":"UPHOLD"
+                            "transfer_method":"CRED"
                         },
                         "source_account":{  
                             "currency":"USD",
                             "ref_id":"11b27574-9637-4156-9202-9657442ceffd",
-                            "transfer_method":"UPHOLD"
+                            "transfer_method":"DEBITCARD"
                         },
-                        "stake":[  
-                            {  
-                                "currency":"LBA",
-                                "ref_id":"89b27574-9637-4156-9202-9657442ceffd",
-                                "transfer_method":"UPHOLD"
-                            }
-                        ]
+                        
                     },
                     "fees":{  
                         "annual_fee":0,
@@ -1271,29 +1322,41 @@ Get all CLOC accounts for a given user_id
             "code" : "400"
         }
 
-## Transactions [/transactions]            
-            
-### Create withdraw authorization [POST/api/v1/users/uuid/cloc/clocId/transaction/]  
+## Transactions [/transactions]    
 
-withdraw API allows borrower to draw on their CLOC via the selected mechanism.  Essentially, the borrower is initiating a transfer of funds from their CLOC account into an account/card where they can spend the legal currency.
-The desintation account and transfer method specify where to move the funds.
+Customer should have the capability be able to withdraw from their CLOC and do repayment at any time.  These transction APIs allow you to facilitate these actions direclty from your platform.
+
+            
+### Create withdraw authorization [POST/api/v1/users/{uid}/cloc/{clocId}/transaction/]  
+This allows customer to withdraw from their CLOC into their designated account. The withdrawal authorization is submitted to Cred to run all through all authorization checks and move funds from the customer's CLOC account into their designated bank/card.  The available credit would be deducted according once transaction is successfully authorized and settled.
+Partner is encouraged to use GET CLOC request to update CLOC account status in order for customer to have most-to-date CLOC account status
 
 + Parameters:
 
-    + `uuid` (string) - User uuid issued by CRED  
+    + `uid` (string) - User uid issued by CRED  
     + `clocId` (string) - CLOC id issued by cred after cloc CLOC
 
 + Request (application/json)
 
-        {  
-            "amount":1000,
-            "notes":"Sample withdrawal",
-            "destination_account":{  
-                "currency":"USD",
-                "ref_id":"c61fbb14-64f3-4693-b904-f799ff1dd84a",
-                "transfer_method":"UPHOLD"
+    + Attributes
+        + `amount` (number) - Amount to be withdrawal from CLOC account  
+        + `notes` (string) - optional note
+        + `destination_account` (object)
+            + `currency` (string) - currency of the withdrawal funds
+            + `ref_id` (string) - reference id of the account to transfer to withdrawal amount into
+            + `transfer_method` (string) - method for withdrawal (i.e ONUS, ACH, DEBITCARD, SEPA)
+            
+    + Body
+
+            {  
+                "amount":1000,
+                "notes":"Sample withdrawal",
+                "destination_account":{  
+                    "currency":"USD",
+                    "ref_id":"c61fbb14-64f3-4693-b904-f799ff1dd84a",
+                    "transfer_method":"DEBITCARD"
+                }
             }
-        }
 
     + Headers
 
@@ -1310,7 +1373,7 @@ The desintation account and transfer method specify where to move the funds.
             "destination_account": {
                 "currency": "USD",
                 "ref_id": "a2ebfc23-69cb-4b12-bde1-089ef0db1321",
-                "transfer_method": "UPHOLD"
+                "transfer_method": "DEBITCARD"
             },
             "settlement_info": {
                 "created_date": "2018-11-11T21:45:00.367Z",
@@ -1321,7 +1384,7 @@ The desintation account and transfer method specify where to move the funds.
             "status": "PENDING",
             "transaction_date": "2018-11-11T21:45:00.367Z",
             "type": "WITHDRAWAL",
-            "user_id": "c4a44579-c996-4e30-a7c1-06245f1eb1fb"
+            "uid": "c4a44579-c996-4e30-a7c1-06245f1eb1fb"
         }
 
 + Response 401 (application/json)
@@ -1338,11 +1401,11 @@ The desintation account and transfer method specify where to move the funds.
             "code" : "400"
         }
         
-### Get transaction [GET/api/v1/users/uuid/cloc/clocId/transactions/transactionId]  
+### Get transaction [GET/api/v1/users/uid/cloc/clocId/transactions/transactionId]  
 
 + Parameters:
 
-    + `uuid` (string) - User uuid issued by CRED  
+    + `uid` (string) - User uid issued by CRED  
     + `transactionId` (string) - Transaction id issued by cred after transaction request.
     + `clocId` (string) - CLOC id issued by cred after cloc creation
 
@@ -1364,7 +1427,7 @@ The desintation account and transfer method specify where to move the funds.
             "notes": "Withdrawal request",
             "destination_account": {
                 "ref_id": "a2ebfc23-69cb-4b12-bde1-089ef0db1321",
-                "transfer_method": "UPHOLD",
+                "transfer_method": "DEBITCARD",
                 "currency": "USD"
             },
             "settlement_info": {
@@ -1379,7 +1442,7 @@ The desintation account and transfer method specify where to move the funds.
             "status": "SUCCESS",
             "transaction_date": "2018-11-11T21:45:00.367Z",
             "type": "WITHDRAWAL",
-            "user_id": "c4a44579-c996-4e30-a7c1-06245f1eb1fb"
+            "uid": "c4a44579-c996-4e30-a7c1-06245f1eb1fb"
         }
 
 
@@ -1397,11 +1460,14 @@ The desintation account and transfer method specify where to move the funds.
             "code" : "400"
         }
         
-### Create repayment authorization [POST/api/v1/users/uuid/cloc/clocId/repayment/]  
+### Create repayment authorization [POST/api/v1/users/uid/cloc/clocId/repayment/]  
+This allows customer to do repayments for their CLOC from their designated account. The repayment authorization is submitted to Cred to run through all authorization checks prior settlement.  When repayment is succesful, the available credit would increase accordingly and be made available to the customer.  
+At the end of each month, customer would be auto-debited from the designated account for the total interest and fee accrued from.  The customer should always have an option to make additional payment for off-cycle payments.  Both on-cycle and off-cycle repayments can be done using the same API.
+
 
 + Parameters:
 
-    + `uuid` (string) - User uuid issued by CRED  
+    + `uid` (string) - User uid issued by CRED  
     + `clocId` (string) - CLOC id issued by cred after cloc CLOC
 
 + Request (application/json)
@@ -1412,7 +1478,7 @@ The desintation account and transfer method specify where to move the funds.
             "source_account":{  
                 "currency":"USD",
                 "ref_id":"c61fbb14-64f3-4693-b904-f799ff1dd84a",
-                "transfer_method":"UPHOLD"
+                "transfer_method":"DEBITCARD"
             }
         }
 
@@ -1431,7 +1497,7 @@ The desintation account and transfer method specify where to move the funds.
             "destination_account": {
                 "currency": "USD",
                 "ref_id": "a2ebfc23-69cb-4b12-bde1-089ef0db1321",
-                "transfer_method": "UPHOLD"
+                "transfer_method": "DEBITCARD"
             },
             "settlement_info": {
                 "created_date": "2018-11-11T21:45:00.367Z",
@@ -1442,7 +1508,7 @@ The desintation account and transfer method specify where to move the funds.
             "status": "PENDING",
             "transaction_date": "2018-11-11T21:45:00.367Z",
             "type": "REPAYMENT",
-            "user_id": "c4a44579-c996-4e30-a7c1-06245f1eb1fb"
+            "uid": "c4a44579-c996-4e30-a7c1-06245f1eb1fb"
         }
 
 + Response 401 (application/json)
@@ -1460,11 +1526,11 @@ The desintation account and transfer method specify where to move the funds.
         }
 
 
-### Get all CLOC transactions [GET/api/v1/users/uuid/cloc/clocId/transactions]  
+### Get all CLOC transactions [GET/api/v1/users/uid/cloc/clocId/transactions]  
 
 + Parameters:
 
-    + `uuid` (string)- User uuid issued by CRED  
+    + `uid` (string)- User uid issued by CRED  
     + `clocId` (string) - cloc id issued by cred after cloc creation
 
 + Request (application/json)
@@ -1487,7 +1553,7 @@ The desintation account and transfer method specify where to move the funds.
                     "notes": "Withdrawal request",
                     "destination_account": {
                         "ref_id": "a2ebfc23-69cb-4b12-bde1-089ef0db1321",
-                        "transfer_method": "UPHOLD",
+                        "transfer_method": "DEBITCARD",
                         "currency": "USD"
                     },
                     "settlement_info": {
@@ -1502,7 +1568,7 @@ The desintation account and transfer method specify where to move the funds.
                     "status": "SUCCESS",
                     "transaction_date": "2018-11-11T21:45:00.367Z",
                     "type": "WITHDRAWAL",
-                    "user_id": "c4a44579-c996-4e30-a7c1-06245f1eb1fb"
+                    "uid": "c4a44579-c996-4e30-a7c1-06245f1eb1fb"
                 }
             ],
             "pageable": {
