@@ -15,17 +15,6 @@ In order to onboard a user onto the Cred’s platform and apply for C-Loc, we co
 ### User signup [POST/api/v1/users] 
 
 The User Signup API is the first step to customer onboarding to collect their basic account information.  This returns a unqiue identifier for each user.  The user id should be kept on the partner's system for future reference or inquiry for a specific user/account
-
-+ Attributes
-
-    + `uid` (string) - user ID returned from CRED as unique user identifier
-    + `user_name` (string) - email address of the member and needs to be unique per member
-    + `country_code` (string) - the country code for the member’s mobile number
-    + `mobile_number` (number) - mobile phone number of the member
-    + `tc_Enabled` (boolean) - To indicate whether the member has agreed to Terms and Conditions as listed on the partner’s site/mobile app. If tc_enabled = false, the user will not be created
-    + `partner` (object) - partner parameters returned to partner by Cred
-        + `partner_name`
-        + `partner_id`
         
 + Request (application/json)
 
@@ -40,6 +29,18 @@ The User Signup API is the first step to customer onboarding to collect their ba
     + Headers
 
             Authorization: Basic YWxhZGRpbjpvcGVuc2VzYW1l
+            
+    
+    + Attributes
+
+        + `uid` (string) - user ID returned from CRED as unique user identifier
+        + `user_name` (string) - email address of the member and needs to be unique per member
+        + `country_code` (string) - the country code for the member’s mobile number
+        + `mobile_number` (number) - mobile phone number of the member
+        + `tc_Enabled` (boolean) - To indicate whether the member has agreed to Terms and Conditions as listed on the partner’s site/mobile app. If tc_enabled = false, the user will not be created
+        + `partner` (object) - partner parameters returned to partner by Cred
+            + `partner_name`
+            + `partner_id`
             
 + Response 200 (application/json)
 
@@ -74,6 +75,7 @@ The User Signup API is the first step to customer onboarding to collect their ba
 The KYC API collects the member’s PIIs for Cred to fulfill our KYC requirements.  Cred is required to perform our own KYC for each CLOC customer. Partner should only allow member to move forward with C-LOC application if both account status and kyc status are in good standing.
 
 + Parameters
+
     + `uid` (string) - User uid issued by CRED   
 
 + Attributes
