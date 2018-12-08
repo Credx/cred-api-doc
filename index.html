@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CRED API</title>
+</head>
+<script src="https://api.apiary.io/seeds/embed.js"></script>
+<body>
+<script>
+    var embed = new Apiary.Embed({
+        subdomain: 'credx',
+        customFonts: {
+            families: [
+                {
+                    name: 'GTAmerica',
+                    style: 'normal',
+                    weight: 200,
+                    formats: [
+                        {
+                            format: 'woff',
+                            url: 'https://developers.mycred.io/GT-America-Standard-Regular.woff2'
+                        }
+                    ]
+                }
+            ]
+        },
+        theme: {
+            fontFamily: 'GTAmerica',
+            tableOfContents: { // To change color of a title in Machine Column
+                section: {
+                    title: {
+                        color: '#0F44D0'
+                    }
+                }
+            },
+            humanColumn: { // To change color of a title in Machine Column
+                content: {
+                    apiName: {
+                        color: '#0F44D0'
+                    },
+                    section: {
+                        title: {
+                            color: '#0F44D0',
+                            resourceGroups: {
+                                resourceGroup: {
+                                    name: {
+                                        color: '#0F44D0'
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    });
+</script>
+</body>
+</html>
