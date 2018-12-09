@@ -7,6 +7,8 @@ Cred’s comprehensive suite of APIs are designed for everyone looking to build 
 The Cred APIs are grouped into four different areas and provide end-to-end functionality.
 We support the loan cycle user journey from onboarding to loan origination, disbursement to repayment. Cred even supports wallet management.
 
+Cred introduces Crypto Line of Credit (C-LOC™) to allow your customer to get crypto-backed loans in order to get the liquidity they need. 
+When you build your application with our APIs, you instantly get access to our properietary platform to navigate the complexity of blockchain financial services.  The Cred platform uses extensive risk and fraud algorithm and has all the backend pipes to take care of underwriting, KYC, settlement and billing capabilities etc.  You are just one integration away from offering the C-LOC product to your customer to let their crypto grow while offering them flexible access to credit.
 
 ## Users [/users]
 
@@ -16,6 +18,10 @@ In order to onboard a user onto the Cred’s platform and apply for C-Loc, we co
 
 The User Signup API is the first step to customer onboarding to collect their basic account information.  This returns a unqiue identifier for each user.  The user id should be kept on the partner's system for future reference or inquiry for a specific user/account
     
+
+
++ Request (application/json)
+
 + Attributes
     + `uid` (string) - user ID returned from CRED as unique user identifier
     + `user_name` (string) - email address of the member and needs to be unique per member
@@ -25,16 +31,16 @@ The User Signup API is the first step to customer onboarding to collect their ba
     + `partner` (object) - partner parameters returned to partner by Cred
         + `partner_name`
         + `partner_id`
-
-+ Request (application/json)
-
-        {
+        
+    + Body        
+    
+            {
             "user_name": "john@mycred.io"
             "country_code": "+1",
             "mobile_number": "4156089756",
             "partner_user_uid": "d4a44579-c996-4e30-a7c1-06245f1eb1fb",
             "tc_enabled": "true",
-        }
+            }
 
     + Headers
 
@@ -103,7 +109,6 @@ The KYC API collects the member’s PIIs for Cred to fulfill our KYC requirement
         
         
 + Request (application/json)
-
         {
             "first_name": "John",
             "last_name": "Doe",
@@ -219,7 +224,7 @@ Customer to submit goverment ID to check for autheticity validation.  This is a 
 
         {
             "error": "Bad request",
-            "code" : "400"
+            "code" : "400"ro
         }
 
 
@@ -264,7 +269,7 @@ The user's account status is updated throughout the lifecycle of the account.  T
             
             
 +   Response 200 (application/json)
-
+        
         {
             "uid": "d4a44579-c996-4e30-a7c1-06245f1eb1fb",
             "first_name": "John",
@@ -354,7 +359,7 @@ The crypto assets' Fair Market Value (FMV) allows you to calculate the estimated
         + `daily_withdrawal_limit` (number) - daily withdrawal limit for CLOC which borrower must adhere to
 
     + Body
-
+    
             { 
                 {  
                     "currency":"USD",
@@ -435,7 +440,6 @@ The crypto assets' Fair Market Value (FMV) allows you to calculate the estimated
     + `fair_market_value` (number) - Fair market value of pledged collateral
 
     + Body
-
         {
             "symbol": "ETH",
             "convert": "USD",
