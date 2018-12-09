@@ -7,7 +7,7 @@ Cred’s comprehensive suite of APIs are designed for everyone looking to build 
 The Cred APIs are grouped into four different areas and provide end-to-end functionality.
 We support the loan cycle user journey from onboarding to loan origination, disbursement to repayment. Cred even supports wallet management.
 
-Cred introduces Crypto Line of Credit (C-LOC™) to allow your customer to get crypto-backed loans in order to get the liquidity they need. 
+Cred introduces Crypto Line of Credit (C-LOC™) to allow your customer to get crypto-backed loans in order to get the liquidity they need via a revolving line of credit. 
 When you build your application with our APIs, you instantly get access to our properietary platform to navigate the complexity of blockchain financial services.  The Cred platform uses extensive risk and fraud algorithm and has all the backend pipes to take care of underwriting, KYC, settlement and billing capabilities etc.  You are just one integration away from offering the C-LOC product to your customer to let their crypto grow while offering them flexible access to credit.
 
 ## Users [/users]
@@ -88,7 +88,6 @@ The KYC API collects the member’s PIIs for Cred to fulfill our KYC requirement
 + Request (application/json)
 
     + Attributes
-        + `uid` (string) - unique user identifier
         + `first_name` (string)
         + `last_name` (string)
         + `address` (object)
@@ -233,8 +232,14 @@ The user's account status is updated throughout the lifecycle of the account.  T
 
 + Request (application/json)
 
+    + Headers
+
+            Authorization: Basic YWxhZGRpbjpvcGVuc2VzYW1l
+            
+
++   Response 200 (application/json)
+
     + Attributes
-        + `uid` (string) - unique user identifier
         + `first_name` (string)
         + `last_name` (string)
         + `status` (string) - Status of the user account. This can be enabled, suspended or disabled
@@ -256,41 +261,35 @@ The user's account status is updated throughout the lifecycle of the account.  T
         + `dob` (string)
         + `user_name` (string)
         + `resident` (string)
-
-
-    + Headers
-
-            Authorization: Basic YWxhZGRpbjpvcGVuc2VzYW1l
-            
-            
-+   Response 200 (application/json)
         
-        {
-            "uid": "d4a44579-c996-4e30-a7c1-06245f1eb1fb",
-            "first_name": "John",
-            "last_name": "Doe",
-            "status": "enabled",
-            "kyc": {
-                "status": "pending"
-            },
-            "address": {
-                "line1": "487 Cumber Lane",
-                "line2": "Block 5",
-                "state": "CA",
-                "zip": "94105",
-                "country": "USA"
-            },
-            "partner_details": {
-                "partner_name":"partner_example",
-                "uid":"d4a44579-c996-4e30-a7c1-06245f1eb1fb"
-            },
-            "mobile": "4150689089",
-            "country_code":"+1",
-            "tc_enabled": "true",
-            "dob":"12/31/91",
-            "user_name": "john@mycred.io",
-            "resident": "US"   
-        }
+    + Body
+    
+            {
+                "uid": "d4a44579-c996-4e30-a7c1-06245f1eb1fb",
+                "first_name": "John",
+                "last_name": "Doe",
+                "status": "enabled",
+                "kyc": {
+                    "status": "pending"
+                },
+                "address": {
+                    "line1": "487 Cumber Lane",
+                    "line2": "Block 5",
+                    "state": "CA",
+                    "zip": "94105",
+                    "country": "USA"
+                },
+                "partner_details": {
+                    "partner_name":"partner_example",
+                    "uid":"d4a44579-c996-4e30-a7c1-06245f1eb1fb"
+                },
+                "mobile": "4150689089",
+                "country_code":"+1",
+                "tc_enabled": "true",
+                "dob":"12/31/91",
+                "user_name": "john@mycred.io",
+                "resident": "US"   
+            }
 
         
 + Response 401
