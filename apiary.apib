@@ -22,24 +22,26 @@ The User Signup API is the first step to customer onboarding to collect their ba
 
 + Request (application/json)
 
-+ Attributes
-    + `uid` (string) - user ID returned from CRED as unique user identifier
-    + `user_name` (string) - email address of the member and needs to be unique per member
-    + `country_code` (string) - the country code for the member’s mobile number
-    + `mobile_number` (number) - mobile phone number of the member
-    + `tc_Enabled` (boolean) - To indicate whether the member has agreed to Terms and Conditions as listed on the partner’s site/mobile app. If tc_enabled = false, the user will not be created
-    + `partner` (object) - partner parameters returned to partner by Cred
-        + `partner_name`
-        + `partner_id`
+    + Attributes
+        + `uid` (string) - user ID returned from CRED as unique user identifier
+        + `user_name` (string) - email address of the member and needs to be unique per member
+        + `country_code` (string) - the country code for the member’s mobile number
+        + `mobile_number` (number) - mobile phone number of the member
+        + `tc_Enabled` (boolean) - To indicate whether the member has agreed to Terms and Conditions as listed on the partner’s site/mobile app. If tc_enabled = false, the user will not be created
+        + `partner_details` (object) - partner parameters returned to partner by Cred
+            + `partner_name`
+            + `partner_id`
         
     + Body        
     
             {
-            "user_name": "john@mycred.io"
-            "country_code": "+1",
-            "mobile_number": "4156089756",
-            "partner_user_uid": "d4a44579-c996-4e30-a7c1-06245f1eb1fb",
-            "tc_enabled": "true",
+                "user_name": "john@mycred.io"
+                "country_code": "+1",
+                "mobile_number": "4156089756",
+                "tc_enabled": "true",
+                "partner_details": {
+                    "partner_name": "PARTNER_X";
+                    "partner_id": "d4a44579-c996-4e30-a7c1-06245f1eb1fb",
             }
 
     + Headers
@@ -56,7 +58,7 @@ The User Signup API is the first step to customer onboarding to collect their ba
             "mobile_number": "4153579089",
             "tc_enabled": "true",
             "partner_details": {
-                "partner_name":"DEBITCARD",
+                "partner_name":"PARTNER_X",
                 "partner_id":"d4a44579-c996-4e30-a7c1-06245f1eb1fb"
             }
         }
@@ -82,47 +84,50 @@ The KYC API collects the member’s PIIs for Cred to fulfill our KYC requirement
 + Parameters
     + `uid` (string) - User uid issued by CRED   
 
-+ Attributes
-    + `uid` (string) - unique user identifier
-    + `first_name` (string)
-    + `last_name` (string)
-    + `status` (string) - Status of the user account. This can be enabled, suspended or disabled
-    + `kyc` (object) - personal information submitted to Cred is used to run kyc via third party vendor. this provides details on the verification process
-        + `status` (string) - APPROVED, PENDING or DECLINED
-    + `address` (object)
-        + `line1` (string)
-        + `line2` (string)
-        + `state` (string)
-        + `zip` (string)
-        + `country` (string)
-    + `partner` (object) - partner parameters returned to partner by Cred
-        + `partner_name`
-        + `partner_id`   
-       
-    + `mobile` (number)
-    + `country_code` (number)
-    + `tc_enabled` (boolean)
-    + `dob` (string)
-    + `user_name` (string)
-    + `resident` (string)
-        
-        
-        
 + Request (application/json)
-        {
-            "first_name": "John",
-            "last_name": "Doe",
-            "address": {
-                "line1": "487 Cumber Lane",
-                "line2": "Block 5",
-                "state": "CA",
-                "zip": "94105",
-                "country": "USA"
-                        },
-            "dob":"12/31/91",
-            "document_id":"3456",
-            "resident": "US" 
-        }
+
+    + Attributes
+        + `uid` (string) - unique user identifier
+        + `first_name` (string)
+        + `last_name` (string)
+        + `status` (string) - Status of the user account. This can be enabled, suspended or disabled
+        + `kyc` (object) - personal information submitted to Cred is used to run kyc via third party vendor. this provides details on the verification process
+            + `status` (string) - APPROVED, PENDING or DECLINED
+        + `address` (object)
+            + `line1` (string)
+            + `line2` (string)
+            + `state` (string)
+            + `zip` (string)
+            + `country` (string)
+        + `partner` (object) - partner parameters returned to partner by Cred
+            + `partner_name`
+            + `partner_id`   
+           
+        + `mobile` (number)
+        + `country_code` (number)
+        + `tc_enabled` (boolean)
+        + `dob` (string)
+        + `user_name` (string)
+        + `resident` (string)
+            
+        
+        
+    + Body
+    
+            {
+                "first_name": "John",
+                "last_name": "Doe",
+                "address": {
+                    "line1": "487 Cumber Lane",
+                    "line2": "Block 5",
+                    "state": "CA",
+                    "zip": "94105",
+                    "country": "USA"
+                            },
+                "dob":"12/31/91",
+                "document_id":"3456",
+                "resident": "US" 
+            }
         
     + Headers
 
@@ -190,7 +195,7 @@ Customer to submit goverment ID to check for autheticity validation.  This is a 
 
         
     + Body
-        
+    
             {
                 {
                     "country_code": "US",
@@ -203,7 +208,7 @@ Customer to submit goverment ID to check for autheticity validation.  This is a 
             }
         
     + Headers
-
+    
             Authorization: Basic YWxhZGRpbjpvcGVuc2VzYW1l
             
             
@@ -236,32 +241,32 @@ The user's account status is updated throughout the lifecycle of the account.  T
 + Parameters
     + `uid` (string) - user uid issued by CRED 
 
-+ Attributes
-    + `uid` (string) - unique user identifier
-    + `first_name` (string)
-    + `last_name` (string)
-    + `status` (string) - Status of the user account. This can be enabled, suspended or disabled
-    + `kyc` (object) - personal information submitted to Cred is used to run kyc via third party vendor. this provides details on the verification process
-        + `status` (string) - APPROVED, PENDING or DECLINED
-    + `address` (object)
-        + `line1` (string)
-        + `line2` (string)
-        + `state` (string)
-        + `zip` (string)
-        + `country` (string)
-    + `partner` (object) - partner parameters returned to partner by Cred
-        + `partner_name`
-        + `partner_id`   
-       
-    + `mobile` (number)
-    + `country_code` (number)
-    + `tc_enabled` (boolean)
-    + `dob` (string)
-    + `user_name` (string)
-    + `resident` (string)
-
-
 + Request (application/json)
+
+    + Attributes
+        + `uid` (string) - unique user identifier
+        + `first_name` (string)
+        + `last_name` (string)
+        + `status` (string) - Status of the user account. This can be enabled, suspended or disabled
+        + `kyc` (object) - personal information submitted to Cred is used to run kyc via third party vendor. this provides details on the verification process
+            + `status` (string) - APPROVED, PENDING or DECLINED
+        + `address` (object)
+            + `line1` (string)
+            + `line2` (string)
+            + `state` (string)
+            + `zip` (string)
+            + `country` (string)
+        + `partner` (object) - partner parameters returned to partner by Cred
+            + `partner_name`
+            + `partner_id`   
+           
+        + `mobile` (number)
+        + `country_code` (number)
+        + `tc_enabled` (boolean)
+        + `dob` (string)
+        + `user_name` (string)
+        + `resident` (string)
+
 
     + Headers
 
@@ -317,7 +322,6 @@ The user's account status is updated throughout the lifecycle of the account.  T
 ## Loan proposition  [/ltv]
 Cred offers customized CLOC programs to meet the needs and requirements of our partners' applications.  All the details of each loan proposition is returned based on your specific partner ID from Cred.
 The crypto assets' Fair Market Value (FMV) allows you to calculate the estimated loan amount based on borrowers input (i.e. cryptocurrency type and amount for collateral and the type of fiat interested for the loan)
-
 
 ### Loan proposition [GET/api/v1/settings/ltv]
 
@@ -419,11 +423,10 @@ The crypto assets' Fair Market Value (FMV) allows you to calculate the estimated
         
 ### Fair Market Value of coins [GET/api/v1/oracle/fmv?convert={convert}&numberOfCoins={numberOfCoins}&symbol={symbol}]
 
+
 + Parameters
     + convert (required) - Legal money symbol to get fair market value for (ISO 4217 Currency Codes)
-    + numberOfCoins (required) - Number of coins intended to pledge for collateral
-    + symbol (required) - Coin symbol (BTC, ETH or XRP)
-
+    + numberOfCoins (required) - Number of coins intended to pledge for colla+ symbol (required) - Coin symbol (BTC, ETH or XRP)
 
 + Request
 
