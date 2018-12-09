@@ -18,14 +18,11 @@ In order to onboard a user onto the Cred’s platform and apply for C-Loc, we co
 
 The User Signup API is the first step to customer onboarding to collect their basic account information.  This returns a unqiue identifier for each user.  The user id should be kept on the partner's system for future reference or inquiry for a specific user/account
     
-
-
 + Request (application/json)
 
     + Attributes
-        + `uid` (string) - user ID returned from CRED as unique user identifier
         + `user_name` (string) - email address of the member and needs to be unique per member
-        + `country_code` (string) - the country code for the member’s mobile number
+        + `country_code` (number) - the country code for the member’s mobile number
         + `mobile_number` (number) - mobile phone number of the member
         + `tc_Enabled` (boolean) - To indicate whether the member has agreed to Terms and Conditions as listed on the partner’s site/mobile app. If tc_enabled = false, the user will not be created
         
@@ -45,18 +42,28 @@ The User Signup API is the first step to customer onboarding to collect their ba
             
 + Response 200 (application/json)
 
-        {
-            "uid": "d4a44579-c996-4e30-a7c1-06245f1eb1fb",
-            "user_name": "john@mycred.io",
-            "country_code":"+1",
-            "mobile_number": "4153579089",
-            "tc_enabled": "true",
-            "partner_details": {
-                "partner_name":"PARTNER_X",
-                "partner_id":"d4a44579-c996-4e30-a7c1-06245f1eb1fb"
-            }
-        }
+    + Attributes
         
+        + `uid` (string) - user ID returned from CRED as unique user identifier
+        + `user_name` (string) - email address of the member and needs to be unique per member
+        + `country_code` (string) - the country code for the member’s mobile number
+        + `mobile_number` (number) - mobile phone number of the member
+        + `tc_Enabled` (boolean) - To indicate whether the member has agreed to Terms and Conditions as listed on the partner’s site/mobile app. If tc_enabled = false, the user will not be created
+        
+    + Body
+    
+            {
+                "uid": "d4a44579-c996-4e30-a7c1-06245f1eb1fb",
+                "user_name": "john@mycred.io",
+                "country_code":"+1",
+                "mobile_number": "4153579089",
+                "tc_enabled": "true",
+                "partner_details": {
+                    "partner_name":"PARTNER_X",
+                    "partner_id":"d4a44579-c996-4e30-a7c1-06245f1eb1fb"
+                }
+            }
+            
 + Response 401 (application/json)
 
         {
@@ -90,7 +97,7 @@ The KYC API collects the member’s PIIs for Cred to fulfill our KYC requirement
             + `state` (string)
             + `zip` (string)
             + `country` (string)
-        + `dob` (string)
+        + `dob` (string) - date of birth in format mm/dd/yy
         + `resident` (string)
             
         
@@ -409,7 +416,8 @@ The crypto assets' Fair Market Value (FMV) allows you to calculate the estimated
 
 + Parameters
     + convert (required) - Legal money symbol to get fair market value for (ISO 4217 Currency Codes)
-    + numberOfCoins (required) - Number of coins intended to pledge for colla+ symbol (required) - Coin symbol (BTC, ETH or XRP)
+    + numberOfCoins (required) - Number of coins intended to pledge for collateral
+    + symbol (required) - Coin symbol (BTC, ETH or XRP)
 
 + Request
 
@@ -419,19 +427,20 @@ The crypto assets' Fair Market Value (FMV) allows you to calculate the estimated
 
 + Response 200 (application/json)
 
-+ Attributes
-    + `symbol` (string) - Coin symbol (BTC, ETH or XRP)
-    + `convert` (string) - Legal money symbol to get fair market value for (ISO 4217 Currency Codes)
-    + `number_of_coins` (number) - Number of coins intended to pledge for collateral
-    + `fair_market_value` (number) - Fair market value of pledged collateral
+    + Attributes
+        + `symbol` (string) - Coin symbol (BTC, ETH or XRP)
+        + `convert` (string) - Legal money symbol to get fair market value for (ISO 4217 Currency Codes)
+        + `number_of_coins` (number) - Number of coins intended to pledge for collateral
+        + `fair_market_value` (number) - Fair market value of pledged collateral
 
     + Body
-        {
-            "symbol": "ETH",
-            "convert": "USD",
-            "number_of_coins": 1,
-            "fair_market_value": 113.583
-        }
+    
+            {
+                "symbol": "ETH",
+                "convert": "USD",
+                "number_of_coins": 1,
+                "fair_market_value": 113.583
+            }
 
 
 + Response 400 (application/json)
