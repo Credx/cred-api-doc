@@ -28,9 +28,6 @@ The User Signup API is the first step to customer onboarding to collect their ba
         + `country_code` (string) - the country code for the member’s mobile number
         + `mobile_number` (number) - mobile phone number of the member
         + `tc_Enabled` (boolean) - To indicate whether the member has agreed to Terms and Conditions as listed on the partner’s site/mobile app. If tc_enabled = false, the user will not be created
-        + `partner_details` (object) - partner parameters returned to partner by Cred
-            + `partner_name`
-            + `partner_id`
         
     + Body        
     
@@ -38,10 +35,7 @@ The User Signup API is the first step to customer onboarding to collect their ba
                 "user_name": "john@mycred.io"
                 "country_code": "+1",
                 "mobile_number": "4156089756",
-                "tc_enabled": "true",
-                "partner_details": {
-                    "partner_name": "PARTNER_X";
-                    "partner_id": "d4a44579-c996-4e30-a7c1-06245f1eb1fb",
+                "tc_enabled": "true"
             }
 
     + Headers
@@ -90,24 +84,13 @@ The KYC API collects the member’s PIIs for Cred to fulfill our KYC requirement
         + `uid` (string) - unique user identifier
         + `first_name` (string)
         + `last_name` (string)
-        + `status` (string) - Status of the user account. This can be enabled, suspended or disabled
-        + `kyc` (object) - personal information submitted to Cred is used to run kyc via third party vendor. this provides details on the verification process
-            + `status` (string) - APPROVED, PENDING or DECLINED
         + `address` (object)
             + `line1` (string)
             + `line2` (string)
             + `state` (string)
             + `zip` (string)
             + `country` (string)
-        + `partner` (object) - partner parameters returned to partner by Cred
-            + `partner_name`
-            + `partner_id`   
-           
-        + `mobile` (number)
-        + `country_code` (number)
-        + `tc_enabled` (boolean)
         + `dob` (string)
-        + `user_name` (string)
         + `resident` (string)
             
         
