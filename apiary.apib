@@ -80,7 +80,7 @@ The User Signup API is the first step to customer onboarding to collect their ba
 
 ### User KYC [POST/api/v1/users/{uid}/kyc] 
 
-The KYC API collects the member’s PIIs for Cred to fulfill our KYC requirements.  Cred is required to perform our own KYC for each CLOC customer. Partner should only allow member to move forward with C-LOC application if both account status and kyc status are in good standing.
+The KYC API collects the member’s PIIs for Cred to fulfill our KYC requirements.  Cred is required to perform our own KYC for each C-LOC customer. Partner should only allow member to move forward with C-LOC application if both account status and kyc status are in good standing.
 
 + Parameters
     + `uid` (string) - User uid issued by CRED   
@@ -539,7 +539,7 @@ Each C-LOC quote is returned with a quoteID for future reference.  The quote is 
         }
 
 ### Get quote [GET/api/v1/users/uid/quotes/quoteId]  
-Retrieve CLOC quote status (i.e. approved, expired etc) and details using the quoteID returned from POST
+Retrieve C-LOC quote status (i.e. approved, expired etc) and details using the quoteID returned from POST
 
 + Parameters:
 
@@ -1319,8 +1319,8 @@ Customer should have the capability be able to withdraw from their C-LOC and do 
 
             
 ### Create withdraw authorization [POST/api/v1/users/{uid}/cloc/{clocId}/transaction/]  
-This allows customer to withdraw from their C-LOC into their designated account. The withdrawal authorization is submitted to Cred to run all through all authorization checks and move funds from the customer's CLOC account into their designated bank/card.  The available credit would be deducted according once transaction is successfully authorized and settled.
-Partner is encouraged to use GET C-LOC request to update C-LOC account status in order for customer to have most-to-date CLOC account status
+This allows customer to withdraw from their C-LOC into their designated account. The withdrawal authorization is submitted to Cred to run all through all authorization checks and move funds from the customer's C-LOC account into their designated bank/card.  The available credit would be deducted according once transaction is successfully authorized and settled.
+Partner is encouraged to use GET C-LOC request to update C-LOC account status in order for customer to have most-to-date C-LOC account status
 
 + Parameters:
 
