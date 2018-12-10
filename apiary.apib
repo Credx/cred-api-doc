@@ -1452,7 +1452,7 @@ Partner is encouraged to use GET C-LOC request to update C-LOC account status in
         
 ### Create repayment authorization [POST/api/v1/users/uid/cloc/clocId/repayment/]  
 This allows customer to do repayments for their C-LOC from their designated account. The repayment authorization is submitted to Cred to run through all authorization checks prior settlement.  When repayment is succesful, the available credit would increase accordingly and be made available to the customer.  
-At the end of each month, customer would be auto-debited from the designated account for the total interest and fee accrued from.  The customer should always have an option to make additional payment for off-cycle payments.  Both on-cycle and off-cycle repayments can be done using the same API.
+At the end of each month, the platform would initiate on-cycle payment (auto-debit) for the total interest and fee accrued from from the designated account.  The customer should always have an option to make additional payment for off-cycle payments.  Both on-cycle and off-cycle repayments can be done using the same API.
 
 
 + Parameters:
