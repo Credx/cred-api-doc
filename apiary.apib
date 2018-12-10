@@ -459,27 +459,40 @@ Each C-LOC quote is returned with a quoteID for future reference.  The quote is 
 
 ### Create quote request [POST/api/v1/users/{uid}/quotes]  
 
-+ Parameters:
++ Parameters
 
     + `uid` (string) - User uid issued by CRED
 
 + Request (application/json)
 
-        {  
-            "collateral":{  
-                "btc":2,
-                "eth":1,
-                "xrp":0
-            },
-            "currency":"USD",
-            "interest_rate_rebates":[  
-                {  
-                    "currency":"LBA",
-                    "percentage":1
-                }
-            ],
-            "tenor_in_months":36
-        }
+    + Attributes
+        + `collateral` (object) - number of coin for each cryptocurrency to be pleged as colalteral.  currently, we support BTC, ETH, and XRP
+            + `btc` (number)
+            + `eth` (number)
+            + `xrp` (number)
+        + `currency` (string) - the currency which customer wants to get a loan in (i.e. USD)
+        + `interest_rate_rebates` (object) - the type and number of utility token to stake for discounted C-LOC interest rate
+            + `currency` (string) - type of utiltiy token for staking (i.e. LBA)
+            + `percentage` (number) - percentage of total loan amount for staking
+        + tenor_in_months (number) - loan term in number of months
+            
+    + Body
+    
+            {  
+                "collateral":{  
+                    "btc":2,
+                    "eth":1,
+                    "xrp":0
+                },
+                "currency":"USD",
+                "interest_rate_rebates":[  
+                    {  
+                        "currency":"LBA",
+                        "percentage":1
+                    }
+                ],
+                "tenor_in_months":36
+            }
         
     + Headers
 
