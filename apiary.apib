@@ -3,12 +3,11 @@ HOST: https://api-dev.mycred.io
 
 # CRED API
 
-Cred’s comprehensive suite of APIs are designed for everyone looking to build powerful crypto-based financial applications.
-The Cred APIs are grouped into four different areas and provide end-to-end functionality.
-We support the loan cycle user journey from onboarding to loan origination, disbursement to repayment. Cred even supports wallet management.
+CredX comprehensive suite of APIs are designed for everyone looking to build powerful crypto-based financial applications.  CredX APIs are grouped into multiple logical areas and provide for comprehensive set of required capabilities. Altogether exposed service modules account for entire user journey from onboarding to service origination, funds disbursement to repayment, service propositioning to reporting.  In addition, CredX APIs support all relevant wallet management functions, including collateral custody governance.
 
-Cred introduces Crypto Line of Credit (C-LOC™) to allow your customer to get crypto-backed loans in order to get the liquidity they need via a revolving line of credit. 
-When you build your application with our APIs, you instantly get access to our properietary platform to navigate the complexity of blockchain financial services.  The Cred platform uses extensive risk and fraud algorithm and has all the backend pipes to take care of underwriting, KYC, settlement and billing capabilities etc.  You are just one integration away from offering the C-LOC product to your customer to let their crypto grow while offering them flexible access to credit.
+First fully developed array of modules available for application development is CredX innovative proposition of Crypto equity Line of Credit or C-LOC™.  Crypto equity Line of Credit is a REVOLVING loan offering in which the funder agrees to lend a maximum amount within an agreed period of time, where the collateral is the borrower's equity in his/her crypto assets.  
+
+As we continue to evolve, we will be sharing other innovative services to enable our partners to build full spectrum of crypto based financial services software packages including investing, insurance, payment processing and other banking services.
 
 ## Users [/users]
 
@@ -326,7 +325,6 @@ The crypto assets' Fair Market Value (FMV) allows you to calculate the estimated
 + Response 200 (application/json)
 
     + Attributes
-
         + `currency` (string) - currency of the C-LOC 
         + `max_credit` (number) - maximum amount for C-LOC offer
         + `min_credit` (number) - minimum amount for C-LOC offer
@@ -501,41 +499,73 @@ Each C-LOC quote is returned with a quoteID for future reference.  The quote is 
    
 + Response 200 (application/json)
 
-        {  
-            "id":"461022b1-9875-437c-b83f-6bc4c6e64434",
-            "uid":"c61fbb14-64f3-4693-b904-f799ff1dd84a",
-            "status":"PENDING",
-            "msg":"",
-            "credit_line":0,
-            "currency":"USD",
-            "annual_interest_percent":0,
-            "tenor_in_months":36,
-            "daily_withdrawal_limit":0,
-            "over_limit_allowance_amount":0,
-            "over_limit_allowance_count_per_billing":0,
-            "fees":{  
-                "annual_fee":0,
-                "origination_fee_in_percentage":0,
-                "administrative_fee":0,
-                "late_fee":0,
-                "over_limit_fee":0,
-                "returned_payment_fee":0,
-                "exchange_fee_in_percentage":0
-            },
-            "collateral":{  
-                "btc":2,
-                "eth":1,
-                "xrp":0
-            },
-            "discount":0,
-            "interest_rate_rebates":[  
-                {  
-                    "currency":"LBA",
-                    "percentage":1
-                }
-            ],
-            "expiration_date":"2018-11-28T12:17:50.475+0000"
-        }
+    + Attributes
+        + `id` (string) - quote ID returned for reference
+        + `uid` (string) - the user ID for which this quote is created for
+        + `status` (string) - status of the C-LOC quote (PENDING, EXPIRED, INACTIVE)
+        + `credit_line` (number) - 
+        + `currency` (string) - the currency which customer wants to get a loan in (i.e. USD)
+        + `annual_interest_percent` (number) 
+        + `tenor_in_months` (number) 
+        + `daily_withdrawal_limit` (number) 
+        + `over_limit_allowance_amount` (number) 
+        + `over_limit_allowance_count_per_billing` (number) 
+        + `fee` (object) 
+            + `annual_fee` (number) 
+            + `origination_fee_in_percentage` (number) 
+            + `administrative_fee` (number) 
+            + `late_fee` (number) 
+            + `over_limit_fee` (number) 
+            + `returned_payment_fee` (number) 
+            + `exchange_fee_in_percentage` (number) 
+        + `collateral` (object) - number of coin for each cryptocurrency to be pleged as colalteral.  currently, we support BTC, ETH, and XRP
+            + `btc` (number)
+            + `eth` (number)
+            + `xrp` (number)
+        + `currency` (string) - the currency which customer wants to get a loan in (i.e. USD)
+        + `interest_rate_rebates` (object) - the type and number of utility token to stake for discounted C-LOC interest rate
+            + `currency` (string) - type of utiltiy token for staking (i.e. LBA)
+            + `percentage` (number) - percentage of total loan amount for staking
+        + `tenor_in_months` (number) - loan term in number of months
+        + `expiration_date` (string) - timestamp on when the C-LOC quote would expire
+
+    + Body
+    
+            {  
+                "id":"461022b1-9875-437c-b83f-6bc4c6e64434",
+                "uid":"c61fbb14-64f3-4693-b904-f799ff1dd84a",
+                "status":"PENDING",
+                "msg":"",
+                "credit_line":0,
+                "currency":"USD",
+                "annual_interest_percent":0,
+                "tenor_in_months":36,
+                "daily_withdrawal_limit":0,
+                "over_limit_allowance_amount":0,
+                "over_limit_allowance_count_per_billing":0,
+                "fees":{  
+                    "annual_fee":0,
+                    "origination_fee_in_percentage":0,
+                    "administrative_fee":0,
+                    "late_fee":0,
+                    "over_limit_fee":0,
+                    "returned_payment_fee":0,
+                    "exchange_fee_in_percentage":0
+                },
+                "collateral":{  
+                    "btc":2,
+                    "eth":1,
+                    "xrp":0
+                },
+                "discount":0,
+                "interest_rate_rebates":[  
+                    {  
+                        "currency":"LBA",
+                        "percentage":1
+                    }
+                ],
+                "expiration_date":"2018-11-28T12:17:50.475+0000"
+            }
         
 + Response 401 (application/json)
 
@@ -583,7 +613,7 @@ Retrieve C-LOC quote status (i.e. approved, expired etc) and details using the q
             "fees":{  
                 "annual_fee":0,
                 "origination_fee_in_percentage":3,
-                "administrative_fee":250,
+                "administrative_fee":0,
                 "late_fee":39,
                 "over_limit_fee":29,
                 "returned_payment_fee":30,
@@ -747,38 +777,39 @@ The immeidate next steps is to allow customer to pledge the collateral and stake
                 + `currency` (string) - currency for C-LOC repayment
                 + `ref_id` (string) - reference ID of customer's repayment account (i.e. bank account number, debit card number)
                 + `transfer_method` (string) - method for repayment (i.e ONUS, ACH, DEBITCARD, SEPA)
+        + `quote_id` (string) - quote ID returned from Cred upon C-LOC quote creation
 
     + Body  
     
             {  
-            "esignature":"34.234.234.23-2018-11-11T20:45:55.000+0000",
-            "funding_method":{  
-                "collateral":[  
-                    {  
-                        "currency":"BTC",
-                        "ref_id":"82b27574-9637-4156-9202-9657442ceffd",
-                        "transfer_method":"CRED"
-                    }
-                ],
-                "stake":[  
-                    {  
-                        "currency":"LBA",
-                        "ref_id":"89b27574-9637-4156-9202-9657442ceffd",
-                        "transfer_method":"CRED"
-                    }
-                ]
-                "destination_account":{  
-                    "currency":"USD",
-                    "ref_id":"92b27574-9637-4156-9202-9657442ceffd",
-                    "transfer_method":"DEBITCARD"
+                "esignature":"34.234.234.23-2018-11-11T20:45:55.000+0000",
+                "funding_method":{  
+                    "collateral":[  
+                        {  
+                            "currency":"BTC",
+                            "ref_id":"82b27574-9637-4156-9202-9657442ceffd",
+                            "transfer_method":"CRED"
+                        }
+                    ],
+                    "stake":[  
+                        {  
+                            "currency":"LBA",
+                            "ref_id":"89b27574-9637-4156-9202-9657442ceffd",
+                            "transfer_method":"CRED"
+                        }
+                    ]
+                    "destination_account":{  
+                        "currency":"USD",
+                        "ref_id":"92b27574-9637-4156-9202-9657442ceffd",
+                        "transfer_method":"DEBITCARD"
+                    },
+                    "source_account":{  
+                        "currency":"USD",
+                        "ref_id":"11b27574-9637-4156-9202-9657442ceffd",
+                        "transfer_method":"ACH"
+                    },
                 },
-                "source_account":{  
-                    "currency":"USD",
-                    "ref_id":"11b27574-9637-4156-9202-9657442ceffd",
-                    "transfer_method":"ACH"
-                },
-            },
-            "quote_id":"461022b1-9875-437c-b83f-6bc4c6e64434"
+                "quote_id":"461022b1-9875-437c-b83f-6bc4c6e64434"
             }
 
             
@@ -788,11 +819,11 @@ The immeidate next steps is to allow customer to pledge the collateral and stake
     + Attributes 
         + `id` (string) - C-LOC id generated for reference
         + `uid` (string) - the user ID submitted in the create C-LOC request
-        + `quote_id` (string) - the quote id and the quote details used to create the C-LOC agreement
+        + `quote_id` (string) - the quote id as it relates to this specific C-LOC agreement
         + `status` (string) - status of C-LOC account (PENDING, ACTIVE, SUSPENDED)
         + `msg` (string) - additional message for notes if the C-LOC account is SUSPENDED
-        + `credit_line` (number) - credit line amount
-        + `annual_interest_percent` (number) - 
+        + `credit_line` (number) - credit line amount for the C-LOC account
+        + `annual_interest_percent` (number) - interest rate for this C-LOC account
         + `discount` (number) - 
         + `tenor_in_months` (number) - 
         + `origination_date` (string) - 
@@ -862,16 +893,16 @@ The immeidate next steps is to allow customer to pledge the collateral and stake
                 "status":"PENDING",
                  "msg":"",
                 "credit_line":200000,
-                "annual_interest_percent":0,
-                "discount":0,
-                "tenor_in_months":0,
+                "annual_interest_percent":9,
+                "discount":1,
+                "tenor_in_months":36,
                 "origination_date":"2018-11-28T13:59:16.848+0000",
-                "available_credit":0,
-                "ltv":0,
-                "maintenance_ltv":0,
-                "daily_withdrawal_limit":0,
-                "over_limit_allowance_amount":0,
-                "over_limit_allowance_count_per_billing":0,
+                "available_credit":20000,
+                "ltv":0.5,
+                "maintenance_ltv":0.7,
+                "daily_withdrawal_limit":7500,
+                "over_limit_allowance_amount":100,
+                "over_limit_allowance_count_per_billing":3,
                 "billing_cycle":"MONTH",
                 "account_standing":0,
                 "outstanding_balance":0,
