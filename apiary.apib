@@ -824,17 +824,17 @@ The immeidate next steps is to allow customer to pledge the collateral and stake
         + `msg` (string) - additional message for notes if the C-LOC account is SUSPENDED
         + `credit_line` (number) - credit line amount for the C-LOC account
         + `annual_interest_percent` (number) - interest rate for this C-LOC account
-        + `discount` (number) - 
-        + `tenor_in_months` (number) - 
-        + `origination_date` (string) - 
-        + `available_credit` (number) - 
-        + `ltv` (number) - 
-        + `maintenace_ltv` (number) - 
+        + `discount` (number) - discounted interest rate for this C-LOC account
+        + `tenor_in_months` (number) - the duration of the C-LOC account in months
+        + `origination_date` (string) - the date when collateral was received and C-LOC account was created
+        + `available_credit` (number) - the total amount of funds avaiable for withdrawal
+        + `ltv` (number) - loan to value ratio for the type of collteral pledged
+        + `maintenace_ltv` (number) - loan to value ratio at which the C-LOC must remain to not trigger default notification
         + `annual_interest_percent` (number) - 
-        + `daily_withdrawal_limit` (number) - 
-        + `over_limit_allowance_amount` (number) - 
-        + `over_limit_allowance_count_per_billing` (number) - 
-        + `billing_cycle` (string) - MONTHLY 
+        + `daily_withdrawal_limit` (number) - the daily maximum amount of funds allowed for withdrawal
+        + `over_limit_allowance_amount` (number) - tolerance for over limit withdrawal 
+        + `over_limit_allowance_count_per_billing` (number) - number of times allowed for over withdrawal per billing cycle
+        + `billing_cycle` (string) - MONTH
         + `accounting_standing` (number) -
         + `outstanding_balance` (number) -
         + `principal_standing` (number) -
@@ -843,9 +843,9 @@ The immeidate next steps is to allow customer to pledge the collateral and stake
         + `current_cycle_fees` (number) -
         + `net_current_charges` (number) -
         + `minimum_payment_due_date`(string) - 
-        + `billed_interest":0`(string) - 
-        + `billed_fees":0`(string) - 
-        + `net_billed_charges":0`(string) - 
+        + `billed_interest`(string) - 
+        + `billed_fees`(string) - 
+        + `net_billed_charges`(string) - 
         + `funding_method` - contains all the details for asset transfer
             + `collateral` (object) - contains details on collateral to be pledged to obtain C-LOC
                 + `currency` (string) - cryptocurrency type to be used for collateral (BTC, ETH, XRP)
