@@ -286,6 +286,7 @@ The user's account status is updated throughout the lifecycle of the account.  T
                 "mobile": "4150689089",
                 "country_code":"+1",
                 "tc_enabled": "true",
+                "status":"enabled",
                 "dob":"12/31/91",
                 "user_name": "john@mycred.io",
                 "resident": "US"   
@@ -309,7 +310,7 @@ The user's account status is updated throughout the lifecycle of the account.  T
 
 
 ## Loan proposition  [/ltv]
-Cred offers customized CLOC programs to meet the needs and requirements of our partners' applications.  All the details of each loan proposition is returned based on your specific partner ID from Cred.
+Cred offers customized C-LOC programs to meet the needs and requirements of our partners' applications.  All the details of each loan proposition is returned based on your specific partner ID from Cred.
 The crypto assets' Fair Market Value (FMV) allows you to calculate the estimated loan amount based on borrowers input (i.e. cryptocurrency type and amount for collateral and the type of fiat interested for the loan)
 
 ### Loan proposition [GET/api/v1/settings/ltv]
@@ -326,10 +327,10 @@ The crypto assets' Fair Market Value (FMV) allows you to calculate the estimated
 
     + Attributes
 
-        + `currency` (string) - currency of the CLOC 
-        + `max_credit` (number) - maximum amount for CLOC offer
-        + `min_credit` (number) - minimum amount for CLOC offer
-        + `interet_rates` (object) - list of interest profiles for the CLOC available for the partner  
+        + `currency` (string) - currency of the C-LOC 
+        + `max_credit` (number) - maximum amount for C-LOC offer
+        + `min_credit` (number) - minimum amount for C-LOC offer
+        + `interet_rates` (object) - list of interest profiles for the C-LOC available for the partner  
             + `borrower_residence` (string) - US or non-US
             + `tenor_in_months` (number) - the duration of loan term  
             + `rate` (number) - interest rate in percentage
@@ -341,7 +342,7 @@ The crypto assets' Fair Market Value (FMV) allows you to calculate the estimated
         + `eth_ltv` (number) - loan to value ratio for Etherum as collateral
         + `btc_ltv` (number) - loan to value ratio for Bitcoin as collateral
         + `xrp_ltv` (number) - loan to value ratio for Ripple as collateralpdate
-        + `fee_response` (object) - all the finance charges related to the CLOC
+        + `fee_response` (object) - all the finance charges related to the C-LOC
             +`administrative_fee` (number) 
             +`annual_fee` (number)
             +`exchange_fee_in_percentage` (number) 
@@ -349,7 +350,7 @@ The crypto assets' Fair Market Value (FMV) allows you to calculate the estimated
             +`origiation_fee_in_percentage` (number) 
             +`over_limit_fee` (number)
             +`returned_payment_fee` (number) 
-        + `daily_withdrawal_limit` (number) - daily withdrawal limit for CLOC which borrower must adhere to
+        + `daily_withdrawal_limit` (number) - daily withdrawal limit for C-LOC which borrower must adhere to
 
     + Body
     
@@ -452,8 +453,8 @@ The crypto assets' Fair Market Value (FMV) allows you to calculate the estimated
             
 ## Quotes [/quotes]
 
-A CLOC quote is generated based customer's input on collateral type and amount, loan term, opt-in to hold and others. 
-Each CLOC quote is returned with a quoteID for future reference.  The quote is valid for only 3 hours from the time of issue. The customer must read and agree to the loan agreement to proceed furhter.
+A C-LOC quote is generated based customer's input on collateral type and amount, loan term, opt-in to hold and others. 
+Each C-LOC quote is returned with a quoteID for future reference.  The quote is valid for only 3 hours from the time of issue. The customer must read and agree to the loan agreement to proceed furhter.
 
 
 ### Create quote request [POST/api/v1/users/{uid}/quotes]  
@@ -698,12 +699,12 @@ Request all the quotes for a specific user
         }
    
 
-## CLOC [/cloc]            
+## C-LOC [/cloc]            
             
-### Create CLOC request [POST/api/v1/users/{uid}/cloc] 
+### Create C-LOC request [POST/api/v1/users/{uid}/cloc] 
 
-Whe customer agrees and wants to proceed with CLOC presented in the official quote.  The official loan agreement would be presented for their e-signature.  The loan agreement is a legally binding document and Cred will provide this to the partner to be hosted on their site.
-Upon borrower signing the loan agreement, a CLOC contract is generated and a CLOC id is created for reference.  The esignature is the concatenation of the user's ipaddress and timestamp at the time of signing.
+Whe customer agrees and wants to proceed with C-LOC presented in the official quote.  The official loan agreement would be presented for their e-signature.  The loan agreement is a legally binding document and Cred will provide this to the partner to be hosted on their site.
+Upon borrower signing the loan agreement, a C-LOC contract is generated and a C-LOC id is created for reference.  The esignature is the concatenation of the user's ipaddress and timestamp at the time of signing.
 The immeidate next steps is to allow customer to pledge the collateral and stake the coins per loan agreement.  The destination addresses should be presented to the customer for the transfers.
 
 
@@ -715,9 +716,9 @@ The immeidate next steps is to allow customer to pledge the collateral and stake
 + Request (application/json)
 
     + Attributes
-        + `esignature` (string) - concatenation of IP address and timestamp when user signs the loan agreement.  This is used as official e-signature for the CLOC agreement.
+        + `esignature` (string) - concatenation of IP address and timestamp when user signs the loan agreement.  This is used as official e-signature for the C-LOC agreement.
         + `funding_method` - contains all the details for asset transfer
-            + `collateral` (object) - contains details on collateral to be pledged to obtain CLOC
+            + `collateral` (object) - contains details on collateral to be pledged to obtain C-LOC
                 + `currency` (string) - cryptocurrency type to be used for collateral (BTC, ETH, XRP)
                 + `ref_id` (string) - reference ID of source wallet address for collateral (i.e. public wallet address or other reference)
                 + `transfer_method` (string) - method of cryptocurrency transfer for the collateral (i.e CRED, ONUS, ACH, DEBITCARD, SEPA)
@@ -726,11 +727,11 @@ The immeidate next steps is to allow customer to pledge the collateral and stake
                 + `ref_id` (string) - reference ID of source wallet address for utility tokens (i.e. public wallet address or other reference)
                 + `transfer_method` (string) - method of cryptocurrency transfer for the reserved tokens (i.e CRED, ONUS, ACH, DEBITCARD, SEPA)
             + `destination account` (object) - contains details for withdrawal account
-                + `currency` (string) - currency for withdrawal for the CLOC
+                + `currency` (string) - currency for withdrawal for the C-LOC
                 + `ref_id` (string) - reference ID of customer's withdrawal account (i.e. bank account number, debit card number)
-                + `transfer_method` (string) - method for disbursing fiat for CLOC withdrawal (i.e ONUS, ACH, DEBITCARD, SEPA)
+                + `transfer_method` (string) - method for disbursing fiat for C-LOC withdrawal (i.e ONUS, ACH, DEBITCARD, SEPA)
             + `source account` (object) - contains details for repayment account
-                + `currency` (string) - currency for CLOC repayment
+                + `currency` (string) - currency for C-LOC repayment
                 + `ref_id` (string) - reference ID of customer's repayment account (i.e. bank account number, debit card number)
                 + `transfer_method` (string) - method for repayment (i.e ONUS, ACH, DEBITCARD, SEPA)
 
@@ -772,11 +773,11 @@ The immeidate next steps is to allow customer to pledge the collateral and stake
             
 + Response 200 (applicantion/json)
     + Attributes 
-        + `id` (string) - CLOC id generated for reference
-        + `uid` (string) - the user ID submitted in the create CLOC request
-        + `quote_id` (string) - the quote id and the quote details used to create the CLOC agreement
-        + `status` (string) - status of CLOC account (PENDING, ACTIVE, SUSPENDED)
-        + `msg` (string) - additional message for notes if the CLOC account is SUSPENDED
+        + `id` (string) - C-LOC id generated for reference
+        + `uid` (string) - the user ID submitted in the create C-LOC request
+        + `quote_id` (string) - the quote id and the quote details used to create the C-LOC agreement
+        + `status` (string) - status of C-LOC account (PENDING, ACTIVE, SUSPENDED)
+        + `msg` (string) - additional message for notes if the C-LOC account is SUSPENDED
         + `credit_line` (number) - credit line amount
         + `annual_interest_percent` (number) - 
         + `discount` (number) - 
@@ -802,7 +803,7 @@ The immeidate next steps is to allow customer to pledge the collateral and stake
         + `billed_fees":0`(string) - 
         + `net_billed_charges":0`(string) - 
         + `funding_method` - contains all the details for asset transfer
-            + `collateral` (object) - contains details on collateral to be pledged to obtain CLOC
+            + `collateral` (object) - contains details on collateral to be pledged to obtain C-LOC
                 + `currency` (string) - cryptocurrency type to be used for collateral (BTC, ETH, XRP)
                 + `ref_id` (string) - reference ID of source wallet address for collateral (i.e. public wallet address or other reference)
                 + `transfer_method` (string) - method of cryptocurrency transfer for the collateral (i.e CRED, ONUS, ACH, DEBITCARD, SEPA)
@@ -811,11 +812,11 @@ The immeidate next steps is to allow customer to pledge the collateral and stake
                 + `ref_id` (string) - reference ID of source wallet address for utility tokens (i.e. public wallet address or other reference)
                 + `transfer_method` (string) - method of cryptocurrency transfer for the reserved tokens (i.e CRED, ONUS, ACH, DEBITCARD, SEPA)
             + `destination account` (object) - contains details for withdrawal account
-                + `currency` (string) - currency for withdrawal for the CLOC
+                + `currency` (string) - currency for withdrawal for the C-LOC
                 + `ref_id` (string) - reference ID of customer's withdrawal account (i.e. bank account number, debit card number)
-                + `transfer_method` (string) - method for disbursing fiat for CLOC withdrawal (i.e ONUS, ACH, DEBITCARD, SEPA)
+                + `transfer_method` (string) - method for disbursing fiat for C-LOC withdrawal (i.e ONUS, ACH, DEBITCARD, SEPA)
             + `source account` (object) - contains details for repayment account
-                + `currency` (string) - currency for CLOC repayment
+                + `currency` (string) - currency for C-LOC repayment
                 + `ref_id` (string) - reference ID of customer's repayment account (i.e. bank account number, debit card number)
                 + `transfer_method` (string) - method for repayment (i.e ONUS, ACH, DEBITCARD, SEPA) 
         + `fees` (object) 
@@ -940,14 +941,14 @@ The immeidate next steps is to allow customer to pledge the collateral and stake
         }
         
             
-### Get CLOC [GET/api/v1/users/{uid}/cloc/{clocId}]  
+### Get C-LOC [GET/api/v1/users/{uid}/cloc/{clocId}]  
 
-Get CLOC account information by id for a given user
+Get C-LOC account information by id for a given user
 
 + Parameters:
 
     + `uid` (string) - User uid issued by CRED  
-    + `clocId` (string) - cloc account id issued by CRED
+    + `clocId` (string) - c-loc account id issued by CRED
 
 + Request (application/json)
 
@@ -1055,9 +1056,9 @@ Get CLOC account information by id for a given user
         }
 
 
-### Get active CLOC account [GET/api/v1/users/{uid}/cloc/active]  
+### Get active C-LOC account [GET/api/v1/users/{uid}/cloc/active]  
 
-Get active CLOC account for a given user id (uid)
+Get active C-LOC account for a given user id (uid)
 
 + Parameters
 
@@ -1171,9 +1172,9 @@ Get active CLOC account for a given user id (uid)
         }
 
 
-### Get all user CLOC accounts [GET/api/v1/users/uid/cloc]  
+### Get all user C-LOC accounts [GET/api/v1/users/uid/cloc]  
 
-Get all CLOC accounts for a given user id (uid)
+Get all C-LOC accounts for a given user id (uid)
 
 + Parameters:
 
@@ -1314,22 +1315,21 @@ Get all CLOC accounts for a given user id (uid)
 
 ## Transactions [/transactions]    
 
-Customer should have the capability be able to withdraw from their CLOC and do repayment at any time.  These transction APIs allow you to facilitate these actions direclty from your platform.
+Customer should have the capability be able to withdraw from their C-LOC and do repayment at any time.  These transction APIs allow you to facilitate these actions direclty from your platform.
 
             
 ### Create withdraw authorization [POST/api/v1/users/{uid}/cloc/{clocId}/transaction/]  
-This allows customer to withdraw from their CLOC into their designated account. The withdrawal authorization is submitted to Cred to run all through all authorization checks and move funds from the customer's CLOC account into their designated bank/card.  The available credit would be deducted according once transaction is successfully authorized and settled.
-Partner is encouraged to use GET CLOC request to update CLOC account status in order for customer to have most-to-date CLOC account status
+This allows customer to withdraw from their C-LOC into their designated account. The withdrawal authorization is submitted to Cred to run all through all authorization checks and move funds from the customer's CLOC account into their designated bank/card.  The available credit would be deducted according once transaction is successfully authorized and settled.
+Partner is encouraged to use GET C-LOC request to update C-LOC account status in order for customer to have most-to-date CLOC account status
 
 + Parameters:
 
     + `uid` (string) - User uid issued by CRED  
-    + `clocId` (string) - CLOC id issued by cred after cloc CLOC
-
+    + `clocId` (string) - C-LOC id issued by cred upon C-LOC creation
 + Request (application/json)
 
     + Attributes
-        + `amount` (number) - Amount to be withdrawal from CLOC account  
+        + `amount` (number) - Amount to be withdrawal from C-LOC account  
         + `notes` (string) - optional note
         + `destination_account` (object)
             + `currency` (string) - currency of the withdrawal funds
@@ -1397,7 +1397,7 @@ Partner is encouraged to use GET CLOC request to update CLOC account status in o
 
     + `uid` (string) - User uid issued by CRED  
     + `transactionId` (string) - Transaction id issued by cred after transaction request.
-    + `clocId` (string) - CLOC id issued by cred after cloc creation
+    + `clocId` (string) - C-LOC id issued by cred upon C-LOC creation
 
 
 + Request (application/json)
@@ -1451,14 +1451,14 @@ Partner is encouraged to use GET CLOC request to update CLOC account status in o
         }
         
 ### Create repayment authorization [POST/api/v1/users/uid/cloc/clocId/repayment/]  
-This allows customer to do repayments for their CLOC from their designated account. The repayment authorization is submitted to Cred to run through all authorization checks prior settlement.  When repayment is succesful, the available credit would increase accordingly and be made available to the customer.  
+This allows customer to do repayments for their C-LOC from their designated account. The repayment authorization is submitted to Cred to run through all authorization checks prior settlement.  When repayment is succesful, the available credit would increase accordingly and be made available to the customer.  
 At the end of each month, customer would be auto-debited from the designated account for the total interest and fee accrued from.  The customer should always have an option to make additional payment for off-cycle payments.  Both on-cycle and off-cycle repayments can be done using the same API.
 
 
 + Parameters:
 
     + `uid` (string) - User uid issued by CRED  
-    + `clocId` (string) - CLOC id issued by cred after cloc CLOC
+    + `clocId` (string) - C-LOC id issued by cred upon C-LOC creation
 
 + Request (application/json)
 
@@ -1516,12 +1516,12 @@ At the end of each month, customer would be auto-debited from the designated acc
         }
 
 
-### Get all CLOC transactions [GET/api/v1/users/uid/cloc/clocId/transactions]  
+### Get all C-LOC transactions [GET/api/v1/users/uid/cloc/clocId/transactions]  
 
 + Parameters:
 
     + `uid` (string)- User uid issued by CRED  
-    + `clocId` (string) - cloc id issued by cred after cloc creation
+    + `clocId` (string) - c-loc id issued by cred after c-loc creation
 
 + Request (application/json)
 
