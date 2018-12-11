@@ -3,7 +3,7 @@ HOST: https://api-dev.mycred.io
 
 # CRED API
 
-CredX comprehensive suite of APIs are designed for everyone looking to build powerful crypto-based financial applications.  CredX APIs are grouped into multiple logical areas and provide for comprehensive set of required capabilities. Altogether exposed service modules account for entire user journey from onboarding to service origination, funds disbursement to repayment, service propositioning to reporting.  In addition, CredX APIs support all relevant wallet management functions, including collateral custody governance.
+CredX comprehensive suite of APIs are designed for everyone looking to build powerful crypto-based financial applications.  CredX APIs are grouped into multiple logical areas and provide for all-around set of required capabilities. Altogether exposed service modules account for entire user journey from onboarding to service origination, funds disbursement to repayment, service propositioning to reporting.  In addition, CredX APIs support all relevant wallet management functions, including collateral custody governance.
 
 First fully developed array of modules available for application development is CredX innovative proposition of Crypto equity Line of Credit or C-LOC™.  Crypto equity Line of Credit is a REVOLVING loan offering in which the funder agrees to lend a maximum amount within an agreed period of time, where the collateral is the borrower's equity in his/her crypto assets.  
 
@@ -11,11 +11,11 @@ As we continue to evolve, we will be sharing other innovative services to enable
 
 ## Users [/users]
 
-In order to onboard a user onto the Cred’s platform and apply for C-LOC, we collect basic personal information to create an account.  In addition, to comply with lending regulations in each region, we are obligated to collect additional personal data including an image of a government issued ID to fulfill these requirements.  Partner should only allow member to proceed with C-LOC application if both account status and kyc status are in good standing.
+In order to create a user on CredX platform and provision financial services applications, like C-LOC™, Cred needs to collect and verify user identity information.  This ensures compliance with KYC/AML regulations.  CredX platform operates as a gateway to global and local KYC bureaus to allow for widest possible geographical coverage in documents and identity verification.
 
 ### User signup [POST/api/v1/users] 
 
-The User Signup API is the first step to customer onboarding to collect their basic account information.  This returns a unqiue identifier for each user.  The user id should be kept on the partner's system for future reference or inquiry for a specific user/account
+User Signup API is the first step to user onboarding. This API returns a unique identifier for each user. Thus shared user id should be kept on the partner's system for future referencing or inquiries relating to user/account profile and activity.
     
 + Request (application/json)
 
@@ -79,7 +79,7 @@ The User Signup API is the first step to customer onboarding to collect their ba
 
 ### User KYC [POST/api/v1/users/{uid}/kyc] 
 
-The KYC API collects the member’s PIIs for Cred to fulfill our KYC requirements.  Cred is required to perform our own KYC for each C-LOC customer. Partner should only allow member to move forward with C-LOC application if both account status and kyc status are in good standing.
+User KYC API triggers adjudication process of user’s personal identification information (PII) as part of fulfilling KYC obligations.  No financial services proposition can be offered to a user that did not pass CredX KYC adjudication.  A partner should strictly allow only KYC-ed users to progress with CredX enabled financial services applications, like C-LOC™.
 
 + Parameters
     + `uid` (string) - User uid issued by CRED   
@@ -164,9 +164,9 @@ The KYC API collects the member’s PIIs for Cred to fulfill our KYC requirement
             "error": "Bad request",
             "code" : "400"
         }
-### User KYC Document verification [POST/api/v1/users/{uid}/kyc/verify/documents] 
+### Document verification [POST/api/v1/users/{uid}/kyc/verify/documents] 
 
-Customer to submit goverment ID to check for autheticity validation.  This is a part of the KYC service.
+Document verification API is part of user comprehensive KYC adjudication.  Submitted government issued ID will be fully authenticated through CredX to allow for completion of KYC process.
 
 + Parameters
     + `uid` (string) - User id issued by CRED   
@@ -309,8 +309,7 @@ The user's account status is updated throughout the lifecycle of the account.  T
 
 
 ## Loan proposition  [/ltv]
-Cred offers customized C-LOC programs to meet the needs and requirements of our partners' applications.  All the details of each loan proposition is returned based on your specific partner ID from Cred.
-The crypto assets' Fair Market Value (FMV) allows you to calculate the estimated loan amount based on borrowers input (i.e. cryptocurrency type and amount for collateral and the type of fiat interested for the loan)
+Loan proposition API provides detailed and up to day information on the offering for a particular financial application, like  a C-LOC™, in this case.  Details, such as effective Interest Rate, Tenor, Origination Fee, Fair Market Value of crypto-collateral and other proposition components are returned to a partner to help build customized loan calculator.
 
 ### Loan proposition [GET/api/v1/settings/ltv]
 
@@ -451,10 +450,8 @@ The crypto assets' Fair Market Value (FMV) allows you to calculate the estimated
             
 ## Quotes [/quotes]
 
-A C-LOC quote is generated based customer's input on collateral type and amount, loan term, opt-in to hold and others. 
-Each C-LOC quote is returned with a quoteID for future reference.  The quote is valid for only 3 hours from the time of issue. The customer must read and agree to the loan agreement to proceed furhter.
-
-
+This API triggers official quote generation based on borrower’s specified loan requirements, such as  collateral type, desired credit limit, expressed interest to stake utility coins and other loan customizing parameters. Each C-LOC™ quote is returned with a quoteID for future referencing. Thus generated quote has a validity of 3 hours from the time of issue.  For a valid loan account to be originated it is within the next 3 hours the returned quote will need to be accepted by a borrower, borrower’s collateral to be transferred to Cred and Cred loan agreement to be electronically signed.
+ 
 ### Create quote request [POST/api/v1/users/{uid}/quotes]  
 
 + Parameters
@@ -744,12 +741,9 @@ Request all the quotes for a specific user
 
 ## C-LOC [/cloc]            
             
-### Create C-LOC request [POST/api/v1/users/{uid}/cloc] 
+### Create C-LOC [POST/api/v1/users/{uid}/cloc] 
 
-Whe customer agrees and wants to proceed with C-LOC presented in the official quote.  The official loan agreement would be presented for their e-signature.  The loan agreement is a legally binding document and Cred will provide this to the partner to be hosted on their site.
-Upon borrower signing the loan agreement, a C-LOC contract is generated and a C-LOC id is created for reference.  The esignature is the concatenation of the user's ipaddress and timestamp at the time of signing.
-The immeidate next steps is to allow customer to pledge the collateral and stake the coins per loan agreement.  The destination addresses should be presented to the customer for the transfers.
-
+This API is responsible for loan account origination and is based on acceptance of previously shared official quote, captured borrower’s e-signature on Cred’s loan agreement and successful transfer of crypto collateral.  Before collateral is received in Cred’s custody, borrower’s C-LOC account will be in ‘pend’ state.  Once receipt of collateral is confirmed the status of C-LOC account will be updated to ‘active’.  See below Get C-LOC API for C-LOC account status inquiry call. 
 
 + Parameters
 
@@ -1357,14 +1351,12 @@ Get all C-LOC accounts for a given user id (uid)
             "code" : "400"
         }
 
-## Transactions [/transactions]    
+## Authorization [/transactions]    
 
-Customer should have the capability be able to withdraw from their C-LOC and do repayment at any time.  These transction APIs allow you to facilitate these actions direclty from your platform.
-
+Every credit line transaction, be it a withdrawal or a repayment, is always preceded by what is called authorization.  CredX authorization service is a form of approval process, adjudicating availability of funds on borrower’s C-LOC account along with other important account conditions before submitted transaction is permitted to settle.
             
 ### Create withdraw authorization [POST/api/v1/users/{uid}/cloc/{clocId}/transaction/]  
-This allows customer to withdraw from their C-LOC into their designated account. The withdrawal authorization is submitted to Cred to run all through all authorization checks and move funds from the customer's C-LOC account into their designated bank/card.  The available credit would be deducted according once transaction is successfully authorized and settled.
-Partner is encouraged to use GET C-LOC request to update C-LOC account status in order for customer to have most-to-date C-LOC account status
+Calling this API will trigger an array of dynamic CredX rule sets responsible for adjudicating a withdrawal request.  A withdrawal request is defined as an individual draw on a C-LOC account by an authorized user (ie borrower).  It will take another call to make (Get authorization API, see below) to find out whether a Withdrawal authorization request was approved or declined.  All approved withdrawal authorizations will be queued for further settlement (i.e. transfer from Cred’s issued C-LOC account to borrower’s designated destination account).  CredX settlement service functions as a gateway and is integrated with a variety of global and local clearing and settlement mechanisms (such as ACH, Debit Card, Sepa, various crypto wallets and other). 
 
 + Parameters:
 
@@ -1435,7 +1427,7 @@ Partner is encouraged to use GET C-LOC request to update C-LOC account status in
             "code" : "400"
         }
         
-### Get transaction [GET/api/v1/users/uid/cloc/clocId/transactions/transactionId]  
+### Get authorization [GET/api/v1/users/uid/cloc/clocId/transactions/transactionId]  
 
 + Parameters:
 
@@ -1495,9 +1487,7 @@ Partner is encouraged to use GET C-LOC request to update C-LOC account status in
         }
         
 ### Create repayment authorization [POST/api/v1/users/uid/cloc/clocId/repayment/]  
-This allows customer to do repayments for their C-LOC from their designated account. The repayment authorization is submitted to Cred to run through all authorization checks prior settlement.  When repayment is succesful, the available credit would increase accordingly and be made available to the customer.  
-At the end of each month, the platform would initiate on-cycle payment (auto-debit) for the total interest and fee accrued from from the designated account.  The customer should always have an option to make additional payment for off-cycle payments.  Both on-cycle and off-cycle repayments can be done using the same API.
-
+Calling this API will trigger an array of dynamic CredX rule sets responsible for adjudicating a repayment request.  A repayment request is defined as an expressed intent to pay down or pay off a C-LOC account initiated by an authorized user (ie borrower).  It will take another call to make (see Get Authorization API) to find out whether a repayment authorization request was approved or declined.  All approved repayment authorizations will be queued for further settlement (i.e. transfer from borrower’s designated source account to Cred’s issued C-LOC account).  CredX settlement service functions as a gateway and is integrated to a variety of global and local clearing and settlement mechanisms (such as ACH, Debit Card, Sepa, various crypto wallets and other).    
 
 + Parameters:
 
